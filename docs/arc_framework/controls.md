@@ -1,39 +1,13 @@
 # Controls for agentic systems
 
+!!! abstract "Page Summary"
+
+    This page defines technical controls for mitigating risks in agentic systems, organised into three tiers: Cardinal (Level 0 - fundamental requirements), Standard (Level 1 - recommended implementations), and Best Practice (Level 2 - aspirational measures). Each control aims to either reduce the potential impact of failures or decrease the likelihood of specific failure modes occurring.
+
 Controls are essential to mitigate risks to an acceptable level. Within the **Risk Register**, each risk comes with a set of **recommended technical controls** that aim to either:
 
 1. **Reduce the potential impact** by limiting the scope or severity of a failure, or
 2. **Decrease the likelihood** of a specific failure mode occurring.
-
-Below we provide some examples to illustrate how technical controls satisfy either goal.
-
-??? example "Examples of reducing impact" 
-
-    **Example 1: Sandboxing tool access**
-
-    * **Scenario:** An agentic research agent accidentally deletes files.
-    * **Control:** Run all file operations in a sandboxed or read-only directory.
-    * **Effect:** The failure still happens, but it can’t harm real systems → *reduces impact*.
-
-    **Example 2: Data encryption and backup**
-
-    * **Scenario:** A system breach exposes internal data.
-    * **Control:** Encrypt stored data and maintain regular backups.
-    * **Effect:** Attackers can’t read stolen data, and recovery is fast → *reduces impact*.
-
-??? example "Examples of decreasing likelihood"
-
-    **Example 1: Input validation and allow-listing**
-
-    * **Scenario:** A prompt injection tries to trick the agent.
-    * **Control:** Filter and validate all external inputs; only allow trusted URLs or commands.
-    * **Effect:** Reduces chances that malicious inputs even reach the agent → *lowers likelihood*.
-
-    **Example 2: Authentication and least-privilege access**
-
-    * **Scenario:** A compromised account triggers unauthorised actions.
-    * **Control:** Enforce strong authentication and give each agent minimal necessary permissions.
-    * **Effect:** Makes successful misuse much harder → *lowers likelihood*.
 
 ---
 
@@ -41,7 +15,7 @@ Below we provide some examples to illustrate how technical controls satisfy eith
 
 Identifying the wide range of risks from agentic systems is only just the start - the next part is curating a list of effective technical controls to mitigate these risks. This section describes how to develop controls for the Risk Register.
 
-### Guiding principles
+### 🧭 Guiding principles
 
 To ensure controls remain relevant, meaningful, and effective for tackling agentic risks, we outline three key guiding principles for developing controls: 
 
@@ -57,7 +31,7 @@ To ensure controls remain relevant, meaningful, and effective for tackling agent
 
     Yes! This is because several risks may share the same failure mode. For example, prompt injection guardrails are likely to be useful to deal with prompt injection attacks from the memory component, website, or internal files.
 
-### Developing controls
+### 🔨 Developing controls
 
 First, we start by analysing the risk for its failure mode and hazard, and consider how to address the risk by reducing either its likelihood of occurring or the adverse impact if it does occur. Some helpful questions for brainstorming possible controls include:
 
@@ -76,15 +50,15 @@ Next, we categorise the control into three levels based on its criticality:
 
 ??? example "Example of controls targeting a specific risk"
 
-    **Risk:** “Opening vulnerabilities to prompt injection attacks via malicious websites” → **Security and safety risk (all)** caused by **external manipulation** of the **Internet & Search Access capability.**
+    **Risk:** RISK-034 "Prompt injection via malicious websites" → **Safety and security risk** caused by **external manipulation** of the **Internet and Search Access** capability.
 
     **Recommended Controls:**
 
-    1. [Level 1] Implement input guardrails to detect prompt injection or adversarial attacks → *reduces likelihood of prompt injection attack succeeding*
-    2. [Level 1] Implement escape filtering before including web content into prompts → *reduces likelihood of prompt injection attack succeeding*
-    3. [Level 2] Use structured retrieval APIs for searching the web rather than through web scraping → *reduces likelihood of prompt injection attack occurring*
+    1. **CTRL-0061** [Level 0] Use structured retrieval APIs for web searches rather than web scraping → *reduces exposure to malicious web content and injection vectors*
+    2. **CTRL-0062** [Level 0] Implement input guardrails to detect prompt injection and adversarial attacks → *reduces likelihood of prompt injection attack succeeding*
+    3. **CTRL-0063** [Level 1] Prioritise search results from verified, high-quality domains → *reduces exposure to unreliable and potentially malicious content*
 
-In our draft Risk Register, we also provide a **tentative list of recommended controls** for each risk to help organizations get started.
+Our [Interactive Risk Register](risk-register.md) provides **recommended controls** for each of the 46 documented risks to help organizations get started.
 
 ---
 
@@ -96,3 +70,7 @@ However, identifying residual risks is inherently difficult, as it depends heavi
 
 * **Inherent weaknesses** of technical controls (e.g., prompt-injection guardrails trained on past jailbreaks may not generalize to novel attacks).
 * **Composite risks** that emerge from the interaction of two or more capabilities within the system.
+* **Human factors** including social engineering attacks targeting developers or operators, credential compromise, or misconfiguration during deployment.
+* **Context-specific risks** unique to the deployment domain (e.g., medical, financial, legal) that are not adequately addressed by general-purpose controls.
+
+To adequately address residual risks, organisations can consider implementing a **layered risk management strategy** that combines technical controls with organisational measures. This includes establishing **human-in-the-loop oversight** for high-stakes decisions, implementing **continuous monitoring and anomaly detection** to identify unexpected behaviours, and fostering a **culture of responsible AI development** where teams proactively identify and escalate emerging risks. Additionally, organisations should stay informed about the evolving agentic AI landscape and periodically reassess their risk posture as capabilities, architectures, and deployment contexts change over time.

@@ -2,12 +2,28 @@
 
 We provide a range of resources to help organisations understand and get started with using the ARC framework to govern their agentic AI systems. 
 
-| Resource | Target Audience | Objective | 
+| Resource | Target Audience | Description |
 | --- | --- | --- |
-| Presentation slides | General AI-literate audience | To provide a general understanding of the ARC framework | 
-| Technical Paper[^1] | AI governance teams, academia | To share deeper technical details about the ARC framework | 
-| Sample Risk Register | AI governance teams, developers | To illustrate how a Risk Register might look like for a generic organisation |
-| Risk Assessment Matrix | AI governance teams, developers | To provide greater clarity about how to conduct the risk assessment |
-| Self-assessment Tool | AI governance teams, developers | To enable teams to provide a simple interface for implementing the ARC framework's assessment internally |
+| [ARCvisor Tool](#arcvisor) | AI governance teams, developers | Web-based risk assessment workflow with 50%+ time savings |
+| [Technical Paper](../assets/ARC_Framework-Paper-IASEAI_2026.pdf) | AI governance teams, academia | In-depth technical details and research foundations |
+| [Baseline Risk Register](../arc_framework/risk-register/) | AI governance teams, developers | Interactive exploration of 46 risks and 88 controls ([YAML sources](../../arc-risk-register/)) |
+| Presentation slides (pending) | General AI-literate audience | High-level overview of the ARC framework |
 
-[^1]: Note that we have a few versions of our paper due to conference / workshop acceptances. We prefer this version, submitted to IASEAI 2026, as it is the most complete version.
+## ARCvisor 🤖✨
+
+ARCvisor is an AI-powered assistant that makes risk assessment for agentic AI systems actually enjoyable. By combining LLMs with structured knowledge representation, ARCvisor turns the tedious process of risk identification and control selection into an interactive conversation.
+
+[Try Live Demo :material-play-circle:](https://agentic-risk-assessment.app.tc1.airbase.sg){ .md-button .md-button--primary } [View on GitHub :fontawesome-brands-github:](https://github.com/govtech-responsibleai/arcvisor){ .md-button }
+
+### 🚀 Key Features
+
+- **⚡ Lightning Fast**: Reduce risk assessment time by 50%+ without sacrificing quality
+- **🎯 Smart Risk Detection**: Automatically identifies relevant risks based on your system description
+- **🛡️ Intelligent Control Selection**: Recommends the most appropriate controls for your specific context
+- **📋 Documentation Made Easy**: Generates comprehensive risk mitigation documentation as you go
+- **🎚️ Flexible Assessments**: Supports both baseline and capability-level evaluations
+- **💬 Conversational Interface**: Natural language interaction - just describe your system and let ARCvisor guide you
+
+### 📚 Learn More
+
+Want to dive deeper into how ARCvisor works? Check out the [ARCvisor preprint paper](../assets/ARCvisor-Preprint_2025.pdf) for technical details on the architecture, evaluation results, and real-world case studies.

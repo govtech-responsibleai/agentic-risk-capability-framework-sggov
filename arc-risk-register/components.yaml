@@ -1,0 +1,15 @@
+CMP-01:
+  name: "LLM"
+  description: "A large language model (LLM) is a neural network trained on massive text data to learn statistical patterns of language, enabling it to understand, generate, and reason over natural language inputs. It is the core reasoning engine that processes instructions, interprets user inputs, and generates contextually appropriate responses by leveraging its trained language understanding and generation capabilities. There are a large variety of LLMs to choose from, with different sizes, capabilities, and architectures, from large closed-source LLMs such as OpenAI's GPT-5.2, Anthropic's Claude 4 Opus, or Gemini 3 Pro, to smaller open-weights models like Llama 3.1 8B, Qwen3 8B, and Mistral Small 3.1."
+
+CMP-02:
+  name: "Instructions"
+  description: "Instructions are structured inputs provided to an LLM that define the task, constraints, and context, guiding how the model interprets inputs and generates outputs. They guide the LLM's decision process by conditioning prompts and tool use with objectives, policies, and guardrails. Forms include system prompts, policies, schemas, and rubrics, varying by framework and enforcement strictness."
+
+CMP-03:
+  name: "Tools"
+  description: "Tools are external functions, APIs, or resources attached to an LLM that extend its capabilities beyond text generation, enabling it to retrieve information, execute actions, and affect external systems (e.g., search, code execution, database queries, or file manipulation), typically through structured interfaces such as the Model Context Protocol (MCP) that constrain invocation, inputs, permissions, and outputs for agentic control and safety."
+
+CMP-04:
+  name: "Memory"
+  description: "Memory is a persistent or semi-persistent data store attached to an LLM that retains information across interactions—such as conversation history, user preferences, task state, and retrieved knowledge—enabling continuity, long-horizon reasoning, and personalization in agentic workflows. Memory may be implemented through mechanisms such as context windows, vector databases, episodic logs, or external state stores, each offering different trade-offs in latency, fidelity, and persistence."

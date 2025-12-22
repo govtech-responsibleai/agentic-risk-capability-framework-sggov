@@ -1,11 +1,15 @@
 # Risks of agentic systems
 
-In this section, we explain how risks materialize from the [elements of an agentic system](elements.md). This comprises two key aspects:
+!!! abstract "Page Summary"
+
+    This page explains how risks materialise from the elements of agentic systems through three failure modes (agent failure, external manipulation, tool malfunction) and various hazards (resulting impacts). It introduces the Risk Register as the organisation's central repository for documenting and managing risks across components, design, and capabilities.
+
+In this section, we explain how risks materialise from the [elements of an agentic system](elements.md). This comprises two key aspects:
 
 1. **Failure modes**, which outline *how* the system fails.
 2. **Hazards**, which describe the *resulting impact*.
 
-We then describe the **Risk Register**, which serves as the organization's central repository of risks relating to agentic systems.
+We then describe the **Risk Register**, which serves as the organisation's central repository of risks relating to agentic systems.
 
 ---
 
@@ -13,7 +17,7 @@ We then describe the **Risk Register**, which serves as the organization's centr
 
 Agentic systems may fail through three general modalities: (1) agent failure, (2) external manipulation, or (3) tool or resource malfunction. In this section, we explain each of these failure modes and provide two detailed examples to illustrate the point.
 
-### Agent Failure
+### 🤖 Agent Failure
 
 In this failure mode, **the agent itself fails to operate as intended due to poor performance, misalignment, or unreliability.** 
 
@@ -24,7 +28,7 @@ This encompasses failures that originate from the core decision-making and reaso
     * **Misaligned goal pursuit**: A customer service agent designed to resolve issues efficiently begins automatically issuing refunds for all complaints without verification to maximize its "resolution rate" metric. The agent misinterprets its optimization objective, prioritizing speed over accuracy and proper validation. This demonstrates agent failure through misalignment between the intended behavior (resolving issues appropriately) and actual behavior (blindly issuing refunds). The failure stems from poor reward specification and insufficient safeguards in the agent's decision-making process.
     * **Hallucinated instructions**: A code review agent confidently suggests implementing a non-existent Python library function `secure_hash.ultra_encrypt()` as a security best practice. The agent generates this recommendation based on pattern matching from its training data without verifying the function's actual existence. This demonstrates agent failure through unreliability and poor performance in distinguishing real APIs from plausible-sounding fabrications. The failure results from the underlying model's tendency to hallucinate combined with inadequate fact-checking mechanisms.
 
-### External Manipulation
+### 🎭 External Manipulation
 
 In this failure mode, **malicious actors cause or trick the agent to deviate from its intended behavior through deliberate attacks or exploitation of vulnerabilities.**
 
@@ -36,7 +40,7 @@ This includes a broad spectrum of adversarial techniques, including prompt injec
 
     * **Adversarial training data poisoning**: Attackers contribute seemingly helpful code examples to an open-source repository that an AI coding assistant uses for fine-tuning, but these examples contain subtle backdoors activated by specific trigger phrases. When developers later use the assistant and inadvertently include trigger phrases in their comments, the agent suggests vulnerable code. This demonstrates external manipulation through supply chain compromise of the agent's training pipeline. The failure occurs because the agent cannot detect malicious patterns embedded in otherwise legitimate-looking training data.
 
-### Tool or Resource Malfunction
+### ⚙️ Tool or Resource Malfunction
 
 In this failure mode, **the tools or resources utilized by the agentic system fail, are compromised, or are inadequate.**
 
@@ -54,34 +58,34 @@ This comprises scenarios such as API timeouts or rate limiting, database corrupt
 
 The following tables list a range of **safety and security hazards** which may result from these failures. This distinction serves as a heuristic for comprehensive risk identification and should not be interpreted as a rigid or complete taxonomy of hazards.
 
-### Security Hazards
+### 🔒 Security Hazards
 
-Security hazards involve threats to the **confidentiality, integrity, and availability of systems, data, and infrastructure**. These include unauthorized access to sensitive information, disruption of critical services, and compromise of system functionality or resources.
-
-| **Hazard** | **Description** |
-| ----- | ----- |
-| Data (files, databases) | Failures can lead to data breaches, integrity attacks, PII exposure, or ransomware, where sensitive information is exfiltrated, corrupted, or held hostage.<br>*Example: An agent with database access is prompt-injected to execute SQL queries that export customer credit card information to an external server.* |
-| Application | System failures, service disruptions, unintended use of applications, backdoor access, or resource exploitation that compromise functionality or security.<br>*Example: A code generation agent inserts a backdoor into a internal application, creating unauthorized remote access for attackers.* |
-| Infrastructure & network | Denial of service (DoS/DDoS), man-in-the-middle (MitM) attacks, network eavesdropping, or lateral access compromising the underlying infrastructure.<br>*Example: An agent repeatedly spawns resource-intensive tasks without rate limiting, overwhelming cloud infrastructure and causing service outages for legitimate users.* |
-| Identity & access management | Unauthorized control, impersonation of credible roles, or privilege escalation allowing attackers to gain elevated access or control over systems.<br>*Example: An agent exploits poorly configured authentication to escalate from read-only permissions to admin privileges, then creates unauthorized user accounts.* |
-
-### Safety Hazards
-
-Safety hazards involve risks to **human well-being, social harm, and the responsible use of AI systems**. These hazards encompass ethical violations, generation of harmful content, discriminatory behavior, and actions that could endanger individuals or society.
+Security hazards involve threats to the **confidentiality, integrity, and availability of systems, data, and infrastructure**. These include unauthorised access to sensitive information, disruption of critical services, and compromise of system functionality or resources.
 
 | **Hazard** | **Description** |
 | ----- | ----- |
-| Illegal and CBRNE activities | Agents facilitating or engaging in CBRNE-related activities or other criminal offenses such as fraud, scams, or smuggling.<br>*Example: An agent provides step-by-step guidance on synthesizing controlled substances after jailbreaking bypasses its safety restrictions.* |
-| Discriminatory or hateful content | Unsafe or discriminatory content, including hate speech, slurs, and biased decisions.<br>*Example: A hiring agent consistently ranks candidates with ethnic minority names lower than identical candidates with majority-culture names due to biased training data.* |
-| Inappropriate content | Generation of vulgar, violent, sexual, or self-harm-promoting content that causes reputational harm and erodes trust.<br>*Example: A customer service chatbot generates graphic violent imagery in response to a seemingly innocuous query due to inadequate content filtering.* |
-| Compromise user safety | Direct endangerment of users, such as through misinformation or harmful autonomous actions.<br>*Example: A medical advice agent confidently recommends discontinuing essential medication based on hallucinated drug interactions, potentially endangering patient health.* |
-| Misrepresentation | Dissemination of wrong or inaccurate information, or cascading failures due to uncorrected errors, leading to loss of trust.<br>*Example: A social media management agent generates and posts false news stories about political candidates, presenting fabricated quotes and events as factual information.* |
+| 🔴 Data (files, databases) | Failures can lead to data breaches, integrity attacks, PII exposure, or ransomware, where sensitive information is exfiltrated, corrupted, or held hostage.<br>*Example: An agent with database access is prompt-injected to execute SQL queries that export customer credit card information to an external server.* |
+| 🟠 Application | System failures, service disruptions, unintended use of applications, backdoor access, or resource exploitation that compromise functionality or security.<br>*Example: A code generation agent inserts a backdoor into an internal application, creating unauthorised remote access for attackers.* |
+| 🟠 Infrastructure & network | Denial of service (DoS/DDoS), man-in-the-middle (MitM) attacks, network eavesdropping, or lateral access compromising the underlying infrastructure.<br>*Example: An agent repeatedly spawns resource-intensive tasks without rate limiting, overwhelming cloud infrastructure and causing service outages for legitimate users.* |
+| 🔴 Identity & access management | Unauthorised control, impersonation of credible roles, or privilege escalation allowing attackers to gain elevated access or control over systems.<br>*Example: An agent exploits poorly configured authentication to escalate from read-only permissions to admin privileges, then creates unauthorised user accounts.* |
+
+### 🚨 Safety Hazards
+
+Safety hazards involve risks to **human well-being, social harm, and the responsible use of AI systems**. These hazards encompass ethical violations, generation of harmful content, discriminatory behaviour, and actions that could endanger individuals or society.
+
+| **Hazard** | **Description** |
+| ----- | ----- |
+| 🔴 Illegal and CBRNE activities | Agents facilitating or engaging in CBRNE-related activities or other criminal offences such as fraud, scams, or smuggling.<br>*Example: An agent provides step-by-step guidance on synthesising controlled substances after jailbreaking bypasses its safety restrictions.* |
+| 🟠 Discriminatory or hateful content | Unsafe or discriminatory content, including hate speech, slurs, and biased decisions.<br>*Example: A hiring agent consistently ranks candidates with ethnic minority names lower than identical candidates with majority-culture names due to biased training data.* |
+| 🟡 Inappropriate content | Generation of vulgar, violent, sexual, or self-harm-promoting content that causes reputational harm and erodes trust.<br>*Example: A customer service chatbot generates graphic violent imagery in response to a seemingly innocuous query due to inadequate content filtering.* |
+| 🔴 Compromise user safety | Direct endangerment of users, such as through misinformation or harmful autonomous actions.<br>*Example: A medical advice agent confidently recommends discontinuing essential medication based on hallucinated drug interactions, potentially endangering patient health.* |
+| 🟡 Misrepresentation | Dissemination of wrong or inaccurate information, or cascading failures due to uncorrected errors, leading to loss of trust.<br>*Example: A social media management agent generates and posts false news stories about political candidates, presenting fabricated quotes and events as factual information.* |
 
 ---
 
 ## The Risk Register
 
-The **Risk Register** consolidates all risks identified through the ARC framework and **serves as the organization’s reference list of safety and security risks for agentic systems**. 
+The **Risk Register** consolidates all risks identified through the ARC framework and **serves as the organization's reference list of safety and security risks for agentic systems**. 
 
 Each risk in the register should:
 
@@ -89,21 +93,23 @@ Each risk in the register should:
 2. Correspond to a **failure mode** (agent failure, external manipulation, or tool/resource malfunction), and
 3. Result in at least one **hazard** (from the categories listed above).
 
-To illustrate the point, see the examples below:
+To illustrate the point, see the examples below from our [Interactive Risk Register](risk-register.md):
 
-??? example "Examples of risks"
+??? example "Examples of risks from the Risk Register"
 
-    <u>**Example 1:**</u> “Overwhelming the database with poor, inefficient, or repeated queries" ->
-    This is a **security risk (application, infrastructure)** caused by **agent failure** of the **File & Data Management** capability.
+    <u>**Example 1:**</u> "Insufficient alignment of LLM behaviour" →
+    This is a **safety and security risk** caused by **agent failure** of the **LLM** component. The risk arises when an LLM's learned objectives and behaviors do not reliably align with intended user goals, system instructions, or organizational policies, leading to inappropriate, unsafe, or undesired outputs.
     
-    <u>**Example 2:**</u> “Opening vulnerabilities to prompt injection attacks via malicious websites" -> This is a **security and safety risk (all)** caused by **external manipulation** of the **Internet & Search Access** capability.
+    <u>**Example 2:**</u> "Prompt injection attacks via malicious websites" → 
+    This is a **safety and security risk** caused by **external manipulation** of the **Internet & Search Access** capability. The risk arises when malicious actors craft adversarial web content to inject instructions that override the agent's intended behavior, causing data exfiltration or unauthorised actions.
 
-    <u>**Example 3:**</u> “Poorly implemented tools may not correctly verify user identity or permissions when executing privileged actions” -> This is a **security risk (identity & access management)** caused by **tool or resource malfunction** of the **Tools** component in an agent.
+    <u>**Example 3:**</u> "Production or execution of poor or ineffective code" → 
+    This is a **safety and security risk** caused by **agent failure** of the **Code Execution** capability. The risk arises when an agent generates or executes code that is incorrect, inefficient, insecure, or unsuitable for the intended task, potentially introducing bugs, vulnerabilities, or operational disruptions.
 
 While combining **elements**, **failure modes**, and **hazards** helps brainstorm potential risks, not all combinations are meaningful.
-For instance, “tool or resource malfunction” does not sensibly apply to the “instructions” component.
+For instance, "tool or resource malfunction" does not sensibly apply to the "instructions" component.
 Organizations should exercise discretion and retain only risks supported by **academic research** or **industry case studies**.
 
-For illustrative purposes, a **draft Risk Register** is provided in Appendix [Risk Register: Risks](#app-risk-register-risks), covering major risks of agentic systems.
-Each entry is backed by a real-world example or academic study.
-This register serves as a useful starting point for organizations but should be **continuously updated** as the field of agentic AI evolves.
+We provide a comprehensive [**Interactive Risk Register**](risk-register.md) that documents 46 risks across all elements of agentic systems, each backed by real-world examples or academic studies.
+The register includes recommended controls for each risk and serves as a practical starting point for organizations.
+It should be **continuously updated** as the field of agentic AI evolves.

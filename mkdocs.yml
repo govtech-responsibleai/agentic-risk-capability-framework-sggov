@@ -36,6 +36,14 @@ markdown_extensions:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
 
+# Extra CSS and JavaScript
+extra_css:
+  - https://unpkg.com/tabulator-tables@5.5.2/dist/css/tabulator_materialize.min.css
+
+extra_javascript:
+  - https://unpkg.com/tabulator-tables@5.5.2/dist/js/tabulator.min.js
+  - assets/risk-register.js
+
 # Extra Configuration
 extra:
   social:
@@ -65,21 +73,21 @@ extra:
     
 # Navigation
 nav:
-  - ARC Framework: 
+  - ARC Framework:
     - index.md
-    - Overview of the ARC Framework: arc_framework/overview.md
+    - Introduction: arc_framework/introduction.md
     - Elements of agentic systems: arc_framework/elements.md
     - Risks of agentic systems: arc_framework/risks.md
     - Controls for agentic systems: arc_framework/controls.md
+    - Interactive Risk Register: arc_framework/risk-register.md
     - Comparison to other frameworks: arc_framework/comparison.md
   - Implementation:
     - Implementing ARC: implementation/index.md
     - For Governance Teams: implementation/for-governance-teams.md
     - For AI Developers: implementation/for-ai-developers.md
-  - Case Studies:
-    - case_studies/index.md
   - Resources:
     - resources/index.md
+    - ARCvisor Tool: resources/arcvisor.md
 # Plugins
 plugins:
   - search

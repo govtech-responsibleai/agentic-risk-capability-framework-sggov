@@ -1,87 +1,158 @@
 # For Governance Teams
 
-In this section, we outline a step-by-step approach for applying the ARC Framework for your organisation and provide two worked examples to illustrate how it can be applied.
+!!! abstract "Page Summary"
 
-## Applying the ARC Framework
+    This page guides organisational-level adoption and contextualisation of the ARC Framework through a six-phase methodology. Governance teams adapt the baseline framework to their organisation's context (jurisdiction, industry, technical stack, risk appetite) over 6-12 months, producing an organisation-specific capability taxonomy, risk register, adapted controls, and implementation toolkit.
 
-### Step 1: Review the capability taxonomy
+This guide is for governance teams responsible for adopting the ARC framework across the organisation. Your goal is to contextualise the baseline framework to your organisation's specific needs, creating a standardised approach that all developers will use when building agentic AI systems.
 
-Although we designed [our capability taxonomy](../capability/index.md) to be comprehensive in capturing the wide gamut of agentic capabilities today, we also recognise that there may be very niche capabilities which are especially relevant for specific domains. For example, companies operating in the intersection of agentic AI systems and robotics may have a whole umbrella of capabilities relating to hardware interaction, such as physical movement or object manipulation, while fintech companies may want more granularity for the capability to perform transactions by distinguishing between different types of transactions (e.g. cash, stocks, bonds).
+**What you'll accomplish:**
 
-**Governance teams should begin by reviewing the capability taxonomy and identifying the key capabilities which are intuitively most relevant to the organisation, and consider breaking out more specific second-level categories if the first-level categories are insufficient.** We generally do not recommend organisations to drop any of the existing capabilities in the taxonomy, even if they are unlikely to be used, as this may hurt the taxonomy's generalisability across different verticals within the organisation (e.g. manufacturing, finance, or legal).
+- Adapt capability taxonomy for your domain
+- Contextualise risk mappings to your jurisdiction and industry
+- Map controls to your technical infrastructure
+- Define risk relevance criteria matching your risk appetite
+- Pilot with real systems and gather feedback
+- Roll out organisation-wide with training and templates
 
-### Step 2: Contextualise the risk mapping
+---
 
-Each organisation has a different risk profile, and contextualising the risk mapping is important to ensure tight alignment between the organisation's risk management needs and the ARC Framework. For example, while the ARC Framework describes hallucination as a general risk for the capability of Natural Language Communication, it is more significant for a law firm rather than a social companion chatbot. 
+## Customisation Steps
 
-**Governance teams should go through the list of risks associated with each capability and apply the organisation's context (be it country- or industry-specific)** to help the organisation and its internal AI development teams better understand the potential harms that could arise from such a capability. This is necessary if the capability taxonomy has been updated, since the current risk mapping is valid only for the present taxonomy.
+In this section, we explain the steps that governance teams need to take to contextualise the ARC framework for your organisation.
 
-### Step 3: Adapt the controls
+### Step 1: Customise the Capability Taxonomy
 
-Similar to capabilities and risks, the technical controls themselves also require adaptation to the organisation's operating context and technical stack. For example, a fact-checking system operating in the European Union must comply with GDPR's strict data protection requirements, which might necessitate additional privacy controls beyond what's specified in the framework. Moreover, some controls may require specific technical expertise or infrastructure that is not available to all organisations, necessitating alternative approaches that achieve similar risk mitigation outcomes.
+The [baseline capability taxonomy](../arc_framework/elements.md#capabilities) is a good start, but domain-specific capabilities may be needed. For example, healthcare organisations may need to distinguish "patient-facing communication" from "clinical decision support" due to regulatory differences, while manufacturing companies may need capabilities for "physical equipment control" or "sensor data processing."
 
-**Governance teams should systematically map their jurisdiction's AI and data protection requirements against the ARC Framework controls and conduct technical readiness assessments before mandating specific controls.** For smaller teams, focusing initial efforts on controls that address the highest-impact risks within the organisation's regulatory and technical constraints may be more fruitful. Implementing audits which evaluate both compliance and efficacy will help to identify controls which may need to be adjusted and ensure that the framework stays relevant in the longer run.
+**Review the baseline taxonomy, identify organisation-relevant capabilities, and consider adding domain-specific subcategories.** Retain all existing capabilities even if unlikely to be used — this preserves applicability across organisational verticals.
 
-### Step 4: Define relevance criteria
+!!! tip "When to Customise the Capability Taxonomy"
+    Consider adding domain-specific subcategories when:
 
-Not all risks are equally relevant, especially given the diversity of domains and use cases even within an organisation. For example, the risk of "generating controversial content" is minimal for an internal document processing system but represents a critical concern for a public-facing fact-checking platform that could influence public opinion. Relevance criteria provide a structured filter to help developers focus their limited time and resources on risks that actually matter for their specific system and use case.
+    - **High Regulatory Scrutiny:** Healthcare needs to distinguish patient interactions from clinical decisions due to FDA/HSA regulations
+    - **Fine-Grained Risk Profiles:** Finance needs to separate stock trading from bond trading from currency exchange
+    - **Industry-Specific Operations:** Manufacturing needs capabilities for equipment control, sensor processing, supply chain coordination
 
-Under the ARC Framework, we recommend setting two main relevance criteria: **impact** (the magnitude of potential consequences) and **likelihood** (the probability of risk materialising). Each criterion is set along a five-point scale, and the final score is calculated by multiplying the two values together. This simplicity makes implementation easier. 
+    You should **keep the baseline taxonomy intact** even if certain capabilities seem irrelevant — future teams may need them.
 
-**Governance teams should then calibrate these criteria to their organisation's context and risk appetite, and provide guidance on what score is required for a risk to be considered as "relevant".**  For instance, a conservative financial institution might consider any risk scoring 6 or above (3x2 or 2x3) as relevant and requiring mandatory controls, while a technology startup might set the threshold at 9 or above (3x3). The calibration should also account for regulatory requirements - risks with direct compliance implications may be deemed relevant regardless of their calculated score. Additionally, governance teams should establish review periods to reassess these thresholds as the organisation's risk profile and business context evolve.
+### Step 2: Contextualise Risk Mapping
 
-### Step 5: Standardise and scale
+Risks can vary significantly across organisations. For example, hallucination risk is significantly more critical for law firms (where incorrect legal precedents could lead to malpractice) than for social companion chatbots (where occasional inaccuracies are tolerable). Contextualising risk mapping ensures alignment between organisational risk management needs and the ARC Framework. 
 
-Rolling out the ARC Framework - capability taxonomy, risk mapping, and technical controls - will not be an overnight feat, and requires significant change management and training across multiple departments. **Governance teams should look to streamline the reporting process by providing a simple form or checklist for AI developers to declare their system's capabilities, relevant risks, and technical controls.** As more data points for different systems start to stream in, governance teams will get a better organisation-wide view of system capabilities, risk exposures, and control adoption rates, which in turn will enhance the governance design process.
+**Review risks associated with each capability and apply organisational context** (jurisdiction, industry, regulatory environment) to help development teams understand potential harms in your specific setting.
 
-Beyond the day-to-day operations of validating compliance to the framework, governance teams should leverage the framework to deliver more agile governance for agentic AI systems. For example, when new threats emerge or regulatory requirements change, **governance teams can efficiently update the framework by adjusting impact levels, adding new risks, or enhancing control specifications, with changes automatically propagating to all systems** through the next assessment cycle. This transforms AI governance from a reactive, project-by-project exercise into a proactive, portfolio-level capability that scales with organisational AI adoption and maintains effectiveness as both technology and threat landscapes evolve.
+!!! example "Examples of Contextualised Risks"
 
-## Example: Domain-specific adaptations
+    1. **Generic Risk:** "Exposing personally identifiable information from databases"  
+    **Healthcare (Singapore):** "Exposing patient health records violating PDPA healthcare provisions and MOH data protection standards; potential criminal liability under Healthcare Services Act; mandatory breach notification to PDPC within 3 days"
 
-In this subsection, we provide two fictional examples of how an organisation can adapt the ARC Framework to their operating context. 
+    2. **Generic Risk:** "Executing unauthorised transactions"  
+    **Financial Services (US):** "Processing unauthorised securities trades violating SEC Rule 15c3-3 (Customer Protection Rule); potential market manipulation under Securities Exchange Act; immediate FINRA reporting required; exposure to class action lawsuits"
 
-### Healthcare Organisation
+!!! tip "Contextualising Risks for your Organisation"
+    **Geographic context** matters significantly when contextualising risks. **US organisations** should map risks to state and federal regulations such as HIPAA, CCPA, and sector-specific requirements. **Singapore-based organisations** should align risks with the PDPA, Cybersecurity Act, and sectoral guidelines from regulators like MAS, MOH, and IMDA. **Organisations with a presence in the EU** must contextualise risks for GDPR compliance and emerging AI Act requirements.
 
-**Step 1: Review the capability taxonomy**
+    **Industry context** shapes risk prioritisation and impact assessment. **Healthcare organisations** should elevate all risks involving patient safety and medical information due to regulatory scrutiny and potential harm. **Financial services firms** must emphasize transaction integrity, market manipulation risks, and financial crime prevention. **Legal firms** should highlight risks to attorney-client privilege and professional liability. **Manufacturing companies** need to focus on safety-critical operations and operational continuity risks.
 
-Healthcare organisations should expand the "Natural Language Communication" capability to distinguish between patient-facing communications and clinical decision support, as these may carry different regulatory implications (such as FDA medical device regulations and Singapore's Health Sciences Authority ("HSA") medical device guidelines). They may also need to add specific capabilities for medical image analysis under "Multimodal Understanding & Generation" and create subcategories for different types of clinical data access under "File & Data Management" (e.g., accessing electronic health records vs. medical literature databases). The "Transactions" capability should be refined to include medication ordering, appointment scheduling, and insurance claim processing, each with distinct risk profiles under healthcare regulations.
+### Step 3: Adapt Controls
 
-**Step 2: Contextualise the risk mapping**
+Technical controls require adaptation to the organisation's existing technical stack and capabilities. Some controls may require specific infrastructure, tools, or expertise that are not available in all organisations — for example, advanced guardrail systems may require dedicated ML infrastructure, or automated monitoring may depend on existing observability platforms. When standard controls are not feasible, organisations need to develop alternative approaches that achieve similar risk mitigation using available resources.
 
-Risk contextualisation must emphasize patient safety and data protection compliance. "Generating unqualified advice in specialised domains" becomes a critical risk requiring FDA medical device approval pathways or HSA therapeutic product registration rather than just disclaimer implementation. "Regurgitating personally identifiable information" takes on heightened significance due to HIPAA requirements in the US and Singapore's Personal Data Protection Act (PDPA) for healthcare data, with potential criminal penalties in both jurisdictions. "Generating hallucinated content" in clinical contexts could lead to patient harm, making this a patient safety issue under FDA guidelines. The organisation should map each risk against specific healthcare regulations (such as HIPAA, FDA 21 CFR Part 820, Joint Commission standards, HSA medical device regulations, MOH clinical practice guidelines) and patient safety frameworks.
+**Governance teams should conduct technical readiness assessments to understand what infrastructure, tools, and expertise are available** before mandating specific controls, and work with technical teams to adapt controls to what is practically achievable within current constraints.
 
-**Step 3: Adapt the controls**
+!!! example "Examples of Adapted Controls"
 
-Controls must align with healthcare quality management systems and clinical workflows in both jurisdictions. "Implement output guardrails" becomes "Implement clinical decision support alerts with physician override capabilities and audit trails compliant with prevailing regulations", such as FDA 21 CFR Part 820 and HSA quality management system requirements. "Require human approval" transforms into "Require licensed clinician review with documented clinical reasoning". The organisation must integrate controls with existing clinical governance structures, electronic health record systems, and medical staff credentialing processes. Controls should also address clinical validation requirements, with mandatory testing against clinical datasets and integration with hospital incident reporting systems that in accordance with local requirements, be it the US Joint Commission sentinel event reporting or Singapore's MOH adverse event reporting requirements.
+    ???+ example "Example 1: Adapting to Different Logging Infrastructure"
+        **Baseline Control (CTRL-0007):** "Log all LLM inputs and outputs for regular review using a centralised logging system (e.g., ELK stack, Datadog, CloudWatch)"
 
-**Step 4: Define relevance criteria**
+        - **Adapted for AWS-based Organisation:** "Log all LLM inputs and outputs to CloudWatch Logs with 90-day retention; use CloudWatch Insights for query analysis; export critical logs to S3 for long-term compliance retention"
+        - **Adapted for Small Organisation Without Centralised Logging:** "Log all LLM inputs and outputs to structured JSON files with daily rotation; implement weekly manual review process by security team; escalate to cloud logging system when budget allows"
+    
+    ??? example "Example 2: Adapting Approval Workflows to Organisational Context"
+        **Baseline Control (CTRL-0006):** "Require human approval before executing high-impact actions"
+        
+        - **Adapted for Enterprise with Slack:** "Require manager approval via Slack workflow for transactions >$1,000 or data modifications affecting >100 records; auto-approve lower-risk actions with notification; escalate to director approval for transactions >$10,000"
+        - **Adapted for Financial Services Firm:** "Require dual approval (originator + supervisor) via internal workflow system for all transactions; implement out-of-band SMS confirmation for transactions >$50,000; maintain immutable audit trail in compliance database"
 
-Healthcare organizations typically operate with very low risk tolerance due to patient safety implications and regulatory scrutiny in both the US and Singapore. The relevance threshold should be set conservatively - any risk scoring 4 or above (2x2) should be considered relevant given the potential for patient harm. Impact criteria must consider patient safety outcomes, regulatory compliance, and malpractice liability. Likelihood assessments should account for the clinical environment's high-stress conditions where users may over-rely on AI recommendations. All risks with direct patient safety implications should be deemed relevant regardless of calculated scores, especially for healthcare organisations in Singapore given Singapore's emphasis on healthcare quality through the National Healthcare Quality and Safety Framework.
-
-**Step 5: Standardise and scale**
-
-The rollout must integrate with existing clinical governance structures, including medical staff committees, quality assurance programs, and clinical informatics teams. Training should be incorporated into medical staff orientation and continuing education requirements. The framework should align with hospital accreditation standards and integrate with existing clinical audit processes. 
-
-### Manufacturing Company
-
-**Step 1: Review the capability taxonomy**
-
-Manufacturing organisations should significantly expand operational capabilities to include industrial equipment control, sensor data processing, and supply chain coordination. Under "System Management," they may need subcategories for industrial control systems, supervisory control and data acquisition systems, and manufacturing execution systems. The "Transactions" capability should be refined to distinguish between procurement, inventory management, and supplier communications, particularly important given Singapore's role as a regional manufacturing and logistics hub. They may also need to add capabilities for predictive maintenance, quality control analysis, and production optimization under a new "Industrial Operations" category.
-
-**Step 2: Contextualise the risk mapping**
-
-Risk contextualisation must emphasize operational safety, production continuity, and supply chain security. "Misconfiguring system resources" becomes critical as it could shut down production lines or damage expensive equipment, violating standards like OSHA's safety standards and Singapore's Workplace Safety and Health Act. "Executing malicious code" takes on heightened significance in industrial environments where cyberattacks could cause physical damage or safety incidents, subject to frameworks like NIST's cybersecurity frameworks or Singapore's Cybersecurity Act requirements for critical information infrastructure. Risks should be mapped against industrial safety standards (ISO 45001, OSHA regulations, Singapore's WSH Act), quality management systems (ISO 9001), and cybersecurity frameworks for industrial control systems (IEC 62443, NIST, Singapore's Cybersecurity Agency guidelines).
-
-**Step 3: Adapt the controls**
-
-Controls must integrate with existing industrial safety and quality management systems under both jurisdictions. "Scope system privileges strictly" becomes "Implement role-based access control aligned with safety integrity levels and functional safety requirements". "Monitor system health metrics" transforms into "Integrate with plant-wide distributed control systems with automatic failsafe mechanisms compliant with prevailing regulations". Controls should align with manufacturing execution systems, integrate with existing maintenance management systems, and comply with industrial cybersecurity standards. Safety-critical systems may require redundant control mechanisms and fail-safe designs to meet the requisite safety standards.
-
-**Step 4: Define relevance criteria**
-
-Manufacturing organisations must balance operational efficiency with safety and continuity requirements under both regulatory environments. Risk tolerance varies significantly between safety-critical systems (very low tolerance) and optimisation systems (moderate tolerance). The relevance threshold should be set at 6 or above (3x2 or 2x3) for most systems, but any risk affecting safety-critical operations should be relevant regardless of score. Impact criteria must consider production downtime costs, equipment damage potential, worker safety implications, and supply chain disruption effects. Likelihood assessments should account for the industrial environment's complexity and the potential for cascading physical failures.
-
-**Step 5: Standardise and scale**
-
-The rollout must integrate with existing plant engineering, maintenance, and safety management systems, and training should be incorporated into existing safety training programs and technical competency development. The framework should align with manufacturing quality management systems and integrate with existing operational risk management processes, with regular reviews coinciding with planned maintenance shutdowns and safety audit cycles, thereby ensuring that AI governance becomes part of standard operational excellence programs.
+    ??? example "Example 3: Adapting Safety Guardrails to Available Tool"        
+        **Baseline Control (CTRL-0044):** "Implement output safety guardrails to detect and prevent generation of undesirable content"
+        
+        - **Adapted for Organisation with Azure Infrastructure:** "Use Azure AI Content Safety API with toxicity threshold >0.7, sexual content threshold >0.6; block flagged outputs and log violations to Application Insights; review flagged content weekly"
+        - **Adapted for Organisation Without Commercial Safety APIs:** "Implement keyword-based filtering for high-priority harmful content categories (profanity, violence, hate speech); use open-source detectors (e.g., Detoxify) for toxicity scoring; plan migration to commercial API in Q3 when budget available"
 
 
+### Step 4: Define Relevance Criteria
+
+Not all risks are equally relevant across systems and use cases. Relevance criteria provide a structured filter to help developers focus on risks that matter for their specific system. Under the ARC framework, we recommend two main criteria: **impact** (magnitude of potential consequences) and **likelihood** (probability of risk materialising), scored on five-point scales.
+
+??? info "Five-Point Scoring Scales"
+    
+    We use a five-point scale to provide sufficient granularity for risk assessment while avoiding the analysis paralysis that comes with overly detailed scoring systems. Note that these scales should be calibrated to your organisational context.
+    
+    <table style="table-layout: fixed; width: 100%;">
+      <thead>
+        <tr style="background-color: #e3f2fd;">
+          <th style="width: 50%;">Impact Scale</th>
+          <th style="width: 50%;">Likelihood Scale</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>5 - Catastrophic:</strong> Financial loss >$1M; major irreversible physical or economic harm to people; severe regulatory violations; criminal liability<br><br><strong>4 - Severe:</strong> Financial loss $100K-$1M; some reversible harm to people (e.g., temporary health impact, significant financial loss); major reputational damage; significant compliance issues<br><br><strong>3 - Moderate:</strong> Financial loss $10K-$100K; minor reversible harm (e.g., temporary inconvenience, stress); customer dissatisfaction; moderate business impact<br><br><strong>2 - Minor:</strong> Financial loss <$10K; no harm to people; internal inefficiency; limited user frustration<br><br><strong>1 - Negligible:</strong> Minimal to no consequences; no harm to people</td>
+          <td><strong>5 - Very High:</strong> Almost certain to occur; happens regularly in similar systems; requires only basic access or common conditions (e.g., public internet connection, standard user input)<br><br><strong>4 - High:</strong> Likely to occur; observed in comparable systems; requires commonly available capabilities or tools<br><br><strong>3 - Moderate:</strong> May occur under certain circumstances; requires specific but achievable conditions or moderate attacker sophistication<br><br><strong>2 - Low:</strong> Unlikely but possible; requires specific conditions, insider knowledge, or elevated attacker capabilities to materialize<br><br><strong>1 - Very Low:</strong> Rare; requires highly unlikely combination of factors, multiple zero-day exploits, or extraordinary attacker resources</td>
+        </tr>
+      </tbody>
+    </table>
+
+**Governance teams should calibrate these criteria to organisational context and risk appetite, and provide guidance on what score is required for a risk to be considered "relevant."** For instance, a conservative financial institution might consider any risk with Impact ≥ 3 AND Likelihood ≥ 2 as relevant, while a technology startup might set the threshold at Impact ≥ 4 AND Likelihood ≥ 2.
+
+!!! tip "Setting Relevance Thresholds"
+
+    Calibrating the threshold can be a tricky affair - we provide some illustrative examples of a conservative, moderate, and aggressive stance below to highlight how different levels of risk appetite may affect the threshold. 
+
+    **Conservative ** (Healthcare, Finance, Legal, Government):
+    - **Threshold:** Impact ≥ 3 AND Likelihood ≥ 3 OR Impact ≥ 4 (regardless of likelihood)
+    - **Rationale:** Patient safety, financial integrity, regulatory compliance require low risk tolerance
+
+    **Moderate Organizations** (E-commerce, SaaS, Professional Services):
+    - **Threshold:** Impact ≥ 3 AND Likelihood ≥ 3
+    - **Rationale:** Balance innovation speed with customer trust and compliance
+
+    **Aggressive Organizations** (Internal Tools, Early-Stage Startups):
+    - **Threshold:** Impact ≥ 4 AND Likelihood ≥ 3 OR Impact ≥ 5 (regardless of likelihood)
+    - **Rationale:** Maximize innovation speed; acceptable to have incidents on internal systems
+
+### Step 5: Pilot with Real Systems and Gather Feedback
+
+Before rolling out the contextualised framework organisation-wide, validate it with 2-3 pilot systems representing different use cases, complexity levels, and business units. These pilot applications test whether your relevance thresholds are appropriately calibrated, reveal whether control recommendations are practical, and identify where documentation or guidance needs clarification.
+
+!!! tip "Selecting Effective Pilot Systems"
+    Choose 2-3 diverse pilots to stress-test the framework:
+    
+    - **One simple system** (few capabilities, internal-facing) - Ensures the framework isn't overly burdensome for straightforward use cases
+    - **One complex system** (many capabilities, customer-facing) - Tests if the framework scales to complexity without becoming unmanageable
+    - **One novel use case** (new domain or capability) - Verifies the framework is flexible enough for emerging applications
+    
+    Have developers apply the complete framework — capability identification till the residual risk assessment — while you observe their process, collect detailed feedback, and track how long each step takes.
+
+**Use pilot insights to refine your framework before scaling**. If developers consistently struggle with certain risk definitions, clarify the language or add examples. If recommended controls prove infeasible with your infrastructure, document alternative approaches. If relevance thresholds miss critical risks or flag too many trivial ones, recalibrate the criteria. Document these refinements and create case studies from your pilots — these become invaluable training materials for the broader rollout, showing developers exactly how to apply the framework to real systems in your organisation.
+
+### Step 6: Scale Organisation-Wide
+
+With your pilots complete and the framework refined based on real-world feedback, you are now ready to roll out organisation-wide. Scaling requires significant change management and training—developers need to understand not just the mechanics of filling out forms, but the underlying risk thinking and how to apply contextualised controls to their specific systems.
+
+!!! tip "Making It Easy for Developers"
+    Focus your initial efforts on reducing developer friction:
+    
+    **1. Create a developer self-service toolkit** including pre-filled templates, decision trees for risk scoring, and concrete examples from your pilot projects. This enables developers to complete assessments without constant governance support.
+    
+    **2. Develop standardised assessment templates** that auto-populate with your organisation's contextualised risks, controls, and relevance thresholds. Developers should be able to select from dropdowns rather than writing from scratch.
+    
+    **3. Implement automated tooling where possible** such as risk scoring calculators, control recommendation engines, or integration with [ARCvisor](../resources/index.md#arcvisor) for guided workflows. Automation reduces assessment time and ensures consistency.
+    
+    Developers who can complete assessments quickly and confidently are far more likely to embrace the framework than those who face lengthy, ambiguous processes.
+
+As more agentic systems are assessed across the organisation, **governance teams gain valuable organisation-level visibility** into capabilities deployed, risk exposures, and control adoption rates. This aggregated view enables strategic decisions about where to invest in additional safeguards, which risks are most prevalent across systems, and where developer support is most needed. 
+
+Crucially, governance teams should **treat the framework as a living document** — when new threats emerge or regulations change, update the contextualised framework by adjusting impact levels, adding new risks, or enhancing controls, with changes propagating to all future assessments.

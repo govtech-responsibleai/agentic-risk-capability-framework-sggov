@@ -1,0 +1,59 @@
+CAP-01:
+  name: "Planning and Goal Management"
+  category: "Cognitive"
+  description: "The capability to develop detailed, step-by-step, and executable plans with specific tasks in response to broad instructions. This includes prioritizing activities based on importance and dependencies between tasks, monitoring how well its plan is working, and adjusting when circumstances change or obstacles arise."
+
+CAP-02:
+  name: "Agent Delegation"
+  category: "Cognitive"
+  description: "The capability to assign subtasks to other agents and coordinate their activities to achieve broader goals. This includes identifying which components are best suited for specific tasks, issuing clear instructions, managing inter-agent dependencies, and monitoring performance or failures."
+
+CAP-03:
+  name: "Tool Use"
+  category: "Cognitive"
+  description: "The capability to evaluate available options and choose the best tool for specific subtasks, based on the capabilities and limitations of different tools and matching them appropriately to the tasks. This includes selecting between search, computation, code execution, or domain-specific APIs, determining when tool invocation is necessary, and sequencing or combining multiple tools to complete complex tasks effectively."
+
+CAP-04:
+  name: "Multimodal Understanding and Generation"
+  category: "Interaction"
+  description: "The capability to communicate with human users across multiple modalities, including natural language conversation (explaining topics, generating documents, interactive discussions) and multimodal understanding/generation (processing and creating image, audio, or video content such as visual analysis, speech transcription, or multimedia creation)."
+
+CAP-05:
+  name: "Official Communication"
+  category: "Interaction"
+  description: "The capability to autonomously compose, finalize, and dispatch authoritative communications that formally and legally represent an organization to external parties (e.g. customers, partners, regulators, courts, or media) via approved channels and formats, without prior human review or approval, thereby creating potential legal, regulatory, or reputational obligations. This includes sending legally binding correspondence, publishing official statements or press releases, and responding to external inquiries using the organisation's identity."
+
+CAP-06:
+  name: "Business Transactions"
+  category: "Interaction"
+  description: "The capability to autonomously initiate, authorise, and execute binding business transactions with external parties - such as payments, purchases, reservations, or service commitments - within predefined authorisation limits, resulting in real financial, contractual, or operational obligations for the organization. This includes processing payments or refunds, placing orders or subscriptions, booking services or reservations, and accepting or triggering contractual commitments on behalf of the organization."
+
+CAP-07:
+  name: "Internet and Search Access"
+  category: "Interaction"
+  description: "The capability to autonomously access, browse, search, and retrieve information from the Internet to augment the LLM's static training knowledge with external and up-to-date sources in support of task execution and response generation. This includes issuing search queries, following and parsing web pages, extracting relevant facts or documents, and aggregating information from multiple online sources."
+
+CAP-08:
+  name: "Computer Use"
+  category: "Interaction"
+  description: "The capability to directly operate a computer’s graphical user interface on behalf of the user, enabling the agent to navigate applications and execute tasks through mouse, keyboard, and window-based interactions. This includes moving the cursor, clicking buttons, entering text, using keyboard shortcuts, switching between windows and applications, and navigating files and menus within the operating system environment."
+
+CAP-09:
+  name: "Other Programmatic Interfaces"
+  category: "Interaction"
+  description: "The capability to interact with external systems through non-graphical, programmatic interfaces, such as APIs, SDKs, and backend services, to exchange data or trigger actions as part of task execution. This includes calling REST or GraphQL APIs, invoking cloud services, publishing or consuming messages from queues or event streams, and performing operations such as code pushes, data updates, or system integrations across enterprise platforms."
+
+CAP-10:
+  name: "Code Execution"
+  category: "Operational"
+  description: "The capability to write, execute, and debug code in various programming languages to automate tasks or solve computational problems. This includes implementing algorithms, writing scripts, compiling and running code, debugging errors, and integrating with external systems through APIs or backend services."
+
+CAP-11:
+  name: "File and Data Management"
+  category: "Operational"
+  description: "The capability to manage the full lifecycle of files and data by creating, reading, modifying, organizing, converting, querying, and updating information across both unstructured artifacts (e.g. documents, spreadsheets, media files) and structured data stores (e.g. SQL/NoSQL databases, data warehouses, vector or embedding stores) in support of operational tasks. This includes ingesting and transforming datasets, generating or updating files, maintaining directory or schema structures, executing database queries or updates, and storing or retrieving embeddings or derived data products."
+
+CAP-12:
+  name: "System Management"
+  category: "Operational"
+  description: "The capability to directly manage and configure technical systems and infrastructure by adjusting system settings, controlling computing resources, and administering operational environments across on-premise or cloud platforms. This includes monitoring system health and performance, managing authentication credentials and access controls, provisioning or scaling compute and storage resources, configuring operating system or runtime parameters, and applying system-level optimisations to support reliable operation."

@@ -1,140 +1,323 @@
 # For AI Developers
 
-For teams building agentic AI systems, the ARC Framework provides a good starting point for thinking through the risks and controls required to manage safety and security risks. Instead of having to brainstorm a laundry list from scratch, teams can use the ARC Framework and adapt it to the specifics of their agentic AI system.
+!!! abstract "Page Summary"
 
-The aim of this section is to help AI development teams understand and apply the ARC Framework to their own agentic AI systems. The first sub-section provides a general explanation of how teams can apply the ARC Framework to their own agentic AI systems, and the second sub-section provides an example to illustrate how this would work for real-world agentic AI systems. 
+    This page guides system-level application of the ARC Framework to individual agentic AI systems. Development teams follow a four-step methodology: identify capabilities, evaluate risks, implement controls, and assess residual risks. Teams typically complete this process within 3-7 days for simple systems or 1-2 weeks for complex systems.
 
-## Applying the framework
+This guide is for development teams applying the ARC framework to specific agentic AI systems. Your goal is to systematically identify capabilities, evaluate relevant risks, implement appropriate controls, and assess residual risks for your system.
 
-In the subsequent parts, we provide a step-by-step approach for how AI developers should apply the ARC Framework to their team's agentic AI system. 
+---
 
-### Step 1: Identify capabilities
+## Four-Step Process
 
-Begin by analysing the agentic AI system's capabilities using either [our capability taxonomy](../capability/index.md) or the one provided by your organisation. 
+The ARC Framework application follows four sequential steps:
 
-The easiest way to do this is to list the functions that the agentic AI system performs and compare that to the list of capabilities in the taxonomy. For example, if the system sends emails autonomously to other users, that would clearly fall under "Interaction - Official Commmunications", while being able to generate and execute Python code would qualify for "Operational - Code Execution". 
+* **Step 1: Identify Capabilities** → Analyse your system's autonomous functions and map to capability taxonomy
+* **Step 2: Evaluate Risks** → Review component, design, and capability risks; apply relevance criteria
+* **Step 3: Implement Controls** → Contextualise recommended controls to your implementation
+* **Step 4: Assess Residual Risks** → Document remaining risks and mitigation strategies
 
-Note that the capabilities are defined on a system-level, so *even if only one agent has that capability*, that means that the system as a whole has that capability. 
+!!! tip "Iterative Application"
+    Revisit these steps as your system evolves or new capabilities are added. The framework is designed for continuous risk management, not one-time assessment.
 
-### Step 2: Evaluate risks
+## Step 1: Identify Capabilities
 
-Next, for each identified capability, map the specific risks that could arise from the system having that capability using [the ARC Framework's risk mapping](../capability/risks.md) or the one provided by your organisation. The [baseline risks](../baseline/risks.md) should also be included here.
+Analyse your agentic AI system's capabilities using [the capability taxonomy](../arc_framework/elements.md#capabilities) or your organisation's contextualised version.
 
-Teams might find it helpful to further contextualise the risks to the use case. For example, defining what "undesirable" content means is important as such definitions are typically culturally specific, and focusing on the most critical topics when evaluating the risk of hallucination (e.g. medical advice, financial products) makes the risk more tractable and concrete. Additionally, there may be other safety or security risks that are not included in our list - to brainstorm for such risks, consider thinking through failure modes by asking yourself "What is the worst scenario that could happen if this capability malfunctions or is misused?"
+**Key principle:** Capabilities are defined system-level—if any agent has a capability, the entire system has that capability.
 
-After compiling a comprehensive list of all the safety and security risks that could apply, teams should then apply the [relevance criteria](for-governance-teams.md#step-4-define-relevance-criteria) to identify and retain only the relevant risks for consideration. 
+!!! tip "Quick Capability Identification"
+    Map each function your system performs to specific capabilities:
 
-### Step 3: Adopt or adapt controls
+    - Sends emails to customers → **Official Communication**
+    - Executes Python/JavaScript code → **Code Execution**
+    - Searches Google/web → **Internet & Search Access**
+    - Reads/writes database records → **File & Data Management**
+    - Processes refunds or payments → **Business Transactions**
+    - Modifies system config or cloud resources → **System Management**
 
-Now for each relevant risk, review the recommended technical controls which help to mitigate the risk to an acceptable level - in the ARC Framework, we provide both [baseline](../baseline/controls.md) and [capability](../capability/controls.md) controls. 
+    If unsure whether a function qualifies as a capability, err on the side of inclusion—better to assess an extra risk than miss a critical one.
 
-Similar to the risks in Step 2, these controls will also require some contextualisation. Not all controls are feasible or effective in every case, and teams should exercise judgement in deciding how to implement the control to meaningfully address the risk.[^1] 
+??? question "Common Capability Identification Mistakes"
 
-### Step 4: Assess residual risks
+    - **Multi-agent systems:** Only considering main agent's capabilities instead of system-level view
+    - **Read-only tools:** Ignoring that reading data can still expose PII or enable reconnaissance
+    - **Tool vs capability confusion:** Listing tools available rather than what the system autonomously DOES
 
-With the controls in place, teams should assess what the residual risks are and whether these are acceptable. As this is highly dependent on the use case, we do not provide a standard template for this assessment.[^2] Some questions that teams may consider include identifying the scenarios where harm can still occur despite the controls and what the limitations of the controls are.
+    Always analyse system-level capabilities holistically and assess all tools comprehensively.
 
-If teams find that the residual risks are still unacceptable, then more controls would be needed to reduce either the likelihood or impact of the risk. 
+## Step 2: Evaluate Risks
 
-## Example: Agentic Fact Checker
+For each identified capability, map specific risks using [the ARC Framework's risk register](../arc_framework/risk-register.md) or your organisation's contextualised version. **Always include baseline risks** from components (LLM, tools, instructions, memory) and design (architecture, access controls, monitoring).
 
-Fact-checking is a very time-consuming process, requiring deep thought about each claim, what evidence there is for that claim, and whether it is sufficient to support that claim. Our colleagues in the AI Practice recently developed an agentic fact-checking system (read their [Agentic AI Primer](https://playbooks.aip.gov.sg/agentic-ai-primer/09_applications_for_singapore_govt/) for details), using a complex multi-agent architecture with capabilities spanning cognitive reasoning, web search, database operations, and natural language generation to validate the veracity of any claim that is made. 
+**Review process:**
 
-### Step 1: Identify capabilities
+1. **Component and design risks** - Apply to all agentic systems regardless of capabilities
+2. **Capability-specific risks** - For each capability identified in Step 1
+3. **Contextualise to your use case** - Define domain-specific terms and focus on critical scenarios
+4. **Apply relevance criteria** - Score Impact and Likelihood separately (1-5 scale); retain risks where both scores meet your organisation's threshold (e.g., both ≥3)
+
+!!! tip "Prioritising Risks Effectively"
+
+    High-stakes domains warrant extra scrutiny — for example, healthcare systems must treat hallucinated medical facts as a serious hazard, finance systems should prioritise preventing unauthorised transactions, and legal workflows must guard against unqualified legal advice. Across domains, common high-impact risks include unauthorised or incorrect transaction execution, PII exposure or leakage, malicious code injection where code execution is possible, and prompt injection via untrusted web content when internet access is enabled.
+
+??? example "Component and Design Risks Often Overlooked"
+
+    Many teams focus only on capability risks and miss critical baseline issues:
+
+    **Component Risks:**
+
+    - LLM insufficient capability for complex reasoning tasks
+    - Tool weak authentication (API tokens too permissive)
+    - Ambiguous instructions (agents fill gaps unpredictably)
+    - Memory contamination (hallucinations saved to knowledge base)
+
+    **Design Risks:**
+
+    - Linear pipeline error propagation
+    - Lack of audit trails for debugging
+    - Excessive privileges granted to agent roles
+    - No monitoring for anomalous behaviour
+
+## Step 3: Implement Controls
+
+For each relevant risk from Step 2, review recommended [technical controls](../arc_framework/controls.md) provided in the framework. Contextualise controls to your specific implementation—not all controls are equally critical, and teams must exercise judgement in adapting controls to meaningfully address risks.
+
+### Understanding Control Levels
+
+The ARC framework recommends controls at different levels of priority, and teams should apply differentiated treatment based on risk severity and organisational context:
+
+<table>
+  <thead>
+    <tr style="background-color: #e3f2fd;">
+      <th>Control Level</th>
+      <th>Context</th>
+      <th>Expectation</th>
+      <th>Examples</th>
+      <th>Review Process</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Level 0: Essential Controls</strong></td>
+      <td>High-impact risks, regulatory requirements</td>
+      <td>Implement unless technically infeasible; document exceptions with compensating controls</td>
+      <td>Authentication for transaction APIs, audit logging for sensitive operations, input validation for code execution</td>
+      <td>Requires senior stakeholder or security team sign-off if not implemented</td>
+    </tr>
+    <tr>
+      <td><strong>Level 1: Recommended Controls</strong></td>
+      <td>Moderate-impact risks, best practices</td>
+      <td>Implement where practical; exercise engineering judgement on feasibility</td>
+      <td>Rate limiting for API calls, output guardrails for content quality, human review for edge cases</td>
+      <td>Team-level decision with documented rationale</td>
+    </tr>
+    <tr>
+      <td><strong>Level 2: Enhanced Controls</strong></td>
+      <td>Defence-in-depth, low residual risk tolerance</td>
+      <td>Consider based on risk appetite and available resources</td>
+      <td>Advanced monitoring dashboards, red team testing, redundant safety layers</td>
+      <td>Optional; prioritise based on organisational maturity</td>
+    </tr>
+  </tbody>
+</table>
+
+Not all controls are mandatory—the framework provides a menu of options. Your governance team may specify which controls are required for your organisation; otherwise, apply controls proportionate to risk severity.
+
+!!! tip "Contextualising Controls"
+
+    Although the controls in the organisation's risk register would have been contextualised by the governance teams, they may need additional adaptation to your specific use case or implementation. Below are examples showing the full progression from framework baseline to organisation context to system-specific adaptation:
+
+    ???+ example "Example 1: Output Safety Guardrails"
+        **Framework Baseline:** "Implement output safety guardrails to detect and prevent generation of undesirable content"
+
+        **Organisation Control (from Governance Team):** "Use Azure Content Safety API with toxicity threshold >0.7, sexual content threshold >0.6; block flagged outputs and log violations to Application Insights"
+
+        **System-Specific Adaptation (by Development Team):** "For customer-facing chatbot: Use Azure Content Safety API with toxicity >0.5 (stricter than org baseline due to external users), sexual >0.6, violence >0.6; block and return templated 'I cannot help with that' response; log to Application Insights with customer_id tag for support escalation"
+
+    ??? example "Example 2: Human Approval Workflows"
+        **Framework Baseline:** "Require human approval before executing high-impact actions"
+
+        **Organisation Control (from Governance Team):** "Require manager approval via Slack workflow for transactions >$1,000; auto-approve lower amounts with email notification"
+
+        **System-Specific Adaptation (by Development Team):** "For automated refund agent: Require approval via Slack for refunds >$500 (lower than org threshold due to fraud risk in refunds); include customer history and refund reason in approval request; auto-approve ≤$500 only for customers with >6 months history and <3 refunds in past year; otherwise escalate to supervisor"
+
+    ??? example "Example 3: Hallucination Reduction"
+        **Framework Baseline:** "Implement methods to reduce hallucination rates in agent outputs"
+
+        **Organisation Control (from Governance Team):** "Use RAG with organisation-verified knowledge bases; disable LLM parametric knowledge for policy/compliance questions; add UI disclaimers on critical information"
+
+        **System-Specific Adaptation (by Development Team):** "For HR policy assistant: Use RAG with HR policy database (updated weekly by HR team); restrict LLM to only answer from retrieved documents (block answers with <0.8 retrieval confidence); add disclaimer on all policy responses: 'Please verify critical details with your HR representative'; include source citations with document name and last-updated date"
+
+    This progression from generic to organisation-specific to system-specific makes controls increasingly actionable and measurable.
+
+## Step 4: Assess Residual Risks
+
+Assess residual risks after controls are implemented. Consider where harm can still occur and what control limitations exist. If residual risks remain unacceptable, implement additional controls to reduce likelihood or impact.
+
+For each implemented control, ask: **What failure scenarios does this control not prevent?** Think through attack vectors the control doesn't cover (e.g., "guardrails detect known patterns but miss novel encoding attacks"), conditions where it fails (e.g., "human approval fails if malicious requests appear legitimate"), and underlying assumptions (e.g., "RAG assumes knowledge base accuracy—fails if sources contain errors"). Re-assess each failure scenario's impact and likelihood to determine if the residual risk is acceptable.
+
+For residual risks you accept, **document the specific failure scenario, your chosen strategy (accept, monitor, or mitigate), and concrete actions with measurable thresholds**. Examples: "Accept hallucinations in casual conversation—users understand chatbot limitations"; "Monitor injection attempts via logs, alert if >10/day, maintain <0.1% exploitation rate"; "Mitigate advanced injection through weekly review of flagged conversations + quarterly red team testing".
+
+!!! warning "When Residual Risks Are Too High"
+
+    Review with senior stakeholders if you identify **catastrophic residual risk** (Impact 5, even if low likelihood), **regulatory exposure** where residual risk violates compliance requirements, or **no mitigation strategy** where risk is documented but there's no plan to manage it.
+
+    When risks remain unacceptable, consider adding stronger controls (not just more controls), reducing the system's capability scope, adding human-in-the-loop requirements, limiting the deployment context (e.g., pilot vs. full production), or deferring deployment until better controls become available.
+
+---
+
+## Application Examples
+
+Below are practical examples showing how the framework applies to different system types.
+
+### Example 1: Agentic Fact Checker
+
+Fact-checking is a time-consuming process requiring deep analysis of claims, evidence, and their sufficiency. Our colleagues in the AI Practice recently developed an agentic fact-checking system (read their [Agentic AI Primer](https://playbooks.aip.gov.sg/agentic-ai-primer/09_applications_for_singapore_govt/) for details), using a complex multi-agent architecture to validate the veracity of any claim.
+
+#### Step 1: Identify Capabilities
 
 <img src="../../assets/agentic-fact-checker.png" alt="Architecture for Agentic Fact Checker" style="width: min(750px, 60%); display: block; margin: 0 auto;">
 <font style="font-style: italic; text-align: center;">Figure 1: Architecture for the Agentic Fact Checker (taken from the Agentic AI Primer)</font>
 
-From Figure 1 above, we can see that the Agentic Fact Checker system comprises six distinct agents:
+The Agentic Fact Checker system comprises six distinct agents:
 
 | Agent Type                   | Agent Name            | Task                                                                            |
 | ---------------------------- | --------------------- | ------------------------------------------------------------------------------- |
 | Core Orchestration           | Planner               | Coordinates overall fact-checking workflow and task distribution                |
 | Core Orchestration           | Answer Decomposer     | Breaks down complex statements into verifiable claims                           |
 | Verification Agents          | Check-worthy Assessor | Evaluates which claims require fact-checking                                    |
-| Verification Agents          | Evidence Assessor     | Synthesizes information from multiple sources to make factuality determinations |
+| Verification Agents          | Evidence Assessor     | Synthesises information from multiple sources to make factuality determinations |
 | Information Retrieval Agents | Web Searcher          | Accesses external web sources via search APIs                                   |
 | Information Retrieval Agents | Internal KB Searcher  | Queries internal knowledge base for relevant information                        |
 
-Based on the capability taxonomy from the ARC Framework, this system demonstrates the following capabilities:
+Based on the capability taxonomy, this system demonstrates:
 
 | Category | Capability | Explanation |
 | ----- | ----- | ----- |
-| Cognitive   | Reasoning & Problem-Solving | The Answer Decomposer, Check-worthy Assessor, and Evidence Assessor agents conduct multi-step logical analyses of claims and evidence. |
-| Cognitive    | Planning & Goal Management | The Planner agent assesses the entire text and determines whether a systematic decomposition of claims is needed. |
-| Cognitive    | Tool Use & Delegation | The Evidence Assessor agent determines whether to searc the Internet or the internal knowledge base to validate the claim. |
-| Interaction  | Natural Language Communication | All agents process text statements, while the final Evidence Assessor agent generates the factuality assessment. |
-| Interaction  | Internet & Search Access | The Web Searcher agent retrieves up-to-date information from web sources. |
-| Operational  | File & Data Management | The Internal KB Searcher queries and accesses internal knowledge bases. |
+| Cognitive   | CAP-01: Planning and Goal Management | The Planner coordinates the workflow and determines whether systematic decomposition is needed. |
+| Cognitive   | CAP-02: Agent Delegation | The Planner assigns subtasks to specialized agents (decomposer, assessors, searchers) and coordinates their activities. |
+| Cognitive    | CAP-03: Tool Use | The Evidence Assessor evaluates and selects between web search and internal knowledge base tools. |
+| Interaction  | CAP-04: Multimodal Understanding and Generation | All agents process text statements; Evidence Assessor generates factuality assessments in natural language. |
+| Interaction  | CAP-07: Internet and Search Access | The Web Searcher retrieves up-to-date information from external web sources via search APIs. |
+| Operational  | CAP-11: File and Data Management | The Internal KB Searcher queries and accesses internal knowledge bases. |
 
-### Step 2: Evaluate risks
+#### Step 2: Evaluate Risks
 
-Next, we identify the risks arising from both the baseline components and the capabilities, and assess how likely and impactful the risk is given the context of the Agentic Fact Checker. Here, we assume that the relevance threshold set by the organisation is (3*3), and the scores show the `impact_score * likelihood_score`.
+We identify risks from baseline components and capabilities, assessing likelihood and impact given the fact-checking context. Assuming organisational relevance threshold requires both impact ≥3 AND likelihood ≥3, we identify the following priority risks:
 
-| Category | Component / Capability | Risk | Assessment |
-|----------|------------------------|------|------------|
-| Baseline | LLM | Poorly aligned LLMs may pursue objectives which technically satisfy instructions but violate safety principles | **[Relevance: 2 * 1]** Could lead to accepting biased sources as authoritative or prioritizing speed over accuracy in verification. However, fact-checking is relatively low-stakes compared to financial transactions or safety-critical systems. |
-| Baseline | LLM | Weaker LLMs have a higher tendency to produce unpredictable outputs which make agent behaviour erratic | **[Relevance: 2 * 1]** Erratic behavior would primarily result in inconsistent fact-checking quality rather than serious harm. Users can typically verify claims independently if suspicious of results. |
-| Baseline | LLM | LLMs with poor safety tuning are more susceptible to prompt injection attacks and jailbreaking attempts | **[Relevance: 4 * 4]** Particularly relevant given web search capability. Malicious websites could inject prompts to manipulate verification results, potentially spreading misinformation systematically. |
-| Baseline | LLM | Using LLMs trained on poisoned or biased data introduces manipulation risk, discriminatory decisions, or misinformation | **[Relevance: 3 * 2]** Could result in systematic bias in fact-checking, but impact is limited to information accuracy rather than physical or financial harm. Users can always seek alternative verification. |
-| Baseline | Tools | Poorly implemented tools may not correctly verify user identity or permissions when executing privileged actions | **[Relevance: 2 * 2]** Fact-checker has no privileged actions. Most operations are read-only searches. Limited potential for serious harm beyond information access. |
-| Baseline | Tools | Rogue tools that mimic legitimate ones can contain hidden malicious code that executes when loaded | **[Relevance: 2 * 2]** While concerning, the fact-checker's tools are primarily search APIs with limited system access. Potential harm is constrained compared to systems with file modification or transaction capabilities. |
-| Baseline | Tools | Tools that do not properly sanitise or validate inputs can be exploited through prompt injection attacks |**[Relevance: 4 * 5]** Critical given web search functionality. Unsanitized web content could compromise the entire verification process, leading to systematic misinformation propagation. |
-| Baseline | Tools | Tools that demand broader permissions than necessary create unnecessary attack surfaces for malicious actors | **[Relevance: 3 * 1]** Fact-checking tools require minimal system permissions. Even if compromised, limited potential for serious system-wide damage. |
-| Baseline | Instructions | Simplistic instructions with narrow metrics and without broader constraints may result in agents engaging in specification gaming, resulting in poor performance or safety violations | **[Relevance: 2 * 1]** Could lead to gaming verification metrics (e.g., always marking claims as "uncertain" to avoid errors) but unlikely to cause serious harm beyond reduced system utility. |
-| Baseline | Instructions | Vague instructions may compel agents to attempt to fill in missing constraints, resulting in unpredictable actions or incorrect steps taken | **[Relevance: 1 * 1]** Scope of the system is clear and relatively simple, reducing the likelihood of unpredictable actions. |
-| Baseline | Instructions | Instructions without a clear distinction between system prompts and user requests may confuse agents and result in greater vulnerability to prompt injection attacks | **[Relevance: 3 * 2]** Relevant given user-submitted claims for verification. Could allow users to manipulate the verification process, though impact is limited to information accuracy. |
-| Baseline | Memory | Malicious actors can inject false or misleading facts into the knowledge base, resulting in the agent acting on incorrect data or facts | **[Relevance: 3 * 2]** Poisoned knowledge bases systematically bias future fact-checking decisions. However, cross-validation with web sources provides some protection against relying solely on compromised internal data. |
-| Baseline | Memory | Agents may inadvertently store sensitive user or organisational data from prior interactions, resulting in data privacy risks | **[Relevance: 2 * 1]** Fact-checking typically involves public claims rather than sensitive personal data. Privacy risks are minimal unless checking claims about individuals. |
-| Baseline | Memory | Agents may mistakenly save momentary glitches and hallucinations into memory, resulting in compounding mistakes when the agent relies on the incorrect information for its decision or actions | **[Relevance: 1 * 1]** Memory component in this system is not modified in response to or after the system's actions. |
-| Baseline | Agentic Architecture | In linear agentic pipelines where each stage blindly trusts the previous stage, single early mistakes may be propagated and magnified | **[Relevance: 3 * 2]** Early errors in claim decomposition could propagate through verification steps, but the multi-agent architecture provides some redundancy and cross-checking opportunities. |
-| Baseline | Agentic Architecture | In hub-and-spoke architectures which route all decisions through one controller agent, any bug or compromise may distributes faulty instructions across the entire system | **[Relevance: 1 * 1]** Agentic Fact Checker's architecture is more linear than hub-and-spoke. |
-| Baseline | Agentic Architecture | More complex agentic architectures may make it difficult to fully reconstruct decision processes across multiple agents | **[Relevance: 2 * 2]** While transparency is important for fact-checking credibility, inability to trace decisions doesn't pose serious safety risks. Users can still evaluate final outputs independently. |
-| Cognitive | Reasoning & Problem-Solving | Becoming ineffective, inefficient, or unsafe due to overthinking | **[Relevance: 3 * 1]** Overthinking may be more likely for more complex claims or texts, potentially resulting in circular or faulty reasoning. |
-| Cognitive | Reasoning & Problem-Solving | Engaging in deceptive behaviour through pursuing or prioritising other goals | **[Relevance: 2 * 1]** Could lead to deliberately misleading fact-checks, but the multi-agent verification process provides some protection against single-agent deception. |
-| Cognitive | Planning & Goal Management | Devising plans that are not effective in meeting the user's requirements | **[Relevance: 1 * 1]** Ineffective verification plans would reduce system utility but users can recognize obviously inadequate verification attempts. |
-| Cognitive | Planning & Goal Management | Devising plans that do not adhere to common sense or implicit assumptions about the user's instructions | **[Relevance: 1 * 1]** May result in unnecessarily complex verification of simple claims or missing obvious evidence, but harm is limited to reduced efficiency and user frustration. |
-| Cognitive | Tool Use & Delegation | Assigning tasks incorrectly to other agents | **[Relevance: 1 * 1]** Task misassignment might reduce verification quality but is unlikely to cause serious harm given the read-only nature of most fact-checking operations. |
-| Cognitive | Tool Use & Delegation | Attempting to use other agents maliciously | **[Relevance: 1 * 1]** Limited potential for serious harm given the constrained scope of fact-checking operations. Most concerning would be attempts to bias verification results. |
-| Interaction | Natural Language Communication | Generating undesirable content (e.g. toxic, hateful, sexual) | **[Relevance: 1 * 2]** Fact-checking outputs are typically factual assessments rather than creative content, and the tool is largely for internal use. |
-| Interaction | Natural Language Communication | Generating unqualified advice in specialised domains (e.g. medical, financial, legal) | **[Relevance: 2 * 3]** Could provide medical or legal "facts" without appropriate disclaimers, potentially leading users to make harmful decisions based on unqualified information, but the tool is for internal use. |
-| Interaction | Natural Language Communication | Generating controversial content (e.g. political, competitors) | **[Relevance: 1 * 2]** Fact-checking may involve controversial topics, but the tool is largely for internal use. |
-| Interaction | Natural Language Communication | Regurgitating personally identifiable information |**[Relevance: 1 * 2]** Fact-checking typically focuses on public claims. PII exposure risk is minimal unless specifically checking claims about individuals. |
-| Interaction | Natural Language Communication | Generating non-factual or hallucinated content | **[Relevance: 4 * 4]** Hallucinated "facts" in verification results directly undermine the system's core purpose and could spread misinformation if users trust the assessments. |
-| Interaction | Natural Language Communication | Generating copyrighted content | **[Relevance: 1 * 1]** Fact-checking outputs are factual assessments rather than creative content. Minimal risk of copyright infringement in normal operation. |
-| Interaction | Internet & Search Access | Opening vulnerabilities to prompt injection attacks via malicious websites | **[Relevance: 4 * 5]** Critical vulnerability given the system's reliance on web sources. Malicious sites could inject prompts to manipulate verification results, potentially spreading coordinated misinformation. |
-| Interaction | Internet & Search Access | Returning unreliable information or websites | **[Relevance: 5 * 4]** Core risk for fact-checking systems. Accepting unreliable sources as authoritative directly undermines verification accuracy and could propagate misinformation. |
-| Operational | File & Data Management | Overwriting or deleting database tables or files | **[Relevance: 1 * 1]**: Fact-checking operations are all read-only, no write access to the database or files given. |
-| Operational | File & Data Management | Overwhelming the database with poor, inefficient, or repeated queries | **[Relevance: 1 * 1]** Would impact system performance but limited in scope to the system itself. |
-| Operational | File & Data Management | Exposing personally identifiable or sensitive data from databases or files | **[Relevance: 1 * 1]** Fact-checking databases typically contain public information. PII exposure risk is minimal unless the system stores sensitive verification requests. |
-| Operational | File & Data Management | Opening vulnerabilities to prompt injection attacks via malicious data or files | **[Relevance: 4 * 4]** If knowledge base contains user-contributed content, malicious data could inject prompts to bias future fact-checking decisions. |
+**Priority Risks (Impact ≥3, Likelihood ≥3):**
 
-### Step 3: Adopt or adapt controls
+| Risk ID | Element | Risk Statement | Assessment |
+|----------|---------|----------------|------------|
+| RISK-002 | CMP-01 (LLM) | Insufficient alignment of LLM behaviour | **[Impact: 4, Likelihood: 4]** LLM misalignment could cause it to ignore safety constraints or misinterpret fact-checking instructions, undermining verification accuracy. |
+| RISK-007 | CMP-03 (Tools) | Lack of input sanitisation | **[Impact: 5, Likelihood: 4]** Critical given web search tools. Unsanitized web content from malicious sites could inject prompts to manipulate verification results. |
+| RISK-028 | CAP-04 (Multimodal Understanding) | Generation of non-factual or hallucinated content | **[Impact: 5, Likelihood: 4]** Hallucinated "facts" directly undermine the system's core purpose of verifying truthfulness. |
+| RISK-034 | CAP-07 (Internet Access) | Prompt injection via malicious websites | **[Impact: 5, Likelihood: 4]** Critical vulnerability given reliance on web sources. Adversarial sites could embed instructions to override verification logic. |
+| RISK-035 | CAP-07 (Internet Access) | Unreliable information or websites | **[Impact: 5, Likelihood: 4]** Core risk—retrieving and trusting unreliable sources undermines verification accuracy and could propagate misinformation. |
+| RISK-044 | CAP-11 (File & Data Management) | Prompt injection via malicious files or data | **[Impact: 4, Likelihood: 3]** If internal knowledge base contains user-contributed content, malicious data could inject prompts affecting all verification tasks. |
 
-Given the relevance threshold of (3*3), we retain only the risks with a score higher than that. The table below shows the list of risks we have assessed to be very relevant and the corresponding controls.
+*(Lower-priority risks documented but not shown here for brevity)*
 
-| Category | Component / Capability | Risk & Assessment | Controls |
-|----------|------------------------|-------|----------|
-| Baseline | LLM | LLMs with poor safety tuning are more susceptible to prompt injection attacks and jailbreaking attempts <br> **[Relevance: 4 * 4]** Particularly relevant given web search capability. Malicious websites could inject prompts to manipulate verification results, potentially spreading misinformation systematically. | • Implement input sanitisation measures or limit inputs to conventional ASCII characters only |
-| Baseline | Tools | Tools that do not properly sanitise or validate inputs can be exploited through prompt injection attacks <br> **[Relevance: 4 * 5]** Critical given web search functionality. Unsanitized web content could compromise the entire verification process, leading to systematic misinformation propagation. | • Enforce strict schema validation (e.g. JSON schema, protobuf) and reject non‑conforming inputs upstream<br>• Escape or encode user inputs when embedding into tool prompts or commands |
-| Interaction | Natural Language Communication | Generating non-factual or hallucinated content <br> **[Relevance: 4 * 4]** Hallucinated "facts" in verification results directly undermine the system's core purpose and could spread misinformation if users trust the assessments. | • Implement methods to reduce hallucination rates (e.g. retrieval-augmented generation)<br>• Implement UI/UX cues to highlight the risk of hallucination to the user<br>• Implement features to enable users to easily verify the generated answer against the original content |
-| Interaction | Internet & Search Access | Opening vulnerabilities to prompt injection attacks via malicious websites <br> **[Relevance: 4 * 5]** Critical vulnerability given the system's reliance on web sources. Malicious sites could inject prompts to manipulate verification results, potentially spreading coordinated misinformation. | • Implement input guardrails to detect prompt injection or adversarial attacks<br>• Implement escape filtering before including web content into prompts<br>• Use structured retrieval APIs for searching the web rather than through web scraping |
-| Interaction | Internet & Search Access | Returning unreliable information or websites <br> **[Relevance: 5 * 4]** Core risk for fact-checking systems. Accepting unreliable sources as authoritative directly undermines verification accuracy and could propagate misinformation. | • Prioritise results from verified, high-quality domains (e.g. .gov, .edu, well-known publishers)<br>• Require cross-source validation for some of the claims made |
-| Operational | File & Data Management | Opening vulnerabilities to prompt injection attacks via malicious data or files <br> **[Relevance: 4 * 4]** If knowledge base contains user-contributed content, malicious data could inject prompts to bias future fact-checking decisions. | • Validate new data used to supplement RAG databases or training data<br>• Implement input guardrails to detect prompt injection or adversarial attacks<br>• Disallow unknown or external files unless it is scanned |
+#### Step 3: Implement Controls
 
-### Step 4. Assess residual risks
+For priority risks (Impact ≥3, Likelihood ≥3), we implement the following Level 0 and Level 1 controls:
 
-After evaluating the risks and the controls, we identified three key residual risks:
+| Risk ID | Selected Controls | Implementation |
+|---------|-------------------|----------------|
+| RISK-002 | **CTRL-0005** (Level 0): Conduct structured evaluation of multiple LLMs<br>**CTRL-0006** (Level 1): Require human approval before executing high-impact actions | • Evaluated Claude Sonnet 4.5, GPT-4, and Gemini Pro on fact-checking benchmarks<br>• Selected Claude Sonnet 4.5 for superior instruction-following and refusal capabilities<br>• Require human review before publishing final verification verdicts |
+| RISK-007 | **CTRL-0015** (Level 1): Treat all tool metadata and outputs as untrusted input | • Validate all web search results against strict JSON schemas<br>• Sanitize tool outputs before incorporating into agent prompts<br>• Filter tool descriptions for embedded instructions |
+| RISK-028 | **CTRL-0048** (Level 2): Implement methods to reduce hallucination rates<br>**CTRL-0049** (Level 0): Implement UI/UX cues for hallucination risk<br>**CTRL-0050** (Level 1): Enable users to verify answers against sources | • Implement RAG using verified knowledge bases to ground responses<br>• Display disclaimers highlighting potential for inaccuracies<br>• Provide inline citations linking to source passages for verification |
+| RISK-034 | **CTRL-0061** (Level 1): Implement escape filtering before incorporating web content<br>**CTRL-0062** (Level 0): Use structured retrieval APIs rather than web scraping<br>**CTRL-0063** (Level 0): Implement input guardrails to detect prompt injection | • Sanitize all retrieved web content before adding to prompts<br>• Use Google Search API for structured results rather than raw HTML scraping<br>• Deploy prompt injection detector to scan web content |
+| RISK-035 | **CTRL-0064** (Level 1): Prioritise search results from verified, high-quality domains | • Configure search API to prioritise .gov, .edu, and established news sources<br>• Require cross-source validation for claims from unknown domains |
+| RISK-044 | **CTRL-0063** (Level 0): Implement input guardrails to detect prompt injection<br>**CTRL-0084** (Level 0): Disallow unknown or external files unless scanned | • Validate all new data contributions to knowledge base before ingestion<br>• Scan uploaded files for embedded prompt injection attempts<br>• Maintain allowlist of approved data sources |
 
-1. **Sophisticated Prompt Injection** remains a significant concern as advanced adversarial websites could craft content that bypasses current guardrails, potentially leading to complete compromise of the verification process for specific claims. While we have several technical controls in place, adversarial attack techniques continue to evolve and we cannot depend on these controls to fully mitigate the threat. To manage this residual risk, we will regularly monitor the system's API calls and outputs and flag anomalous activities.
+#### Step 4: Assess Residual Risks
 
-2. **Cascading Hallucination** presents a risk where early false information propagates through multiple verification steps, creating systematic bias in factuality assessments. This is particularly likely for novel or complex claims where existing knowledge bases may be incomplete, and cross-validation may not always catch sophisticated false reasoning that appears internally consistent. To manage this residual risk, we will implement a scoring and feedback mechanism in the front-end of the system to capture user feedback and to check against the system's internal reasoning for hallucinated outputs.
+After implementing controls, key residual risks remain:
 
-3. **Source Quality Assessment** poses a high-likelihood risk, especially for technical or specialised subject areas where the system may struggle to distinguish between authoritative and unreliable sources. This could result in accepting false information as verified fact, undermining the system's core purpose. To manage this residual risk, we will start with small-scale pilots for the fact checker in specific domains first, validating its responses with subject matter experts, before expanding it for more general use.
+| Risk ID | Residual Risk Description | Mitigation Strategy |
+|---------|---------------------------|---------------------|
+| RISK-034 | **Sophisticated Prompt Injection**: Advanced adversarial websites may craft novel injection attacks that bypass current guardrails and filters. | • Monitor all API calls and agent outputs for anomalous patterns<br>• Regularly update prompt injection detectors with new attack patterns<br>• Establish incident response procedures for detected bypasses |
+| RISK-028 | **Cascading Hallucination**: False information generated early in the verification workflow may propagate through subsequent agents, creating systematic verification bias. | • Implement multi-agent cross-checking where independent agents verify claims<br>• Add user feedback mechanisms to flag incorrect verdicts<br>• Compare internal agent reasoning chains to detect inconsistencies |
+| RISK-035 | **Domain-Specific Source Assessment**: System may struggle distinguishing authoritative from unreliable sources in highly specialized or emerging domains with limited established references. | • Begin deployment with small-scale pilots in well-defined domains<br>• Validate verification outputs with subject matter experts<br>• Maintain domain-specific allowlists of trusted sources |
 
-These residual risks (and measures) will be periodically reviewed by the team to ensure relevance and effectiveness.
+These residual risks and mitigation strategies will be reviewed quarterly and updated based on observed system behaviour and emerging threats.
 
-<!-- Footnotes -->
+---
 
-[^1]: This is aligned to our recommendation to governance teams implementing the ARC Framework to take a comply-or-explain approach to the technical controls.
-[^2]: Some helpful resources on managing residual risk include [Verizon's article](https://www.verizon.com/business/resources/articles/s/what-is-residual-risk-in-cyber-security/) or [Bitsight's article](https://www.bitsight.com/glossary/residual-risk) on residual risk.
+### Example 2: Agentic Coding Assistant
+
+Agentic coding assistants like Cursor and Claude Code help developers write, debug, and refactor code by autonomously reading codebases, executing commands, and modifying files. These systems typically employ multi-agent architectures with specialized agents for different coding tasks, requiring careful risk management given their access to sensitive codebases and ability to execute arbitrary code.
+
+#### Step 1: Identify Capabilities
+
+The agentic coding assistant comprises five specialized agents:
+
+| Agent Type | Agent Name | Task |
+|------------|-----------|------|
+| Core Orchestration | Task Planner | Decomposes user coding requests into subtasks and coordinates agent workflow |
+| Code Understanding | Codebase Analyzer | Searches codebase, reads relevant files, and understands existing code structure |
+| Code Generation | Code Writer | Generates new code or modifies existing code based on requirements |
+| Execution & Testing | Command Executor | Runs terminal commands, executes tests, and validates code functionality |
+| File Operations | File Manager | Reads, writes, and manages files and directories in the workspace |
+
+Based on the capability taxonomy, this system demonstrates:
+
+| Category | Capability | Explanation |
+|----------|-----------|-------------|
+| Cognitive | CAP-01: Reasoning and Problem-Solving | The Codebase Analyzer debugs issues by analyzing stack traces, code flow, and dependencies; Code Writer applies software engineering patterns. |
+| Cognitive | CAP-02: Planning and Goal Management | The Task Planner breaks down complex coding requests into sequential steps (e.g., "add authentication" → analyze existing auth, design schema, implement endpoints, write tests). |
+| Cognitive | CAP-03: Tool Use and Delegation | The Task Planner selects appropriate agents and tools based on task requirements (search vs. read vs. execute). |
+| Interaction | CAP-04: Multimodal Understanding and Generation | All agents process code, markdown documentation, and configuration files; Code Writer generates syntactically correct code in multiple languages. |
+| Operational | CAP-09: Code Execution | The Command Executor runs shell commands, executes tests, installs dependencies, and validates code changes. |
+| Operational | CAP-11: File and Data Management | The File Manager reads source files, writes modifications, creates new files, and manages version control operations. |
+
+#### Step 2: Evaluate Risks
+
+We identify risks from baseline components and capabilities, assessing likelihood and impact given the coding assistant context. Assuming organisational relevance threshold requires both impact ≥3 AND likelihood ≥3, we identify the following priority risks:
+
+**Priority Risks (Impact ≥3, Likelihood ≥3):**
+
+| Risk ID | Element | Risk Statement | Assessment |
+|---------|---------|----------------|------------|
+| RISK-002 | CMP-01 (LLM) | Insufficient alignment of LLM behaviour | **[Impact: 4, Likelihood: 3]** Misaligned LLM may ignore security constraints or execute dangerous operations when instructed to "fix it quickly" without proper validation. |
+| RISK-007 | CMP-03 (Tools) | Lack of input sanitisation | **[Impact: 5, Likelihood: 4]** Critical given file system and command execution tools. Malicious file contents or unsanitized tool outputs could inject prompts to manipulate assistant behaviour or execute unintended operations. |
+| RISK-028 | CAP-04 (Multimodal Understanding) | Generation of non-factual or hallucinated content | **[Impact: 4, Likelihood: 4]** Hallucinating incorrect code patterns, API usage, or architectural decisions leads developers to implement buggy or insecure features. |
+| RISK-038 | CAP-09 (Other Programmatic Interfaces) | Incorrect use of unfamiliar programmatic interfaces | **[Impact: 3, Likelihood: 4]** Assistant may misinterpret bespoke API semantics when interacting with internal tools or non-standard interfaces. |
+| RISK-039 | CAP-10 (Code Execution) | Production or execution of poor or ineffective code | **[Impact: 5, Likelihood: 3]** Generated code may be incorrect, inefficient, or contain bugs that cause operational disruptions when deployed or run. |
+| RISK-040 | CAP-10 (Code Execution) | Production or execution of vulnerable or malicious code | **[Impact: 5, Likelihood: 4]** Critical risk—generated code may contain SQL injection, XSS, insecure deserialization, or other OWASP Top 10 vulnerabilities that reach production. |
+| RISK-041 | CAP-11 (File & Data Management) | Destructive modifications to files or databases | **[Impact: 5, Likelihood: 3]** Assistant may accidentally delete critical files, overwrite production configs, or drop database tables when misinterpreting user intent. |
+| RISK-042 | CAP-11 (File & Data Management) | Exposing PII from accessed files | **[Impact: 4, Likelihood: 3]** Code suggestions may inadvertently reproduce API keys, credentials, or sensitive data found in configuration files or comments. |
+| RISK-043 | CAP-11 (File & Data Management) | Prompt injection via malicious files | **[Impact: 4, Likelihood: 3]** Malicious code repositories may contain hidden instructions in comments, README files, or docstrings designed to manipulate assistant behaviour. |
+
+*(Lower-priority risks documented but not shown here for brevity)*
+
+#### Step 3: Implement Controls
+
+For priority risks (Impact ≥3, Likelihood ≥3), we implement the following Level 0 and Level 1 controls:
+
+| Risk ID | Selected Controls | Implementation |
+|---------|-------------------|----------------|
+| RISK-002 | **CTRL-0005** (Level 0): Conduct structured evaluation of multiple LLMs<br>**CTRL-0007** (Level 0): Log all LLM inputs and outputs | • Evaluated Claude Sonnet 4.5, GPT-4o, and Gemini Pro on code generation benchmarks (HumanEval, MBPP)<br>• Selected Claude Sonnet 4.5 for superior instruction-following and code safety<br>• Log all prompts and generated code to CloudWatch with 90-day retention |
+| RISK-007 | **CTRL-0015** (Level 1): Treat all tool metadata and outputs as untrusted input | • Validate all tool outputs (file contents, command results, search results) against expected schemas<br>• Sanitize tool outputs before incorporating into agent prompts or displaying to users<br>• Escape special characters in file paths and command arguments to prevent injection<br>• Filter tool descriptions and error messages for embedded instructions |
+| RISK-028 | **CTRL-0048** (Level 2): Implement methods to reduce hallucination rates<br>**CTRL-0050** (Level 1): Enable users to verify answers against sources | • Implement RAG using codebase context to ground code suggestions in actual project patterns<br>• Display inline citations showing which files informed code suggestions<br>• Add "Verify this code before using" disclaimer on all generated code blocks |
+| RISK-038 | **CTRL-0068** (Level 0): Use code linters to screen generated code | • Integrate ESLint for JavaScript/TypeScript with strict ruleset<br>• Integrate Pylint for Python with security-focused configuration<br>• Display linter warnings to user before applying code changes<br>• Block code application if critical errors detected |
+| RISK-039 | **CTRL-0069** (Level 0): Run code only in isolated environments<br>**CTRL-0070** (Level 0): Review all agent-generated code before execution<br>**CTRL-0073** (Level 0): Create denylist of dangerous commands | • Execute all code in Docker containers with no network access by default<br>• Require explicit user approval before running any shell commands<br>• Denylist: rm -rf, dd, mkfs, iptables, sudo commands without user confirmation |
+| RISK-040 | **CTRL-0071** (Level 0): Use static code analyzers to detect vulnerabilities<br>**CTRL-0070** (Level 0): Review all agent-generated code before execution | • Integrate Semgrep with OWASP ruleset for vulnerability scanning<br>• Integrate Bandit for Python security analysis<br>• Flag HIGH/CRITICAL vulnerabilities and require user acknowledgment<br>• Provide security-focused system prompts emphasizing input validation |
+| RISK-041 | **CTRL-0075** (Level 1): Do not grant write access unless necessary<br>**CTRL-0076** (Level 1): Require human approval for destructive changes<br>**CTRL-0077** (Level 0): Enable versioning or soft-delete | • Restrict write access to workspace directory only (no system files)<br>• Require explicit confirmation before deleting files or modifying package.json/requirements.txt<br>• Integrate with Git to ensure all changes are tracked and reversible |
+| RISK-042 | **CTRL-0047** (Level 0): Implement output guardrails to detect and redact PII<br>**CTRL-0081** (Level 1): Implement input guardrails to detect PII in accessed data | • Scan all generated code for API keys, tokens, passwords using regex patterns<br>• Flag and redact detected secrets before displaying to user<br>• Warn user when reading config files containing credentials |
+| RISK-043 | **CTRL-0062** (Level 0): Implement input guardrails to detect prompt injection<br>**CTRL-0083** (Level 0): Disallow unknown external files unless scanned | • Scan all file contents for prompt injection patterns before processing<br>• Warn user when opening repositories from untrusted sources<br>• Sanitize code comments and docstrings before including in prompts |
+
+#### Step 4: Assess Residual Risks
+
+After implementing controls, key residual risks remain:
+
+| Risk ID | Residual Risk Description | Mitigation Strategy |
+|---------|---------------------------|---------------------|
+| RISK-040 | **Subtle Security Vulnerabilities**: Static analyzers may miss logic flaws, race conditions, or business logic vulnerabilities that require deeper semantic understanding. | • Require security-focused code review for authentication, authorization, and payment logic<br>• Integrate periodic penetration testing of generated features<br>• Maintain security checklist for high-risk code categories |
+| RISK-039 | **Sophisticated Prompt Injection**: Advanced attacks embedded in dependency documentation or third-party code may bypass current detection and manipulate assistant behaviour. | • Monitor command execution patterns for anomalies (e.g., unexpected network calls)<br>• Regularly update injection detection patterns based on emerging attacks<br>• Implement rate limiting on destructive operations |
+| RISK-041 | **Misinterpreted User Intent**: User requests like "clean up the code" may be interpreted too broadly, leading to unintended file deletions or modifications despite approval workflows. | • Require assistant to explicitly list files to be modified before execution<br>• Implement dry-run mode showing proposed changes before applying<br>• Maintain undo history for last 10 operations |
+| RISK-028 | **Framework/Library Hallucination**: Assistant may hallucinate non-existent APIs, deprecated methods, or incorrect framework usage in less common libraries. | • Prioritize official documentation retrieval for library-specific questions<br>• Display confidence scores for code suggestions involving external dependencies<br>• Encourage developers to verify against official docs for critical integrations |
+
+These residual risks and mitigation strategies will be reviewed monthly during the first six months of deployment, then quarterly thereafter based on observed incident rates and developer feedback.
