@@ -3,6 +3,7 @@ site_name: Agentic Risk & Capability Framework
 site_author: GovTech AI Practice
 copyright: GovTech Singapore
 docs_dir: docs
+repo_url: https://github.com/govtech-responsibleai/agentic-risk-capability-framework/tree/gh-pages
 
 # Theme Configuration
 theme:
@@ -28,9 +29,20 @@ theme:
 markdown_extensions:
   - footnotes
   - attr_list
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+# Extra CSS and JavaScript
+extra_css:
+  - https://unpkg.com/tabulator-tables@5.5.2/dist/css/tabulator_materialize.min.css
+
+extra_javascript:
+  - https://unpkg.com/tabulator-tables@5.5.2/dist/js/tabulator.min.js
+  - assets/risk-register.js
 
 # Extra Configuration
 extra:
@@ -61,22 +73,20 @@ extra:
     
 # Navigation
 nav:
-  - Introduction: 
+  - ARC Framework:
     - index.md
-    - Why the ARC Framework?: intro/why_arc.md
-    - About the ARC Framework: intro/about_arc.md
-  - Baseline: 
-    - What is a Baseline?: baseline/index.md
-    - Baseline Risks: baseline/risks.md
-    - Baseline Controls: baseline/controls.md
-  - Capability:
-    - What is a Capability?: capability/index.md
-    - Risks: capability/risks.md
-    - Controls: capability/controls.md
+    - Introduction: arc_framework/introduction.md
+    - Elements of agentic systems: arc_framework/elements.md
+    - Risks of agentic systems: arc_framework/risks.md
+    - Controls for agentic systems: arc_framework/controls.md
+    - Interactive Risk Register: arc_framework/risk-register.md
+    - Comparison to other frameworks: arc_framework/comparison.md
   - Implementation:
     - Implementing ARC: implementation/index.md
     - For Governance Teams: implementation/for-governance-teams.md
     - For AI Developers: implementation/for-ai-developers.md
+  - Resources:
+    - Resources: resources/index.md
 # Plugins
 plugins:
   - search

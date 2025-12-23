@@ -1,50 +1,79 @@
 # :material-shield-star: Agentic Risk & Capability Framework
 
-<img src="assets/robot-banner.png" alt="Robot" style="width: min(600px, 50%); display: block; margin: 0 auto;">
+<img src="assets/arc-banner.jpeg" alt="Robot" style="width: min(600px, 65%); display: block; margin: 0 auto;">
 
-We introduce the Agentic Risk & Capability ("ARC") Framework, a **technical governance framework** that enables organisations to manage the **safety and security risks of agentic AI systems** through **a risk-based approach**. We do this by:
+**The ARC Framework is a technical governance framework for identifying, assessing, and mitigating safety and security risks in agentic AI systems.** The framework provides:
 
-* Defining **a hierarchical taxonomy of capabilities** that agentic AI systems may have, depending on their use case and how they are designed  
-* Distinguishing between **baseline risks** (applicable to all agentic AI systems) and **capability-specific risks** (applicable to agentic AI systems with that capability)  
-* Mapping **each risk to a set of technical controls** which help to mitigate the risk to an acceptable level  
-* Providing a framework to **scale governance of agentic AI systems**, especially for large organisations   
+- A hierarchical capability taxonomy for classifying agentic system capabilities
+- A structured risk mapping distinguishing component, design, and capability-specific risks
+- Technical control specifications with risk-to-control mappings
+- An implementation methodology for organisational adoption and per-system assessment
 
-## This website
+!!! info "Major Update"
 
-We have organised our content into four sections:
+    We have significantly updated the ARC Framework since our initial release in August 2025. The main changes include:
 
-1. **Introduction**: We explain the overall concept of the ARC Framework, how it distinguishes between baseline risks and capability-specific risks, and how it fills a much-needed gap in current discussions on agentic AI governance.   
-2. **Baseline**: We explain what baseline risks are, outline a set of baseline risks that apply to all agentic AI systems, and list the corresponding technical controls for tackling those risks.  
-3. **Capabilities**: We explore the concept of capabilities, go through our proposed taxonomy of agentic capabilities, describe the safety and security risks arising from each capability, and set out the relevant technical controls we recommend for mitigating those risks.  
-4. **Implementation**: We provide a plan for operationalising the ARC framework in an organisation, using stylised examples to help the reader understand the practical implications of the framework.  
+    - **Updated theoretical foundations**: Added a comprehensive [introduction](arc_framework/introduction.md) with design rationale, literature review, real-world case studies (Replit, Antigravity incidents), as well as detailed justifications for the capability-based approach
+    - **Restructured documentation**: Consolidated Components and Design elements together with the Capabilities element into a unified [Elements](arc_framework/elements.md) reference page with clearer taxonomy and detailed definitions
+    - **Interactive Risk Register**: Introduced a [filterable, searchable risk register](arc_framework/risk-register.md) consolidating all 46 risks and 88 controls with risk-to-control mappings in a single interactive interface
+    - **Framework positioning**: Added a [comparison table](arc_framework/comparison.md) benchmarking ARC against NIST AI RMF, ISO 42001, EU AI Act, OWASP, and other governance frameworks
+    - **Enhanced implementation guidance**: Updated implementation guides with more detailed methodologies for both organizational adoption and per-system assessment
+    - **ARCvisor tool**: Launched [ARCvisor](resources/index.md#arcvisor), an AI-powered risk assessment assistant achieving 50%+ time savings with live demo and open-source repository
+    - **Research publications**: Published two technical papers available in [Resources](resources/index.md) — the ARC Framework paper (accepted at IASEAI 2026) and the ARCvisor preprint
 
-For first time readers, we suggest following the order of the contents above. For those who are more familiar with agentic AI governance or with the ARC framework, please feel free to jump ahead to the relevant sections.
+## Navigation
 
-## About us
+On this website, you'll find all the resources you need to get started with understanding and applying the ARC Framework in your organisation.
+
+### 📚 Reference Documentation
+- **[Framework Introduction](arc_framework/introduction.md)** — Design rationale, literature review, and theoretical foundation
+- **[Agentic System Elements](arc_framework/elements.md)** — Detailed examination of components, design, and capabilities
+- **[Capability Taxonomy](arc_framework/elements.md#capabilities)** — Cognitive, interaction, and operational capability categories with definitions
+- **[Risk Register](arc_framework/risk-register.md)** — Component, design, and capability-specific risks with impact/likelihood assessment
+- **[Comparison Table](arc_framework/comparison.md)** — Comparison to NIST AI RMF, ISO 42001, EU AI Act, OWASP, and other frameworks
+
+### 🛠️ Implementation Guides
+- **[Implementation Overview](implementation/index.md)** — Macro and micro implementation levels, timelines, and resources
+- **[Organisational Adoption](implementation/for-governance-teams.md)** — Multi-phase rollout methodology for governance teams
+- **[System Assessment](implementation/for-ai-developers.md)** — Per-system risk assessment process for developers
+
+### 🧰 Tools & Resources
+- **[ARCvisor Tool](resources/index.md#arcvisor)** — Open-source web application for automated risk assessment
+- **[Resources](resources/index.md)** — Slide deck, paper, and code for implementing the ARC Framework for your organisation
+
+## Referenced By
+
+The ARC framework has been mentioned in:
+
+* [Cybersecurity Agency of Singapore's draft Addendum on Securing Agentic AI](https://isomer-user-content.by.gov.sg/36/703ff9fe-9db1-4e09-98c2-89e3d7007ef0/Draft%20Addendum%20on%20Securing%20Agentic%20AI%20[For%20Public%20Consultation].pdf)
+* [Opening Address by Minister Josephine Teo at HLP (AI) on 22 Oct 2025](https://www.csa.gov.sg/news-events/speeches/opening-address-by-minister-josephine-teo-at-hlp--ai--on-22-oct-2025/#:~:text=20.%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%20First%2C%20we,can%20trust%20autonomy.)
+* [AI Agents and Global Governance: Analyzing Foundational Legal, Policy, and Accountability Tools by Talita Dias (Partnership on AI)](https://partnershiponai.org/wp-content/uploads/2025/09/agents-policy-analysis.pdf?vgo_ee=uag8GfRQtHHxKE9ENGhTyS97XYF3rhM%3D%3AZ%2BYB5WRdklLrdWegdiC1Lb9RPOHzTLfW)
+* [Engineering responsible AI: How Singapore builds trust in emerging technologies by GovTech Singapore](https://www.tech.gov.sg/technews/engineering-responsible-ai/)
+
+## About the Authors
 
 The ARC Framework is developed by the Responsible AI team in GovTech Singapore's AI Practice. We develop deep technical capabilities in Responsible AI to improve how the Singapore government develops, evaluates, deploys, and monitors AI systems in a safe, trustworthy, and ethical manner.
 
-In developing this framework, we work closely with other teams in the Singapore government, such as the Ministry for Digital Development and Information and the Cybersecurity Agency of Singapore. We are grateful for their feedback and contributions, which have helped to make this framework more effective, robust, and thorough.
+In developing this framework, we work closely with other teams in the Singapore government, such as the Ministry for Digital Development and Information, the Cybersecurity Agency of Singapore, and the Infocomm Media Development Authority. We are grateful for their feedback and contributions, which have helped to make this framework more effective, robust, and thorough.
 
 To reach out to us, please fill out the Google form <a href="https://forms.gle/KoXecxDuPHf8izP2A" target="_blank">here</a>.
 
-## Citing our work
+## Citation
 
-To cite our work, please use the following BibText citation:
+To cite this work, please use the following BibTeX citation:
 
 ```
 @article{agentic_risk_capability_framework,
     title   = {Agentic Risk & Capability Framework},
-    author  = {Khoo, Shaun and Foo, Jessica and Lee, Roy Ka-Wei},
+    author  = {GovTech Singapore},
     year    = {2025},
-    month   = {July},
+    month   = {December},
     url     = {https://govtech-responsibleai.github.io/agentic-risk-capability-framework/}
 }
 ```
 
 Alternatively, you may use the APA-formatted citation below:
 
-> Khoo, S. & Foo, J. & Lee, R. K.-W. (2025) Agentic Risk & Capability Framework. URL <https://govtech-responsibleai.github.io/agentic-risk-capability-framework/>
+> GovTech Singapore (2025) Agentic Risk & Capability Framework. URL <https://govtech-responsibleai.github.io/agentic-risk-capability-framework/>
 
-<br/>
-*Note: This page was last updated on 7 Aug 2025.*
+*This page was last updated on 23 Dec 2025*
