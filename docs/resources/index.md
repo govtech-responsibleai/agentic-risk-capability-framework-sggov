@@ -17,12 +17,11 @@ ARCvisor is an AI-powered assistant that makes risk assessment for agentic AI sy
 
 ### 🚀 Key Features
 
-- **⚡ Lightning Fast**: Reduce risk assessment time by 50%+ without sacrificing quality
-- **🎯 Smart Risk Detection**: Automatically identifies relevant risks based on your system description
-- **🛡️ Intelligent Control Selection**: Recommends the most appropriate controls for your specific context
-- **📋 Documentation Made Easy**: Generates comprehensive risk mitigation documentation as you go
-- **🎚️ Flexible Assessments**: Supports both baseline and capability-level evaluations
-- **💬 Conversational Interface**: Natural language interaction - just describe your system and let ARCvisor guide you
+- **Automated risk identification**: Identifies relevant risks based on system descriptions
+- **Control recommendations**: Suggests appropriate controls for specific deployment contexts
+- **Documentation generation**: Produces structured risk mitigation documentation
+- **Conversational interface**: Natural language interaction for describing agentic systems
+- **Improved Efficiency**: Reduces time required for manual risk assessment workflows
 
 ### 📚 Learn More
 

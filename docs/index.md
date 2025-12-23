@@ -1,4 +1,4 @@
-# Agentic Risk & Capability Framework
+# :material-shield-star: Agentic Risk & Capability Framework
 
 <img src="assets/arc-banner.jpeg" alt="Robot" style="width: min(600px, 65%); display: block; margin: 0 auto;">
 
@@ -11,15 +11,15 @@
 
 !!! info "Major Update"
 
-    We have significantly updated the ARC Framework based on feedback received. The main changes include:
+    We have significantly updated the ARC Framework since our initial release in August 2025. The main changes include:
 
-    - **New theoretical foundation**: Added comprehensive [Introduction](arc_framework/introduction.md) with design rationale, literature review, real-world case studies (Replit, Antigravity incidents), and detailed justification for the capability-based approach
-    - **Restructured documentation**: Consolidated Components and Design elements into a unified [Elements](arc_framework/elements.md) reference page with clearer taxonomy and detailed definitions
+    - **Updated theoretical foundations**: Added a comprehensive [introduction](arc_framework/introduction.md) with design rationale, literature review, real-world case studies (Replit, Antigravity incidents), as well as detailed justifications for the capability-based approach
+    - **Restructured documentation**: Consolidated Components and Design elements together with the Capabilities element into a unified [Elements](arc_framework/elements.md) reference page with clearer taxonomy and detailed definitions
     - **Interactive Risk Register**: Introduced a [filterable, searchable risk register](arc_framework/risk-register.md) consolidating all 46 risks and 88 controls with risk-to-control mappings in a single interactive interface
-    - **Framework positioning**: Added [Comparison Table](arc_framework/comparison.md) benchmarking ARC against NIST AI RMF, ISO 42001, EU AI Act, OWASP, and other governance frameworks
-    - **Research publications**: Published two technical papers available in [Resources](resources/index.md) — the IASEAI 2026 conference paper and the ARCvisor preprint
-    - **ARCvisor tool**: Launched [ARCvisor](resources/index.md#arcvisor), an AI-powered risk assessment assistant achieving 50%+ time savings with live demo and open-source repository
+    - **Framework positioning**: Added a [comparison table](arc_framework/comparison.md) benchmarking ARC against NIST AI RMF, ISO 42001, EU AI Act, OWASP, and other governance frameworks
     - **Enhanced implementation guidance**: Updated implementation guides with more detailed methodologies for both organizational adoption and per-system assessment
+    - **ARCvisor tool**: Launched [ARCvisor](resources/index.md#arcvisor), an AI-powered risk assessment assistant achieving 50%+ time savings with live demo and open-source repository
+    - **Research publications**: Published two technical papers available in [Resources](resources/index.md) — the ARC Framework paper (accepted at IASEAI 2026) and the ARCvisor preprint
 
 ## Navigation
 
@@ -38,7 +38,7 @@ On this website, you'll find all the resources you need to get started with unde
 - **[System Assessment](implementation/for-ai-developers.md)** — Per-system risk assessment process for developers
 
 ### 🧰 Tools & Resources
-- **[ARCvisor Tool](resources/index.md#arcvisor)** — Open-source web application for automated risk assessment (50%+ time savings)
+- **[ARCvisor Tool](resources/index.md#arcvisor)** — Open-source web application for automated risk assessment
 - **[Resources](resources/index.md)** — Slide deck, paper, and code for implementing the ARC Framework for your organisation
 
 ## Referenced By

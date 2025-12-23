@@ -9,6 +9,10 @@ In this section, we explain how risks materialise from the [elements of an agent
 1. **Failure modes**, which outline *how* the system fails.
 2. **Hazards**, which describe the *resulting impact*.
 
+<figure style="text-align: center;">
+  <img src="../../assets/elements.jpeg" alt="Elements of Agentic Systems" style="width: min(900px, 80%); display: block; margin: 0 auto;">
+</figure>
+
 We then describe the **Risk Register**, which serves as the organisation's central repository of risks relating to agentic systems.
 
 ---
@@ -64,10 +68,10 @@ Security hazards involve threats to the **confidentiality, integrity, and availa
 
 | **Hazard** | **Description** |
 | ----- | ----- |
-| 🔴 Data (files, databases) | Failures can lead to data breaches, integrity attacks, PII exposure, or ransomware, where sensitive information is exfiltrated, corrupted, or held hostage.<br>*Example: An agent with database access is prompt-injected to execute SQL queries that export customer credit card information to an external server.* |
-| 🟠 Application | System failures, service disruptions, unintended use of applications, backdoor access, or resource exploitation that compromise functionality or security.<br>*Example: A code generation agent inserts a backdoor into an internal application, creating unauthorised remote access for attackers.* |
-| 🟠 Infrastructure & network | Denial of service (DoS/DDoS), man-in-the-middle (MitM) attacks, network eavesdropping, or lateral access compromising the underlying infrastructure.<br>*Example: An agent repeatedly spawns resource-intensive tasks without rate limiting, overwhelming cloud infrastructure and causing service outages for legitimate users.* |
-| 🔴 Identity & access management | Unauthorised control, impersonation of credible roles, or privilege escalation allowing attackers to gain elevated access or control over systems.<br>*Example: An agent exploits poorly configured authentication to escalate from read-only permissions to admin privileges, then creates unauthorised user accounts.* |
+| Data (files, databases) | Failures can lead to data breaches, integrity attacks, PII exposure, or ransomware, where sensitive information is exfiltrated, corrupted, or held hostage.<br>*Example: An agent with database access is prompt-injected to execute SQL queries that export customer credit card information to an external server.* |
+| Application | System failures, service disruptions, unintended use of applications, backdoor access, or resource exploitation that compromise functionality or security.<br>*Example: A code generation agent inserts a backdoor into an internal application, creating unauthorised remote access for attackers.* |
+| Infrastructure & network | Denial of service (DoS/DDoS), man-in-the-middle (MitM) attacks, network eavesdropping, or lateral access compromising the underlying infrastructure.<br>*Example: An agent repeatedly spawns resource-intensive tasks without rate limiting, overwhelming cloud infrastructure and causing service outages for legitimate users.* |
+| Identity & access management | Unauthorised control, impersonation of credible roles, or privilege escalation allowing attackers to gain elevated access or control over systems.<br>*Example: An agent exploits poorly configured authentication to escalate from read-only permissions to admin privileges, then creates unauthorised user accounts.* |
 
 ### 🚨 Safety Hazards
 
@@ -75,17 +79,17 @@ Safety hazards involve risks to **human well-being, social harm, and the respons
 
 | **Hazard** | **Description** |
 | ----- | ----- |
-| 🔴 Illegal and CBRNE activities | Agents facilitating or engaging in CBRNE-related activities or other criminal offences such as fraud, scams, or smuggling.<br>*Example: An agent provides step-by-step guidance on synthesising controlled substances after jailbreaking bypasses its safety restrictions.* |
-| 🟠 Discriminatory or hateful content | Unsafe or discriminatory content, including hate speech, slurs, and biased decisions.<br>*Example: A hiring agent consistently ranks candidates with ethnic minority names lower than identical candidates with majority-culture names due to biased training data.* |
-| 🟡 Inappropriate content | Generation of vulgar, violent, sexual, or self-harm-promoting content that causes reputational harm and erodes trust.<br>*Example: A customer service chatbot generates graphic violent imagery in response to a seemingly innocuous query due to inadequate content filtering.* |
-| 🔴 Compromise user safety | Direct endangerment of users, such as through misinformation or harmful autonomous actions.<br>*Example: A medical advice agent confidently recommends discontinuing essential medication based on hallucinated drug interactions, potentially endangering patient health.* |
-| 🟡 Misrepresentation | Dissemination of wrong or inaccurate information, or cascading failures due to uncorrected errors, leading to loss of trust.<br>*Example: A social media management agent generates and posts false news stories about political candidates, presenting fabricated quotes and events as factual information.* |
+| Illegal and CBRNE activities | Agents facilitating or engaging in CBRNE-related activities or other criminal offences such as fraud, scams, or smuggling.<br>*Example: An agent provides step-by-step guidance on synthesising controlled substances after jailbreaking bypasses its safety restrictions.* |
+| Discriminatory or hateful content | Unsafe or discriminatory content, including hate speech, slurs, and biased decisions.<br>*Example: A hiring agent consistently ranks candidates with ethnic minority names lower than identical candidates with majority-culture names due to biased training data.* |
+| Inappropriate content | Generation of vulgar, violent, sexual, or self-harm-promoting content that causes reputational harm and erodes trust.<br>*Example: A customer service chatbot generates graphic violent imagery in response to a seemingly innocuous query due to inadequate content filtering.* |
+| Compromise user safety | Direct endangerment of users, such as through misinformation or harmful autonomous actions.<br>*Example: A medical advice agent confidently recommends discontinuing essential medication based on hallucinated drug interactions, potentially endangering patient health.* |
+| Misrepresentation | Dissemination of wrong or inaccurate information, or cascading failures due to uncorrected errors, leading to loss of trust.<br>*Example: A social media management agent generates and posts false news stories about political candidates, presenting fabricated quotes and events as factual information.* |
 
 ---
 
 ## The Risk Register
 
-The **Risk Register** consolidates all risks identified through the ARC framework and **serves as the organization's reference list of safety and security risks for agentic systems**. 
+The **Risk Register** consolidates all risks identified through the ARC Framework and **serves as the organization's reference list of safety and security risks for agentic systems**. 
 
 Each risk in the register should:
 
