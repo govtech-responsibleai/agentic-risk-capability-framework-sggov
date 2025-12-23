@@ -321,3 +321,77 @@ After implementing controls, key residual risks remain:
 | RISK-028 | **Framework/Library Hallucination**: Assistant may hallucinate non-existent APIs, deprecated methods, or incorrect framework usage in less common libraries. | • Prioritize official documentation retrieval for library-specific questions<br>• Display confidence scores for code suggestions involving external dependencies<br>• Encourage developers to verify against official docs for critical integrations |
 
 These residual risks and mitigation strategies will be reviewed monthly during the first six months of deployment, then quarterly thereafter based on observed incident rates and developer feedback.
+
+---
+
+### Example 3: Agentic Call Assistant
+
+Agentic call assistants handle customer phone inquiries, answer questions about products and services, and perform simple transactional operations like appointment scheduling and booking modifications. These systems operate in real-time conversational contexts requiring natural language understanding, access to customer databases, and integration with booking systems. This example demonstrates framework application with higher risk appetite (threshold: Impact ≥4 AND Likelihood ≥3), appropriate for organisations prioritising rapid deployment and customer experience over defence-in-depth.
+
+#### Step 1: Identify Capabilities
+
+The agentic call assistant comprises four specialised agents:
+
+| Agent Type | Agent Name | Task |
+|------------|-----------|------|
+| Core Orchestration | Conversation Manager | Routes customer requests to appropriate specialised agents and maintains conversation context |
+| Information Retrieval | Knowledge Agent | Retrieves product information, policies, and FAQs from knowledge bases to answer customer queries |
+| Transaction Management | Booking Agent | Accesses appointment systems to check availability, create new bookings, and modify existing appointments |
+| Customer Data | Profile Agent | Retrieves customer information including contact details, booking history, and preferences |
+
+Based on the capability taxonomy, this system demonstrates:
+
+| Category | Capability | Explanation |
+|----------|-----------|-------------|
+| Cognitive | CAP-01: Reasoning and Problem-Solving | The Conversation Manager interprets customer intent from natural language queries and resolves ambiguous requests. |
+| Cognitive | CAP-02: Planning and Goal Management | The Conversation Manager plans multi-step interactions (e.g., "reschedule appointment" → check existing booking, find availability, confirm new time, update system). |
+| Cognitive | CAP-03: Tool Use and Delegation | The Conversation Manager selects appropriate agents based on query type (information vs. transaction vs. customer data lookup). |
+| Interaction | CAP-04: Multimodal Understanding and Generation | All agents process natural language queries and generate conversational responses; system handles phone audio transcription. |
+| Operational | CAP-09: Other Programmatic Interfaces | The Booking Agent integrates with appointment scheduling APIs; Profile Agent queries CRM systems. |
+| Operational | CAP-11: File and Data Management | The Knowledge Agent retrieves from product documentation and policy databases; Profile Agent accesses customer records. |
+
+#### Step 2: Evaluate Risks
+
+We identify risks from baseline components and capabilities, assessing likelihood and impact given the call assistant context. **Assuming organisational relevance threshold requires both impact ≥4 AND likelihood ≥3** (higher risk appetite), we identify the following priority risks:
+
+**Priority Risks (Impact ≥4, Likelihood ≥3):**
+
+| Risk ID | Element | Risk Statement | Assessment |
+|---------|---------|----------------|------------|
+| RISK-028 | CAP-04 (Multimodal Understanding) | Generation of non-factual or hallucinated content | **[Impact: 4, Likelihood: 4]** Hallucinating incorrect product information, pricing, or policies could mislead customers into incorrect decisions or create contractual disputes. |
+| RISK-032 | CAP-09 (Other Programmatic Interfaces) | Executing unauthorised business transactions | **[Impact: 5, Likelihood: 3]** Agent may create, modify, or cancel appointments without proper customer authorisation if it misinterprets conversational intent. |
+| RISK-042 | CAP-11 (File & Data Management) | Exposing PII from accessed files | **[Impact: 4, Likelihood: 3]** Agent may inadvertently disclose another customer's personal information (contact details, booking history) if customer identification fails or database queries retrieve wrong records. |
+
+**Risks Below Threshold (Impact <4 or Likelihood <3):**
+
+| Risk ID | Element | Risk Statement | Assessment | Why Not Priority |
+|---------|---------|----------------|------------|------------------|
+| RISK-002 | CMP-01 (LLM) | Insufficient alignment of LLM behaviour | **[Impact: 4, Likelihood: 2]** Modern LLMs with strong safety training are unlikely to catastrophically misalign in customer service contexts. | Likelihood too low |
+| RISK-007 | CMP-03 (Tools) | Lack of input sanitisation | **[Impact: 3, Likelihood: 3]** Tool injection could manipulate responses but unlikely to cause severe customer harm in this context. | Impact too low |
+| RISK-030 | CAP-04 (Multimodal Understanding) | Making inaccurate commitments in communications | **[Impact: 4, Likelihood: 2]** Agent may overcommit but conversational nature provides clarification opportunities before commitments finalise. | Likelihood too low |
+| RISK-041 | CAP-11 (File & Data Management) | Destructive modifications to files or databases | **[Impact: 3, Likelihood: 2]** Booking modifications are reversible; permanent data loss unlikely with modern systems. | Both too low |
+
+*(Additional risks documented but not shown here for brevity)*
+
+#### Step 3: Implement Controls
+
+For priority risks (Impact ≥4, Likelihood ≥3), we implement primarily Level 0 controls with selective Level 1 controls:
+
+| Risk ID | Selected Controls | Implementation |
+|---------|-------------------|----------------|
+| RISK-028 | **CTRL-0048** (Level 2): Implement methods to reduce hallucination rates<br>**CTRL-0049** (Level 0): Implement UI/UX cues for hallucination risk | • Implement RAG using verified product catalogue and policy database (updated daily)<br>• Add audio disclaimer at call start: "Information provided is for reference only; verify critical details with documentation"<br>• Include citations in call transcripts showing which knowledge base articles informed responses |
+| RISK-032 | **CTRL-0056** (Level 1): Require explicit user confirmation before initiating transactions<br>**CTRL-0058** (Level 1): Restrict agents to proposing transactions using separate controller | • Require verbal confirmation before any booking changes: "I'll change your appointment to [date/time]. Please confirm by saying 'yes' or 'confirm'"<br>• Record confirmation audio for audit trail<br>• Use dedicated transaction controller API that validates all booking operations independently<br>• Booking Agent cannot directly modify databases; only submits requests to controller |
+| RISK-042 | **CTRL-0047** (Level 0): Implement output guardrails to detect and redact PII<br>**CTRL-0082** (Level 2): Do not grant access to PII unless required | • Implement output guardrails that redact phone numbers, email addresses, and full addresses before agent responds<br>• Restrict Profile Agent access to current caller's records only (enforce via customer ID verification)<br>• Log all customer data access attempts with caller ID matching validation<br>• Block queries requesting data for different customer IDs |
+
+#### Step 4: Assess Residual Risks
+
+After implementing controls, key residual risks remain:
+
+| Risk ID | Residual Risk Description | Mitigation Strategy |
+|---------|---------------------------|---------------------|
+| RISK-028 | **Product Information Drift**: Knowledge base may contain outdated information if not regularly updated, leading to incorrect customer guidance despite RAG grounding. | • Establish weekly knowledge base update process with product team sign-off<br>• Monitor customer complaints about inaccurate information<br>• Maintain version tracking for knowledge base updates<br>• Accept: Some lag between product changes and knowledge base updates is acceptable |
+| RISK-032 | **Ambiguous Verbal Confirmation**: Customer may say "yes" to general conversation rather than specific booking confirmation, leading to unintended changes. | • Require agent to state exact action before confirmation request<br>• Monitor for unusual booking modification patterns (e.g., high cancellation rates)<br>• Accept: Clear verbal confirmation protocol is sufficient given low-stakes nature of appointment changes |
+| RISK-042 | **Customer Identification Errors**: Phone number-based identification may fail if caller uses different number, potentially exposing previous customer's data. | • Implement secondary verification (date of birth, booking reference) for sensitive requests<br>• Log all identification failures and review monthly<br>• Accept: Rare misidentification events acceptable given low sensitivity of booking data |
+| RISK-007 | **Tool Output Manipulation**: Booking system responses could theoretically contain injected instructions if compromised. | • Monitor booking API responses for anomalies<br>• Accept: Internal booking system is trusted; risk of compromise considered low<br>• No additional controls warranted given risk appetite |
+
+These residual risks and mitigation strategies will be reviewed quarterly, with accelerated review if customer complaint rates exceed 2% of total calls or booking error rates exceed 0.5%.

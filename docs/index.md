@@ -1,19 +1,25 @@
 # Agentic Risk & Capability Framework
 
-<img src="assets/robot-banner.png" alt="Robot" style="width: min(600px, 50%); display: block; margin: 0 auto;">
+<img src="assets/arc-banner.jpeg" alt="Robot" style="width: min(600px, 65%); display: block; margin: 0 auto;">
 
 **The ARC Framework is a technical governance framework for identifying, assessing, and mitigating safety and security risks in agentic AI systems.** The framework provides:
 
-- Hierarchical capability taxonomy for classifying agentic system capabilities
-- Structured risk mapping distinguishing component, design, and capability-specific risks
+- A hierarchical capability taxonomy for classifying agentic system capabilities
+- A structured risk mapping distinguishing component, design, and capability-specific risks
 - Technical control specifications with risk-to-control mappings
-- Implementation methodology for organisational adoption and per-system assessment
+- An implementation methodology for organisational adoption and per-system assessment
 
 !!! info "Major Update"
 
-    Note that we have significantly fleshed out and updated the ARC Framework based on the feedback we have received. The main changes are:
+    We have significantly updated the ARC Framework based on feedback received. The main changes include:
 
-    - to be filled in
+    - **New theoretical foundation**: Added comprehensive [Introduction](arc_framework/introduction.md) with design rationale, literature review, real-world case studies (Replit, Antigravity incidents), and detailed justification for the capability-based approach
+    - **Restructured documentation**: Consolidated Components and Design elements into a unified [Elements](arc_framework/elements.md) reference page with clearer taxonomy and detailed definitions
+    - **Interactive Risk Register**: Introduced a [filterable, searchable risk register](arc_framework/risk-register.md) consolidating all 46 risks and 88 controls with risk-to-control mappings in a single interactive interface
+    - **Framework positioning**: Added [Comparison Table](arc_framework/comparison.md) benchmarking ARC against NIST AI RMF, ISO 42001, EU AI Act, OWASP, and other governance frameworks
+    - **Research publications**: Published two technical papers available in [Resources](resources/index.md) — the IASEAI 2026 conference paper and the ARCvisor preprint
+    - **ARCvisor tool**: Launched [ARCvisor](resources/index.md#arcvisor), an AI-powered risk assessment assistant achieving 50%+ time savings with live demo and open-source repository
+    - **Enhanced implementation guidance**: Updated implementation guides with more detailed methodologies for both organizational adoption and per-system assessment
 
 ## Navigation
 
@@ -30,7 +36,6 @@ On this website, you'll find all the resources you need to get started with unde
 - **[Implementation Overview](implementation/index.md)** — Macro and micro implementation levels, timelines, and resources
 - **[Organisational Adoption](implementation/for-governance-teams.md)** — Multi-phase rollout methodology for governance teams
 - **[System Assessment](implementation/for-ai-developers.md)** — Per-system risk assessment process for developers
-- **[Case Studies](case_studies/index.md)** — Applied examples: e-commerce, legal services, software development
 
 ### 🧰 Tools & Resources
 - **[ARCvisor Tool](resources/index.md#arcvisor)** — Open-source web application for automated risk assessment (50%+ time savings)

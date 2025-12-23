@@ -13,7 +13,7 @@ We provide a range of resources to help organisations understand and get started
 
 ARCvisor is an AI-powered assistant that makes risk assessment for agentic AI systems actually enjoyable. By combining LLMs with structured knowledge representation, ARCvisor turns the tedious process of risk identification and control selection into an interactive conversation.
 
-[Try Live Demo :material-play-circle:](https://agentic-risk-assessment.app.tc1.airbase.sg){ .md-button .md-button--primary } [View on GitHub :fontawesome-brands-github:](https://github.com/govtech-responsibleai/arcvisor){ .md-button }
+[Try Live Demo :material-play-circle:](https://agentic-risk-assessment.app.tc1.airbase.sg){ .md-button .md-button--primary } [View on GitHub :fontawesome-brands-github:](https://github.com/govtech-responsibleai/agentic-risk-capability-framework/tree/feat/streamlit/app){ .md-button }
 
 ### 🚀 Key Features
 

@@ -86,8 +86,7 @@ nav:
     - For Governance Teams: implementation/for-governance-teams.md
     - For AI Developers: implementation/for-ai-developers.md
   - Resources:
-    - resources/index.md
-    - ARCvisor Tool: resources/arcvisor.md
+    - Resources: resources/index.md
 # Plugins
 plugins:
   - search

@@ -61,10 +61,9 @@ There is a lot to unpack in the ARC framework. To help you along, we provide res
 
 **How to get started:**
 
-
+1. Identify capabilities by mapping your system's autonomous functions
+2. Evaluate risks using the framework's risk register and relevance criteria
+3. Implement controls by contextualising recommended technical controls
+4. Assess residual risks and document remaining mitigation strategies
 
 → [Complete system assessment guide](for-ai-developers.md)
-
-### For Everyone
-**Learn by doing:** Review [case studies](../case_studies/index.md) showing realistic applications across different domains and system types.
-
