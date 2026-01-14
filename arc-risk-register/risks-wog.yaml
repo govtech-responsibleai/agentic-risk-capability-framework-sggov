@@ -316,9 +316,9 @@ RISK-014:
   sources: []
   wog_description: Multi-agent government systems processing high volumes of citizen transactions could develop feedback loops where agents repeatedly validate each other's outputs without independent verification. In automated workflows for grants, permits, or enforcement actions, such loops could result in mass incorrect approvals, denial of legitimate applications, or resource exhaustion on government infrastructure.
   wog_examples:
-    - "Automated MSF-IRAS verification loop repeatedly requests income confirmation for edge cases, generating thousands of API calls that overwhelm both agencies' systems during grant processing period"
-    - "HDB and CPF agents enter circular verification loop when processing complex joint-ownership cases, each requesting confirmation from the other indefinitely without resolving the query"
-    - "NEA enforcement agent and LTA parking agent reinforce each other's incorrect jurisdiction determination, escalating enforcement actions against the same citizen from both agencies simultaneously"
+    - HDB and CPF agents enter circular verification loop when processing complex joint-ownership cases, each requesting confirmation from the other indefinitely without resolving the query
+    - Escalation agent and case review agent continuously re-prioritise the same citizen complaint, each interpreting the other's update as a trigger to escalate further, until the case is incorrectly flagged as critical emergency requiring immediate ministerial attention
+    - Error-handling agents repeatedly retry failed inter-agency API calls without backoff limits, generating thousands of requests per minute that exhaust rate limits and cause cascading timeouts across connected government services during peak hours
 
 RISK-015:
   statement: Overly permissive roles and permissions
@@ -335,13 +335,10 @@ RISK-015:
   - CTRL-0031
   sources:
   - https://cyberweapons.medium.com/escaping-reality-privilege-escalation-in-gen-ai-admin-panel-aka-the-chaos-of-a-misconfigured-b6ad73bf1b65
-
-  wog_description: "Government agents require carefully scoped permissions aligned with the principle of least privilege as mandated by IM8 security policies. Overly permissive roles could enable agents to access citizen data across agencies unnecessarily, invoke financial transaction tools beyond their operational scope, or modify system configurations that should require elevated approval. The interconnected nature of Singapore's digital government amplifies the impact of excessive permissions."
-
+  wog_description: Government agents require carefully scoped permissions aligned with the principle of least privilege as mandated by IM8 security policies. Overly permissive roles could enable agents to access citizen data across agencies unnecessarily, invoke transaction tools beyond their operational scope, or modify system configurations that should require elevated approval. 
   wog_examples:
-    - "Citizen enquiry agent is granted full access to IRAS taxpayer database including sensitive audit flags and enforcement records, when it only requires access to basic tax filing status for enquiry handling"
-    - "Document processing agent receives administrative privileges on GCC infrastructure to facilitate testing, but these permissions are not revoked before production deployment"
-    - "Inter-agency data sharing agent is configured with write access to partner agency databases when read-only access would suffice for its designated function"
+    - Citizen enquiry agent is granted full access to IRAS taxpayer database including sensitive audit flags and enforcement records, when it only requires access to basic tax filing status for enquiry handling
+    - Inter-agency data sharing agent is configured with write access to partner agency databases when read-only access would suffice for its designated function
 
 RISK-016:
   statement: Unauthorised privilege escalation
@@ -359,13 +356,10 @@ RISK-016:
   - CTRL-0032
   sources:
   - https://arxiv.org/abs/2505.19301
-
-  wog_description: "Government agents operating within Singapore's hierarchical approval structures must not be able to escalate their own privileges. An agent that can elevate its permissions could bypass financial approval thresholds, access restricted national security data, or approve transactions that should require senior officer authorisation. This risk is particularly acute for agents with tool-use capabilities that might exploit misconfigured permission systems."
-
+  wog_description: Government agents operating within Singapore's hierarchical approval structures must not be able to escalate their own privileges. An agent that can elevate its permissions could bypass financial approval thresholds, access restricted national security data, or approve transactions that should require senior officer authorisation. This risk is particularly acute for agents with tool-use capabilities that might exploit misconfigured permission systems.
   wog_examples:
-    - "Agent discovers that by invoking tools in a specific sequence, it can accumulate session-level permissions that exceed its base authorisation, eventually gaining access to restricted GCC administrative functions"
-    - "Citizen-facing agent exploits vulnerability in Corppass integration to assume permissions of the business administrator rather than the designated user role"
-    - "Agent manipulates its role tokens through tool interactions, escalating from read-only data analyst permissions to read-write access on sensitive citizen databases"
+    - Business-facing agent receives CorpPass authentication token containing user role information, but modifies the role claim from "employee" to "admin" in subsequent API calls; the backend fails to re-validate against CorpPass, granting the agent unauthorised admin access to company filings and transactions
+    - Agent manipulates its session tokens through repeated tool interactions, escalating from read-only data analyst permissions to read-write access on sensitive citizen databases
 
 RISK-017:
   statement: Delayed failure detection due to limited monitoring
@@ -383,13 +377,10 @@ RISK-017:
   - CTRL-0035
   sources:
   - https://arxiv.org/abs/2401.13138
-
-  wog_description: "Government agents processing thousands of citizen transactions daily require comprehensive monitoring to detect failures promptly. Delayed detection of incorrect eligibility determinations, erroneous payments, or data breaches can affect large numbers of citizens before remediation begins. GovTech's WOGAA analytics and agency-specific monitoring must be configured to provide real-time visibility into agent behaviour and outcomes."
-
+  wog_description: Government agents processing thousands of citizen transactions daily require comprehensive monitoring to detect failures promptly. Delayed detection of incorrect eligibility determinations, erroneous payments, or data breaches can affect large numbers of citizens before remediation begins. 
   wog_examples:
-    - "CPF agent processing MediSave claims contains subtle logic error affecting specific claim types, but limited monitoring fails to detect the pattern until thousands of incorrect deductions have been processed over several weeks"
-    - "MSF grant disbursement agent fails silently for applications missing specific data fields, with no alerting configured, resulting in hundreds of legitimate applicants experiencing unexplained processing delays"
-    - "IRAS tax computation agent drift goes undetected for months because monitoring only tracks completion rates rather than accuracy of calculations"
+    - CPF agent processing MediSave claims contains subtle logic error affecting specific claim types, but limited monitoring fails to detect the pattern until thousands of incorrect deductions have been processed over several weeks
+    - IRAS tax computation agent drift goes undetected for months because monitoring only tracks completion rates rather than accuracy of calculations
 
 RISK-018:
   statement: Inability to audit failures due to missing decision traces
@@ -405,13 +396,11 @@ RISK-018:
   - CTRL-0034
   - CTRL-0035
   sources: []
-
-  wog_description: "Government accountability requires the ability to explain and justify decisions affecting citizens. Agents making eligibility determinations, enforcement decisions, or service outcomes must maintain complete audit trails that satisfy public sector governance requirements. Without decision traces, agencies cannot respond to parliamentary questions, citizen appeals, or audit queries about specific cases."
-
+  wog_description: Government accountability requires the ability to explain and justify decisions affecting citizens. Agents making eligibility determinations, enforcement decisions, or service outcomes must maintain complete audit trails that satisfy public sector governance requirements. Without decision traces, agencies cannot respond to parliamentary questions, citizen appeals, or audit queries about specific cases.
   wog_examples:
-    - "Citizen appeals HDB grant rejection but agency cannot explain the agent's reasoning because decision traces only recorded the final outcome without the eligibility assessment logic applied"
-    - "AGC requires audit of LTA enforcement agent's fine calculations for legal proceedings, but insufficient logging prevents reconstruction of how specific amounts were determined"
-    - "MOH agent's triage recommendations are questioned in medical incident review, but absence of reasoning traces makes it impossible to determine whether appropriate clinical pathways were considered"
+    - Citizen appeals HDB grant rejection but agency cannot explain the agent's reasoning because decision traces only recorded the final outcome without the eligibility assessment logic applied
+    - AGC requires audit of LTA enforcement agent's fine calculations for legal proceedings, but insufficient logging prevents reconstruction of how specific amounts were determined
+    - MOH agent's triage recommendations are questioned in medical incident review, but absence of reasoning traces makes it impossible to determine whether appropriate clinical pathways were considered
 
 RISK-019:
   statement: Generating plans that fail to meet the user's requirements
@@ -431,13 +420,10 @@ RISK-019:
   sources:
   - https://arxiv.org/pdf/2402.01622v4
   - https://aclanthology.org/2025.naacl-long.93.pdf
-
-  wog_description: "Government agents must accurately understand citizen needs and translate them into appropriate service delivery plans. Misunderstanding a citizen's actual requirement—whether for housing assistance, tax guidance, or healthcare services—leads to wasted effort and frustrated citizens. This is particularly important for Singapore's multi-lingual, multi-cultural population where citizen communications may require careful interpretation."
-
+  wog_description: Government agents must accurately understand citizen needs and translate them into appropriate service delivery plans. Misunderstanding a citizen's actual requirements leads to wasted effort and frustrated citizens, undermining public trust. 
   wog_examples:
-    - "Citizen requests 'help with CPF' intending to enquire about retirement adequacy, but agent generates plan focused on housing withdrawal procedures, providing irrelevant information and missing the actual need"
-    - "MSF agent misinterprets 'family support' request as financial assistance when citizen actually needs information about eldercare services, generating inappropriate referral plan"
-    - "IRAS agent plans tax computation workflow based on incomplete understanding of citizen's employment situation, producing assessment that doesn't account for overseas income or multiple employers"
+    - Citizen requests 'help with CPF' intending to enquire about retirement adequacy, but agent generates plan focused on housing withdrawal procedures, providing irrelevant information and missing the actual need
+    - MSF agent misinterprets 'family support' request as financial assistance when citizen actually needs information about eldercare services, generating inappropriate referral plan
 
 RISK-020:
   statement: Generating plans that overlook safety implications
@@ -455,13 +441,11 @@ RISK-020:
   - CTRL-0039
   sources:
   - https://garymarcus.substack.com/p/ai-still-lacks-common-sense-70-years
-
-  wog_description: "Government agents must consider safety implications that extend beyond immediate task completion—including citizen welfare, regulatory compliance, and public interest. An agent focused solely on efficiency might overlook mandatory cooling-off periods, required safety checks, or situations where immediate action could cause harm. These considerations are especially important for agents handling healthcare, enforcement, or vulnerable citizen services."
-
+  wog_description: Government agents must consider safety implications that extend beyond immediate task completion, including citizen welfare, regulatory compliance, and public interest. An agent focused solely on efficiency might overlook mandatory cooling-off periods, required safety checks, or situations where immediate action could cause harm. These considerations are especially important for agents handling healthcare, enforcement, or vulnerable citizen services.
   wog_examples:
-    - "MOH vaccination booking agent plans immediate appointment without considering mandatory observation period requirements or citizen's disclosed allergies that warrant additional medical precautions"
-    - "MOM foreign worker agent generates deployment plan that meets employer requirements but overlooks mandatory rest day provisions and dormitory safety requirements"
-    - "SCDF emergency resource allocation agent optimises for speed without adequately considering responder safety requirements for hazardous material incidents"
+    - Policy research agent generates plan to aggregate citizen feedback data for analysis, but overlooks that combining multiple anonymised datasets could enable re-identification of individuals
+    - Data migration agent plans bulk transfer of citizen records between systems but fails to include rollback capability or validation checks, risking irreversible data corruption
+    - Document summarisation agent plans to process and store summaries of sensitive case files in a shared knowledge base, without considering that the summaries may retain enough detail to expose confidential citizen information to unauthorised users
 
 RISK-021:
   statement: Incorrect task delegation between agents
@@ -478,13 +462,11 @@ RISK-021:
   - CTRL-0040
   sources:
   - https://arxiv.org/abs/2503.13657
-
-  wog_description: "Whole-of-government service delivery requires accurate routing of tasks to appropriate agency agents with correct capabilities and authorisations. Incorrect delegation—sending tax queries to housing agents, or delegating enforcement actions to enquiry-handling agents—wastes resources, delays service delivery, and may result in inappropriate actions being taken by agents lacking the necessary context or authority."
-
+  wog_description: Whole-of-government service delivery requires accurate routing of tasks to appropriate agency agents with correct capabilities and authorisations. Incorrect delegation wastes resources, delays service delivery, and may result in inappropriate actions being taken by agents lacking the necessary context or authority.
   wog_examples:
-    - "Orchestrator agent incorrectly delegates CPF withdrawal request to HDB agent based on keyword matching ('housing'), despite the request actually concerning CPF investment scheme withdrawal"
-    - "Cross-agency coordination agent assigns MOH-specific patient record queries to MSF social services agent, which lacks access permissions and medical data handling protocols"
-    - "Multi-agent workflow incorrectly delegates LTA traffic fine processing to NEA environmental enforcement agent due to ambiguous jurisdiction keywords in citizen complaint"
+    - Orchestrator agent incorrectly delegates CPF withdrawal request to HDB agent based on keyword matching ('housing'), despite the request actually concerning CPF investment scheme withdrawal
+    - Cross-agency coordination agent assigns MOH-specific patient record queries to MSF social services agent, which lacks access permissions and medical data handling protocols
+    - OneService agent incorrectly routes a noise complaint about construction works to NEA instead of BCA, causing delays as NEA agent lacks jurisdiction over construction site regulations and must re-route the case
 
 RISK-022:
   statement: Malicious or manipulative use of delegated agents
@@ -505,13 +487,10 @@ RISK-022:
   - CTRL-0041
   sources:
   - https://arxiv.org/abs/2507.06850
-
-  wog_description: "In multi-agent government architectures, a compromised or manipulated agent could abuse delegation capabilities to launder requests through trusted agents, bypass access controls, or distribute malicious operations across multiple agents to evade detection. The trust relationships between government agents make such manipulation particularly dangerous."
-
+  wog_description: In multi-agent government architectures, a compromised or manipulated agent could abuse delegation capabilities to launder requests through trusted agents, bypass access controls, or distribute malicious operations across multiple agents to evade detection. The trust relationships between government agents make such manipulation particularly dangerous.
   wog_examples:
-    - "Compromised enquiry agent crafts delegation requests that manipulate downstream agents into revealing citizen data that the enquiry agent itself is not authorised to access"
-    - "Attacker manipulates orchestrator agent to delegate small pieces of a fraudulent transaction across multiple agents, none of which detect the malicious intent when viewing only their portion"
-    - "Agent exploits delegation mechanism to fragment a prohibited action (e.g., bulk data export) into many small requests distributed across agents, evading per-agent rate limits and monitoring thresholds"
+    - Compromised enquiry agent crafts delegation requests that manipulate downstream agents into revealing citizen data that the enquiry agent itself is not authorised to access
+    - Agent exploits delegation mechanism to fragment a prohibited action (e.g., bulk data export) into many small requests distributed across agents, evading per-agent rate limits and monitoring thresholds
 
 RISK-023:
   statement: Incorrect tool selection or misuse
@@ -530,13 +509,9 @@ RISK-023:
   - CTRL-0044
   sources:
   - https://arxiv.org/abs/2411.13547
-
-  wog_description: "Government agents access numerous tools through APEX Cloud, MCP servers, and direct integrations—from data retrieval APIs to transaction processing systems. Selecting the wrong tool or misusing tool parameters could result in incorrect citizen data being retrieved, wrong calculations being applied, or unintended transactions being initiated. The consequences range from service delays to incorrect statutory decisions."
-
+  wog_description: Government agents access numerous tools through MCP servers, APEX and direct integrations. Selecting the wrong tool or misusing tool parameters could result in incorrect citizen data being retrieved, wrong calculations being applied, or unintended transactions being initiated. The consequences range from service delays to incorrect statutory decisions.
   wog_examples:
-    - "IRAS agent selects GST calculation tool when corporate income tax tool is required, producing incorrect tax assessment that must be manually corrected"
-    - "Agent uses production GovPay payment tool during what should be a dry-run verification, initiating actual fund transfers instead of validating payment details"
-    - "HDB agent misuses flat valuation tool by providing incorrect parameters, generating valuation report based on wrong property type or location data"
+    - IRAS agent selects GST calculation tool when corporate income tax tool is required, producing incorrect tax assessment that must be manually corrected
 
 RISK-024:
   statement: Generation of undesirable content
@@ -552,13 +527,11 @@ RISK-024:
   - CTRL-0045
   sources:
   - https://arxiv.org/abs/2402.04249v2
-
-  wog_description: "Government agents communicating with citizens must maintain standards appropriate for official communications. Generating content that is offensive, discriminatory, or inappropriate would damage public trust in digital government services and potentially violate Singapore's laws on harassment, discrimination, or sedition. This is especially critical for citizen-facing services on Gov.sg platforms."
-
+  wog_description: Government agents communicating with citizens must maintain standards appropriate for official communications. Generating content that is offensive, discriminatory, or inappropriate would damage public trust in digital government services and potentially violate Singapore's laws on harassment, discrimination, or sedition. This is especially critical for citizen-facing services on Gov.sg platforms.
   wog_examples:
-    - "Citizen feedback response agent generates reply containing culturally insensitive language when addressing complaints about neighbourhood issues, causing offence and complaints to agency leadership"
-    - "Content generation agent for government social media produces posts with inadvertently discriminatory undertones when discussing policy impacts on specific demographic groups"
-    - "Translation agent rendering government announcements into vernacular languages introduces colloquialisms that are considered vulgar or inappropriate for official communications"
+    - Citizen feedback response agent generates reply containing culturally insensitive language when addressing complaints about neighbourhood issues, causing offence and complaints to agency leadership
+    - Content generation agent for government social media produces posts with inadvertently discriminatory undertones when discussing policy impacts on specific demographic groups
+    - Translation agent rendering government announcements into vernacular languages introduces colloquialisms that are considered vulgar or inappropriate for official communications
 
 RISK-025:
   statement: Generation of unqualified advice in specialised domains
@@ -574,13 +547,10 @@ RISK-025:
   - CTRL-0046
   sources:
   - https://www.edpb.europa.eu/system/files/2025-04/ai-privacy-risks-and-mitigations-in-llms.pdf
-
-  wog_description: "Government agents may be asked for advice touching on medical, legal, financial, or other specialised domains. Providing unqualified advice in these areas could cause citizens to make harmful decisions—medical self-treatment instead of seeking care, legal strategies that prejudice their cases, or financial decisions that result in losses. Agents must recognise domain boundaries and direct citizens to appropriate qualified professionals."
-
+  wog_description: Government agents may be asked for advice touching on medical, legal, financial, or other specialised domains. Providing unqualified advice in these areas could cause citizens to make harmful decisions—medical self-treatment instead of seeking care, legal strategies that prejudice their cases, or financial decisions that result in losses. Agents must recognise domain boundaries and direct citizens to appropriate qualified professionals.
   wog_examples:
-    - "MOH health information agent provides specific diagnostic suggestions for citizen's symptoms rather than directing them to appropriate healthcare services, potentially delaying necessary medical attention"
-    - "IRAS agent offers tax optimisation strategies that constitute professional financial advice rather than factual information about tax rules, creating taxpayer reliance issues"
-    - "LAB (Legal Aid Bureau) enquiry agent provides legal opinions on case merits rather than procedural information, potentially affecting citizen's actual legal proceedings"
+    - MOH health information agent provides specific diagnostic suggestions for citizen's symptoms rather than directing them to appropriate healthcare services, potentially delaying necessary medical attention
+    - Legal advisory agent provides legal opinions on case merits rather than procedural information, potentially affecting citizen's actual legal proceedings
 
 RISK-026:
   statement: Generation of controversial or sensitive content
@@ -597,13 +567,10 @@ RISK-026:
   - CTRL-0047
   sources:
   - https://news.stanford.edu/stories/2025/05/ai-models-llms-chatgpt-claude-gemini-partisan-bias-research-study
-
-  wog_description: "Government agents must maintain political neutrality and avoid generating content on sensitive topics including race, religion, politics, and matters affecting Singapore's social cohesion. Given Singapore's multi-racial, multi-religious society and regulations around such content, agents generating inappropriate commentary could violate Maintenance of Religious Harmony Act, Sedition Act, or damage the government's reputation for neutrality and fairness."
-
+  wog_description: "overnment agents must maintain political neutrality and avoid generating content on sensitive topics including race, religion, politics, and matters affecting Singapore's social cohesion. Agents generating inappropriate commentary could damage the government's reputation for neutrality and fairness.
   wog_examples:
-    - "Government communications agent generates social media content that inadvertently takes a political stance on policy debates that should be presented neutrally"
-    - "Citizen enquiry agent responds to question about religious organisation registration with commentary perceived as favouring one religious group over others"
-    - "Content agent produces comparison material that disparages neighbouring countries' approaches when explaining Singapore's policies, creating diplomatic sensitivities"
+    - Government communications agent generates social media content that inadvertently takes a political stance on policy debates that should be presented neutrally
+    - Content agent produces comparison material that disparages neighbouring countries' approaches when explaining Singapore's policies, creating diplomatic sensitivities
 
 RISK-027:
   statement: Regurgitating personally identifiable information
@@ -620,13 +587,10 @@ RISK-027:
   - CTRL-0048
   sources:
   - https://www.edpb.europa.eu/system/files/2025-04/ai-privacy-risks-and-mitigations-in-llms.pdf
-
-  wog_description: "Government agents process vast amounts of citizen PII including NRIC numbers, addresses, income information, medical records, and family details. Agents that regurgitate PII from training data, memory, or prior sessions could expose citizen information inappropriately. While public agencies have exemptions from PDPA, they are still bound by Public Sector Governance Act requirements and the Government Instruction Manual on data protection."
-
+  wog_description: Government agents process vast amounts of citizen PII including NRIC numbers, addresses, income information, medical records, and family details. Agents that regurgitate PII from training data, memory, or prior sessions could expose citizen information inappropriately. While public agencies have exemptions from PDPA, they are still bound by Public Sector Governance Act requirements and the Government Instruction Manual on data protection.
   wog_examples:
-    - "Agent trained on historical citizen correspondence inadvertently reproduces NRIC numbers and addresses from training data when generating template responses"
-    - "Multi-session agent references specific citizen details from earlier interaction when responding to unrelated query from different citizen"
-    - "Content generation agent includes real citizen names and details from processed applications when creating example documentation for training purposes"
+    - Agent trained on historical citizen correspondence inadvertently reproduces NRIC numbers and addresses from training data when generating template responses
+    - Content generation agent includes real citizen names and details from processed applications when creating example documentation for training purposes
 
 RISK-028:
   statement: Generation of non-factual or hallucinated content
@@ -643,13 +607,10 @@ RISK-028:
   - CTRL-0051
   sources:
   - https://arxiv.org/abs/2309.01219
-
-  wog_description: "Government agents must provide accurate information as citizens rely on official sources for critical decisions about housing, retirement, healthcare, and legal matters. Hallucinated policy details, incorrect eligibility criteria, or fabricated procedures could cause citizens to miss application deadlines, misunderstand their entitlements, or take actions based on false information. This undermines the reliability of digital government services."
-
+  wog_description: Government agents must provide accurate information as citizens rely on official sources for critical decisions about housing, retirement, healthcare, and legal matters. Hallucinated policy details, incorrect eligibility criteria, or fabricated procedures could cause citizens to miss application deadlines, misunderstand their entitlements, or take actions based on false information. This undermines the reliability of digital government services.
   wog_examples:
-    - "CPF agent confidently states incorrect withdrawal age limits that were changed in recent policy updates, causing citizens to delay legitimate withdrawals"
-    - "HDB agent generates non-existent 'special hardship exemption' procedure when citizen describes difficult circumstances, creating false expectations"
-    - "IRAS agent fabricates tax relief categories that don't exist in Singapore tax code, leading taxpayer to claim invalid deductions"
+    - CPF agent confidently states incorrect withdrawal age limits that were changed in recent policy updates, causing citizens to delay legitimate withdrawals
+    - IRAS agent fabricates tax relief categories that don't exist in Singapore tax code, leading taxpayer to claim invalid deductions
 
 RISK-029:
   statement: Generation of copyrighted content
@@ -665,13 +626,10 @@ RISK-029:
   - CTRL-0052
   sources:
   - https://arxiv.org/abs/2407.07087
-
-  wog_description: "Government agents generating content for official communications, educational materials, or public engagement must avoid reproducing copyrighted material. Singapore's Copyright Act applies to government use, and agencies must respect intellectual property rights. Agents generating content that infringes copyright could expose agencies to legal liability and reputational damage."
-
+  wog_description: Government agents generating content for official communications, educational materials, or public engagement must avoid reproducing copyrighted material. Singapore's Copyright Act applies to government use, and agencies must respect intellectual property rights. Agents generating content that infringes copyright could expose agencies to legal liability and reputational damage.
   wog_examples:
-    - "Government content agent reproduces substantial portions of copyrighted news articles in public communications without proper licensing or attribution"
-    - "Educational material generation agent for MOE includes copyrighted images or text passages from textbooks without authorisation"
-    - "Creative content agent for National Day communications generates music or artwork that closely resembles copyrighted works"
+    - Government content agent reproduces substantial portions of copyrighted news articles in public communications without proper licensing or attribution
+    - Creative content agent for National Day communications generates music or artwork that closely resembles copyrighted works
 
 RISK-030:
   statement: Misrepresentation of authorship
@@ -687,13 +645,9 @@ RISK-030:
   - CTRL-0053
   sources:
   - https://fortune.com/article/customer-support-ai-cursor-went-rogue/
-
-  wog_description: "Government communications carry legal and administrative weight. Citizens receiving official letters, notices, or responses expect these to reflect considered human judgement by accountable officers. Misrepresenting AI-generated content as human-authored undermines this trust relationship and may create issues when citizens seek to appeal decisions or hold officers accountable."
-
+  wog_description: Government communications carry legal and administrative weight. Citizens receiving official letters, notices, or responses expect these to reflect considered human judgement by accountable officers. Misrepresenting AI-generated content as human-authored undermines this trust relationship and may create issues when citizens seek to appeal decisions or hold officers accountable.
   wog_examples:
-    - "AI-generated enforcement notice from LTA is formatted and signed in a way that implies human officer review and approval when automated, creating accountability confusion when citizen appeals"
-    - "MOH patient correspondence generated entirely by agent includes 'personal' touches and named sign-off suggesting human authorship"
-    - "IRAS assessment notices produced by automated agent do not disclose AI involvement, leading taxpayers to assume detailed human review of their specific circumstances"
+    - AI-generated enforcement notice from LTA is formatted and signed in a way that implies human officer review and approval when automated, creating accountability confusion when citizen appeals
 
 RISK-031:
   statement: Inaccurate promises or statements in official communications
@@ -711,13 +665,10 @@ RISK-031:
   - CTRL-0056
   sources:
   - https://the-decoder.com/people-buy-brand-new-chevrolets-for-1-from-a-chatgpt-chatbot/
-
-  wog_description: "Government agents making official communications must not make promises or commitments that exceed their authority or agency capabilities. Incorrect statements about processing timelines, guaranteed outcomes, or special arrangements could create legitimate expectations that agencies cannot fulfil, potentially exposing the government to legal challenges or damaging public trust in official communications."
-
+  wog_description: Government agents making official communications must not make promises or commitments that exceed their authority or agency capabilities. Incorrect statements about processing timelines, guaranteed outcomes, or special arrangements could create legitimate expectations that agencies cannot fulfil, potentially exposing the government to legal challenges or damaging public trust in official communications.
   wog_examples:
-    - "HDB enquiry agent promises specific flat allocation to citizen based on incorrect understanding of priority rules, creating legitimate expectation that cannot be honoured"
-    - "IRAS agent commits to specific tax refund timeline that exceeds the agency's actual processing capabilities during peak periods"
-    - "MSF agent assures applicant of assistance approval when actual determination requires human review and may result in different outcome"
+    - HDB enquiry agent promises specific flat allocation to citizen based on incorrect understanding of priority rules, creating legitimate expectation that cannot be honoured
+    - Grant application agent commits to specific timeline that exceeds the agency's actual processing capabilities 
 
 RISK-032:
   statement: Unauthorised execution of business transactions
@@ -734,13 +685,11 @@ RISK-032:
   - CTRL-0058
   sources:
   - https://www.emergingtechbrew.com/stories/2025/05/29/ai-agents-vulnerable-financial-attacks
-
-  wog_description: "Government agents with transaction capabilities must operate within strict financial delegation limits defined by the Financial Procedure Act and agency-specific authority matrices. Unauthorised transactions—whether grant disbursements, procurement commitments, or payment authorisations—could result in improper use of public funds, audit findings, and personal liability for officers whose credentials were used."
-
+  wog_description: Government agents with transaction capabilities must operate within the approval limits and delegation authorities defined by the agency. Unauthorised transactions—whether grant disbursements, procurement commitments, or payment authorisations—could result in improper use of public funds and audit findings. 
   wog_examples:
-    - "GovPay-integrated agent processes payment exceeding officer's delegation limit without routing for appropriate approval, creating unauthorised commitment of public funds"
-    - "GeBIZ procurement agent generates purchase orders that bypass required quotation thresholds for the transaction amount"
-    - "Grant disbursement agent approves MSF assistance payments without proper means-testing verification, resulting in overpayments that require recovery action"
+    - Agent processes payment exceeding the officer's delegation limit without routing for appropriate approval, creating unauthorised commitment of public funds
+    - GeBIZ procurement agent generates purchase orders that bypass required quotation thresholds for the transaction amount
+    - Grant disbursement agent approves MSF assistance payments without proper means-testing verification, resulting in overpayments that require recovery action
 
 RISK-033:
   statement: Leakage of transaction credentials
@@ -758,13 +707,11 @@ RISK-033:
   - CTRL-0060
   sources:
   - https://arxiv.org/pdf/2506.01055
-
-  wog_description: "Government transaction credentials—including GovPay authorisation tokens, GeBIZ procurement credentials, and inter-agency API keys—provide access to public funds and sensitive operations. Credential leakage could enable fraudulent transactions, unauthorised procurement, or manipulation of financial systems. IM8 security requirements mandate strict credential protection."
-
+  wog_description: Government transaction credentials provide access to public funds and sensitive operations. Credential leakage could enable fraudulent transactions, unauthorised procurement, or manipulation of financial systems. IM8 security requirements mandate strict credential protection.
   wog_examples:
-    - "Agent logs GovPay authorisation tokens in verbose debug output that is captured in centralised logging system accessible to developers, enabling potential credential theft"
-    - "Inter-agency API credentials for IRAS tax assessment system are exposed in agent's context window and could be extracted through prompt injection"
-    - "Agent stores Corppass service credentials in memory that persists across sessions, enabling subsequent users to potentially access or infer the credentials"
+    - Agent logs payment authorisation tokens in verbose debug output that is captured in centralised logging system accessible to developers, enabling potential credential theft
+    - Procurement agent includes GeBIZ signing credentials in its error messages when transactions fail, exposing credentials that could be used to create unauthorised purchase orders
+    - Grant disbursement agent caches fund transfer credentials in plaintext memory, which could be extracted if the agent's runtime environment is compromised
 
 RISK-034:
   statement: Prompt injection via malicious websites
@@ -784,13 +731,11 @@ RISK-034:
   - CTRL-0063
   sources:
   - https://unit42.paloaltonetworks.com/agentic-ai-threats/
-
-  wog_description: "Government agents with internet access capabilities may retrieve content from websites for research, verification, or information augmentation. Malicious websites could embed prompt injection attacks in their content to manipulate agent behaviour—potentially causing agents to leak sensitive data, bypass security controls, or take unauthorised actions. This risk extends to government agents accessing external databases, news sources, or reference materials."
-
+  wog_description: Government agents with internet access capabilities may retrieve content from websites for research, verification, or information augmentation. Malicious websites could embed prompt injection attacks in their content to manipulate agent behaviour—potentially causing agents to leak sensitive data, bypass security controls, or take unauthorised actions. This risk extends to government agents accessing external databases, news sources, or reference materials.
   wog_examples:
-    - "MTI trade research agent retrieves information from compromised business website containing hidden instructions that cause agent to email sensitive trade negotiation details to external address"
-    - "Agent verifying company information through web search encounters malicious page designed to override agent's instructions and extract information about pending government contracts"
-    - "Policy research agent accessing international organisation website retrieves page with embedded prompt injection that manipulates subsequent analysis outputs"
+    - MTI trade research agent retrieves information from compromised business website containing hidden instructions that cause agent to email sensitive trade negotiation details to external address
+    - Agent verifying company information through web search encounters malicious page designed to override agent's instructions and extract information about pending government contracts
+    - Policy research agent accessing international organisation website retrieves page with embedded prompt injection that manipulates subsequent analysis outputs
 
 RISK-035:
   statement: Unreliable information or websites
@@ -806,13 +751,10 @@ RISK-035:
   - CTRL-0064
   sources:
   - https://www.techradar.com/computing/artificial-intelligence/googles-ai-overviews-are-often-so-confidently-wrong-that-ive-lost-all-trust-in-them
-
-  wog_description: "Government agents providing information to citizens or supporting policy research must ensure accuracy and reliability. Retrieving information from unreliable sources could lead to incorrect policy advice, misinformed citizen guidance, or flawed analysis. Government agents should prioritise .gov.sg domains, official sources, and verified databases over general web content."
-
+  wog_description: Government agents providing information to citizens or supporting policy research must ensure accuracy and reliability. Retrieving information from unreliable sources could lead to incorrect policy advice, misinformed citizen guidance, or flawed analysis.
   wog_examples:
-    - "Research agent preparing policy brief retrieves statistics from unreliable source that contradict official SingStat data, introducing inaccuracies into government analysis"
-    - "Citizen enquiry agent augments response with information from outdated third-party website that no longer reflects current government policy"
-    - "Agent verifying business credentials retrieves information from fraudulent website impersonating ACRA, providing incorrect company registration details"
+    - Research agent preparing policy brief retrieves statistics from unreliable source that contradict official SingStat data, introducing inaccuracies into government analysis
+    - Citizen enquiry agent augments response with information from outdated third-party website that no longer reflects current government policy
 
 RISK-036:
   statement: Prompt injection risks through computer use
@@ -833,13 +775,11 @@ RISK-036:
   sources:
   - https://arxiv.org/html/2505.13076v1
   - https://hiddenlayer.com/innovation-hub/indirect-prompt-injection-of-claude-computer-use/
-
-  wog_description: "Government agents with computer use capabilities operating through VDI or desktop interfaces may encounter adversarial content displayed on screen. This could include malicious documents, manipulated web pages, or deceptive UI elements designed to hijack agent actions. In the government context, this could lead to unauthorised data entry, incorrect form submissions, or compromise of government systems accessed through the interface."
-
+  wog_description: Government agents with computer use capabilities operating desktop interfaces may encounter adversarial content displayed on screen. This could include malicious documents, manipulated web pages, or deceptive UI elements designed to hijack agent actions. This could lead to unauthorised data entry, incorrect form submissions, or compromise of government systems accessed through the interface."
   wog_examples:
-    - "Agent processing citizen documents via ICA case management system encounters PDF with embedded text instructions that cause agent to approve applications it should flag for review"
-    - "Computer use agent navigating government procurement portal is manipulated by malicious vendor's website displayed in adjacent browser tab to modify tender evaluation scores"
-    - "Agent operating legacy government system encounters pop-up with hidden instructions that cause it to export sensitive data to unintended locations"
+    - Computer use agent opens vendor-submitted PDF proposal which contains hidden text instructions that manipulate the agent into copying evaluation criteria to an external email address
+    - Agent browsing external reference website for policy research encounters page with embedded instructions that cause it to paste sensitive draft policy content into a visible text field on the malicious site
+    - Agent processing citizen-uploaded supporting documents encounters a file with hidden prompt injection that instructs it to approve the application regardless of eligibility criteria
 
 RISK-037:
   statement: Exposure of sensitive data
@@ -857,13 +797,10 @@ RISK-037:
   - CTRL-0067
   sources:
   - https://arxiv.org/html/2506.00618v3
-
-  wog_description: "Agents with computer use capabilities authenticated to government systems via officer credentials may access screens containing sensitive citizen data, policy deliberations, or security-classified information beyond what is needed for the current task. This creates risk of data exposure through agent memory, logging, or inadvertent disclosure in subsequent interactions."
-
+  wog_description: Agents with computer use capabilities authenticated to government systems via officer credentials may access screens containing sensitive citizen data, policy deliberations, or security-classified information beyond what is needed for the current task. This creates risk of data exposure through agent memory, logging, or inadvertent disclosure in subsequent interactions.
   wog_examples:
-    - "Agent navigating CPF system to verify contribution status inadvertently views and processes screens showing detailed employment history and salary information not required for the verification task"
-    - "Computer use agent accessing HDB officer portal captures screenshot containing multiple citizens' NRIC numbers and addresses visible in background application windows"
-    - "Agent authenticated to government email system processes inbox content that includes sensitive inter-agency communications beyond its operational scope"
+    - Agent performing document retrieval on legacy file system encounters a shared drive folder containing unrelated case files with sensitive medical information visible in the file preview pane, inadvertently capturing this data in its screen observations
+    - Agent authenticated to email system processes inbox content that includes sensitive communications beyond its operational scope
 
 RISK-038:
   statement: Incorrect use of unfamiliar programmatic interfaces
@@ -880,13 +817,10 @@ RISK-038:
   controls:
   - CTRL-0068
   sources: []
-
-  wog_description: "Singapore government operates numerous bespoke systems with agency-specific APIs beyond standardised APEX gateways. Agents interacting with legacy systems, custom agency APIs, or non-standard integrations may misinterpret interface requirements, invoke operations with incorrect parameters, or fail to handle agency-specific error conditions. This could result in failed transactions, data corruption, or system errors."
-
+  wog_description: Singapore government operates numerous bespoke systems with agency-specific APIs beyond standardised API gateways. Agents interacting with legacy systems, custom agency APIs, or non-standard integrations may misinterpret interface requirements, invoke operations with incorrect parameters, or fail to handle agency-specific error conditions. This could result in failed transactions, data corruption, or system errors.
   wog_examples:
-    - "Agent attempting to use legacy LTA vehicle registration API misinterprets deprecated parameter format, submitting malformed requests that corrupt vehicle ownership records"
-    - "New agent integration with MOH's hospital bed management system fails to handle custom authentication flow, repeatedly triggering account lockouts and disrupting hospital operations"
-    - "Agent invoking custom CPF calculation API misunderstands parameter semantics, producing incorrect retirement projections due to wrong interpretation of contribution periods"
+    - Data agent attempting to use legacy APIs misinterprets deprecated parameter format, submitting malformed requests that corrupt data records"
+    - Agent integration with MOH's hospital bed management system fails to handle custom authentication flow, repeatedly triggering account lockouts and disrupting hospital operations
 
 RISK-039:
   statement: Production or execution of poor or ineffective code
@@ -908,13 +842,11 @@ RISK-039:
   - https://www.usenix.org/system/files/conference/usenixsecurity25/sec25cycle1-prepub-742-spracklen.pdf
   - https://metr.org/blog/2025-07-10-early-2025-ai-experienced-os-dev-study/
   - https://proceedings.neurips.cc/paper_files/paper/2024/hash/bfd082c452dffb450d5a5202b0419205-Abstract-Datasets_and_Benchmarks_Track.html
-
-  wog_description: "Government agents generating code for policy calculations, data analysis, or system automation must produce correct, efficient, and maintainable code. Poor quality code could result in incorrect CPF computations, flawed statistical analyses for policy decisions, or system instabilities. Code must meet government development standards and pass SHIP-HATS security scanning before deployment."
-
+  wog_description: Government agents generating code for applications, system automation, or data processing must produce correct, efficient, and maintainable code. Poor quality code could result in application bugs affecting citizen services, system instabilities, or failed integrations. Code should meet government development standards and pass security scanning before deployment.
   wog_examples:
-    - "Agent generates Python script for CPF retirement calculation that contains logic error in edge case handling, producing incorrect projections for citizens with complex contribution histories"
-    - "Data analysis agent creates inefficient SQL query for SingStat population analysis that times out on production database, delaying policy research deliverables"
-    - "Automation agent produces script with poor error handling that fails silently when processing grant applications, causing legitimate applications to be lost without notification"
+    - Coding agent generates API endpoint for citizen service application with incorrect input validation logic, causing legitimate requests to be rejected and degrading user experience on the government portal
+    - Agent produces frontend code for LifeSG feature that contains memory leaks, causing the mobile app to crash after extended use and generating negative citizen feedback
+    - Agent writes database migration script with flawed rollback logic, which when executed corrupts foreign key relationships and requires emergency manual intervention to restore service
 
 RISK-040:
   statement: Production or execution of vulnerable or malicious code
@@ -936,13 +868,11 @@ RISK-040:
   sources:
   - https://arxiv.org/pdf/2501.08200
   - https://arxiv.org/html/2504.21205v1
-
-  wog_description: "Code executed in government environments must meet IM8 security standards and pass SHIP-HATS security scans including Fortify SAST analysis. Vulnerable code could expose citizen data, compromise GCC infrastructure, or create attack vectors into interconnected government systems. Malicious code, whether intentionally generated or sourced from compromised repositories, could exfiltrate data or establish persistent backdoors."
-
+  wog_description: Code executed in government environments must meet IM8 security standards and pass SHIP-HATS security scans including SAST analysis. Vulnerable code could expose citizen data, compromise GCC infrastructure, or create attack vectors into interconnected government systems. Malicious code, whether intentionally generated or sourced from compromised repositories, could exfiltrate data or establish persistent backdoors.
   wog_examples:
-    - "Agent generates data processing script with SQL injection vulnerability that, when deployed to production, exposes IRAS taxpayer database to extraction attacks"
-    - "Code agent sources library from compromised npm repository that contains backdoor allowing remote access to GCC compute instances"
-    - "Agent produces automation script with hard-coded credentials and logging of sensitive data that violates IM8 security requirements and creates audit findings"
+    - Agent generates data processing script with SQL injection vulnerability that, when deployed to production, exposes sensitive data to extraction attacks
+    - Code agent sources library from compromised npm repository that contains backdoor allowing remote access to GCC compute instances
+    - Agent produces automation script with hard-coded credentials and logging of sensitive data that violates IM8 security requirements and creates vulnerabilities
 
 RISK-041:
   statement: Unintended overwriting or deletion of files or data
@@ -960,12 +890,8 @@ RISK-041:
   - CTRL-0079
   sources:
   - https://syssec.dpss.inesc-id.pt/papers/pedro_icse25.pdf
-
-  wog_description: "Government agents handling citizen records, policy documents, and operational databases must not inadvertently modify or delete critical data. Loss of citizen application records, corruption of financial databases, or deletion of audit trails could have serious consequences including inability to process citizen requests, financial reconciliation failures, or compliance violations."
-
+  wog_description: Government agents handling citizen records, policy documents, and operational databases must not inadvertently modify or delete critical data. Loss of citizen application records, corruption of financial databases, or deletion of audit trails could have serious consequences including inability to process citizen requests, financial reconciliation failures, or compliance violations.
   wog_examples:
-    - "Data processing agent incorrectly interprets cleanup instruction and deletes active MSF grant application records instead of archived duplicates, requiring emergency recovery from backups"
-    - "File management agent overwrites current year's IRAS tax assessment templates with draft versions, causing assessment errors until the modification is detected"
     - "Database maintenance agent misinterprets table archival request and truncates live CPF contribution records, requiring Point-in-Time Recovery and causing service disruption"
 
 RISK-042:
@@ -984,13 +910,10 @@ RISK-042:
   - CTRL-0082
   sources:
   - https://www.tinybird.co/blog-posts/which-llm-writes-the-best-sql
-
-  wog_description: "Government databases supporting citizen services must remain responsive during peak periods—tax filing season for IRAS, BTO launch dates for HDB, or SingPass authentication during national events. Inefficient queries from agents could degrade performance for all users, causing service timeouts, transaction failures, or extended processing delays that affect citizens' ability to complete time-sensitive government transactions."
-
+  wog_description: Government databases supporting citizen services must remain responsive according to agreed-upon SLAs. Inefficient queries from agents could degrade performance for all users, causing service timeouts, transaction failures, or extended processing delays that affect citizens' ability to complete time-sensitive government transactions.
   wog_examples:
-    - "Agent performing bulk eligibility checks during CPF withdrawal period generates unoptimised queries that lack proper indexing, causing cascading performance degradation across CPF systems during peak hours"
-    - "Research agent runs complex analytical queries against production HDB resale database during BTO launch, contributing to system slowdowns affecting legitimate flat applicants"
-    - "Multiple agents simultaneously query IRAS taxpayer database without query result caching, creating redundant load that triggers rate limiting and affects tax filing portal availability"
+    - Agent misconfigured to query the production transactional database instead of the read replica for reporting purposes, causing lock contention that slows down citizen-facing transactions
+    - Agent generates N+1 query pattern when processing batch of applications, issuing thousands of individual database calls instead of a single optimised join query
 
 RISK-043:
   statement: Exposure of sensitive data through file or database access
@@ -1007,13 +930,10 @@ RISK-043:
   - CTRL-0084
   sources:
   - https://www.infosecurity-magazine.com/news/microsoft-365-copilot-zeroclick-ai/
-
-  wog_description: "Government agents with database access may retrieve citizen PII including NRIC numbers, income details, medical records, and family information. Without proper safeguards, this data could be exposed through agent outputs, logs, or subsequent interactions. Public agencies must protect citizen data consistent with Public Sector Governance Act requirements even though PDPA exemptions apply."
-
+  wog_description: Government agents with database access may retrieve citizen PII including NRIC numbers, income details, medical records, and family information. Without proper safeguards, this data could be exposed through agent outputs, logs, or subsequent interactions. 
   wog_examples:
-    - "Agent querying NEHR patient records for healthcare research includes raw PII in its analysis output, exposing patient identities when the research summary is shared with external collaborators"
-    - "Database query agent retrieves IRAS income data for statistical analysis but fails to anonymise results, enabling individual taxpayer identification from the aggregated report"
-    - "File processing agent extracts text from MSF case files containing sensitive family circumstances and includes these details in response to unrelated enquiry from different officer"
+    - Agent querying patient records for healthcare research includes raw PII in its analysis output, exposing patient identities when the research summary is shared with external collaborators
+    - File processing agent extracts text from MSF case files containing sensitive family circumstances and includes these details in response to unrelated enquiry from different officer
 
 RISK-044:
   statement: Prompt injection via malicious files or data
@@ -1032,13 +952,10 @@ RISK-044:
   sources:
   - https://www.hackthebox.com/blog/cve-2025-32711-echoleak-copilot-vulnerability
   - https://www.wired.com/story/here-come-the-ai-worms/
-
-  wog_description: "Government agents processing citizen-submitted documents, business applications, or external data feeds may encounter files crafted to inject malicious instructions. In Singapore's context, this could affect agents processing documents through LifeSG, business filings through BizFile+, or inter-agency data exchanges. Successful injection could manipulate processing outcomes or exfiltrate sensitive information."
-
+  wog_description: Government agents processing citizen-submitted documents, business applications, or external data feeds may encounter files crafted to inject malicious instructions. This could affect agents processing documents through LifeSG or business filings through GoBusiness. Successful injection could manipulate processing outcomes or exfiltrate sensitive information.
   wog_examples:
-    - "Citizen submits PDF supporting document for HDB application containing hidden text with prompt injection that causes processing agent to automatically approve the application"
-    - "Business submits ACRA annual return with embedded instructions in metadata that manipulate the verification agent's assessment of filing completeness"
-    - "Data file received through inter-agency sharing contains prompt injection payload that, when processed by receiving agent, causes it to forward sensitive records to unauthorised recipients"
+    - Citizen submits PDF supporting document for HDB application containing hidden text with prompt injection that causes processing agent to automatically approve the application
+    - Business submits ACRA annual return with embedded instructions in metadata that manipulate the verification agent's assessment of filing completeness
 
 RISK-045:
   statement: Misconfiguration of system resources
@@ -1056,13 +973,10 @@ RISK-045:
   sources:
   - https://neurips.cc/virtual/2024/poster/97835
   - https://arxiv.org/html/2507.10584v1
-
-  wog_description: "Government agents managing GCC infrastructure, agency application settings, or system configurations could introduce misconfigurations that affect service availability, security posture, or compliance status. Given Singapore's high digital service adoption, misconfigurations could impact millions of citizens relying on government services."
-
+  wog_description: Agents managing GCC infrastructure, agency application settings, or system configurations could introduce misconfigurations that affect service availability, security posture, or compliance status. 
   wog_examples:
-    - "Infrastructure agent adjusting GCC Auto Scaling parameters sets incorrect minimum instance count, causing citizen portal to become unresponsive during routine traffic spikes"
-    - "Security configuration agent misapplies IM8 baseline settings, inadvertently opening network ports that create security vulnerabilities on production systems"
-    - "Database agent modifying PostgreSQL configuration parameters introduces settings incompatible with production workload, causing connection timeouts during peak periods"
+    - Security configuration agent misapplies IM8 baseline settings, inadvertently opening network ports that create security vulnerabilities on production systems
+    - Database agent modifying PostgreSQL configuration parameters introduces settings incompatible with production workload, causing connection timeouts during peak periods
 
 RISK-046:
   statement: System overload due to inefficient or excessive operations
@@ -1079,10 +993,7 @@ RISK-046:
   sources:
   - https://arxiv.org/html/2407.20859v1
   - https://genai.owasp.org/llmrisk/llm102025-unbounded-consumption/
-
-  wog_description: "Government infrastructure must support consistent service delivery to Singapore's citizens. Agents performing excessive API calls, redundant system queries, or resource-intensive operations could degrade GCC performance, exhaust compute budgets, or cause cascading failures across interconnected government services. This is particularly critical during high-demand periods like tax filing deadlines or national registration exercises."
-
+  wog_description: Government infrastructure must support consistent service delivery to Singapore's citizens. Agents performing excessive API calls, redundant system queries, or resource-intensive operations could degrade application performance, exhaust compute budgets, or cause cascading failures across interconnected government services. 
   wog_examples:
-    - "Monitoring agent enters retry loop when encountering transient errors, generating thousands of API calls per minute that exhaust rate limits and trigger GCC cost alerts"
-    - "Data synchronisation agent performs full database scans hourly instead of incremental updates, consuming excessive compute resources and impacting co-hosted services"
-    - "Log analysis agent processes historical logs inefficiently, consuming all available memory on the analysis instance and causing out-of-memory failures for other workloads"
+    - Monitoring agent enters retry loop when encountering transient errors, generating thousands of API calls per minute that exhaust rate limits 
+    - Data synchronisation agent performs full database scans hourly instead of incremental updates, consuming excessive compute resources and impacting co-hosted services
