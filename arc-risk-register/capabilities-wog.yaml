@@ -1,0 +1,265 @@
+CAP-01:
+  name: "Planning and Goal Management"
+  category: "Cognitive"
+
+  original_description: "The capability to develop detailed, step-by-step, and executable plans with specific tasks in response to broad instructions. This includes prioritising activities based on importance and dependencies between tasks, monitoring how well its plan is working, and adjusting when circumstances change or obstacles arise."
+
+  wog_adapted_description: "The capability to autonomously develop multi-step workflows and action plans for completing government service delivery tasks, policy implementation activities, or operational processes based on high-level objectives or citizen requests. Includes task prioritisation aligned with government priorities, monitoring execution progress, and dynamic replanning when encountering regulatory constraints, approval requirements, or operational obstacles."
+
+  wog_examples:
+    - "Citizen service request: Agent receives 'Help me apply for childcare subsidy' and plans steps to verify eligibility via Singpass, retrieve MyInfo data, calculate subsidy amount, prepare application form, and submit to MSF system"
+    - "IRAS tax refund processing: Agent receives notice of tax overpayment, plans steps to verify taxpayer identity via Singpass, retrieve employment and income data from MyInfo, recalculate tax liability based on current regulations, generate refund approval form, route to supervisor for amounts above threshold, and initiate GIRO transfer upon approval"
+    - "MOH polyclinic appointment optimisation: Agent receives patient request for specialist referral, plans steps to check patient medical history from NEHR, identify appropriate specialty and nearest polyclinic, check appointment availability across multiple polyclinics, book optimal slot, and send confirmation via HealthHub"
+
+CAP-02:
+  name: "Agent Delegation"
+  category: "Cognitive"
+
+  original_description: "The capability to assign subtasks to other agents and coordinate their activities to achieve broader goals. This includes identifying which components are best suited for specific tasks, issuing clear instructions, managing inter-agent dependencies, and monitoring performance or failures."
+
+  wog_adapted_description: "The capability to autonomously delegate subtasks to specialised agents or systems across government agencies and coordinate their activities to achieve whole-of-government service delivery objectives. Includes identifying which agency systems or specialised agents are best suited for specific tasks, issuing instructions through approved interfaces, managing cross-agency dependencies and handoffs, and monitoring execution progress or failures across the multi-agent workflow."
+
+  wog_examples:
+    - "LTA parking offence appeal: Orchestrator agent receives citizen appeal, delegates to Document Analysis agent to extract appeal grounds from uploaded evidence, delegates to Legal Review agent to assess validity against LTA regulations, delegates to Historical Records agent to check driver's past offence history, then coordinates responses to generate appeal decision and notification"
+    - "MHA foreign worker visa processing: Coordinator agent delegates to MOM agent to verify employment pass eligibility, ICA agent to check immigration records and security clearance, MOH agent to verify health screening completion, and CPF agent to confirm employer levy payments, then synthesises results to approve or reject visa application"
+    - "MSF social assistance application: Primary agent delegates household income verification to IRAS agent, housing status check to HDB agent, employment history to MOM agent via MyInfo Consent, and existing assistance schemes check to ComCare system, then aggregates data to determine eligibility and assistance quantum"
+
+CAP-03:
+  name: "Tool Use"
+  category: "Cognitive"
+
+  original_description: "The capability to evaluate available options and choose the best tool for specific subtasks, based on the capabilities and limitations of different tools and matching them appropriately to the tasks. This includes selecting between search, computation, code execution, or domain-specific APIs, determining when tool invocation is necessary, and sequencing or combining multiple tools to complete complex tasks effectively."
+
+  wog_adapted_description: "The capability to autonomously evaluate available government systems, APIs, and MCP servers, and select the most appropriate ones for specific subtasks based on their capabilities, limitations, and suitability to the task requirements. Includes selecting between search engines, computational tools, code execution environments, or domain-specific government APIs accessible through GovTech's central MCP server registry or agency-specific MCP servers, determining when tool invocation is necessary, and sequencing or combining multiple tools through approved interfaces to complete complex cross-system tasks effectively."
+
+  wog_examples:
+    - "HDB resale enquiry via MCP: Agent evaluates citizen query about flat valuation and selects tools from GovTech central MCP server: HDB Resale Price MCP tool for transaction data, OneMap MCP tool for geospatial queries, CPF Housing Grant calculator, and combines results to provide comprehensive flat valuation"
+    - "NEA environmental complaint routing: Agent receives complaint about illegal dumping, discovers available MCP tools through central registry, selects OneMap geocoding tool to identify location, NEA Jurisdiction Checker to confirm agency responsibility, checks nearby camera coverage via LTA MCP server, and routes complaint with enriched context to appropriate NEA divisional office"
+    - "Multi-agency data aggregation: Agent processing citizen request for government assistance discovers MyInfo Consent MCP server, selects relevant data scopes (employment from MOM, income from IRAS, housing from HDB), sequences API calls respecting rate limits and consent boundaries, and aggregates verified data for eligibility assessment"
+
+CAP-04:
+  name: "Multimodal Understanding and Generation"
+  category: "Interaction"
+
+  original_description: "The capability to communicate with human users across multiple modalities, including natural language conversation (explaining topics, generating documents, interactive discussions) and multimodal understanding/generation (processing and creating image, audio, or video content such as visual analysis, speech transcription, or multimedia creation)."
+
+  wog_adapted_description: "The capability to communicate with citizens, public officers, and external stakeholders across multiple modalities in support of government service delivery, using English as the official working language. Includes natural language conversation for explaining policies, generating official documents, and conducting interactive discussions, as well as multimodal understanding and generation such as processing identity documents, medical images, infrastructure photos, or creating multimedia content for government communications."
+
+  wog_examples:
+    - "ICA document verification: Agent processes passport renewal application, analyses uploaded photo to verify it meets ICAO standards (correct dimensions, neutral expression, proper lighting), extracts text from supporting documents (birth certificate, previous passport), verifies signature consistency, and generates verification report with flagged discrepancies for officer review"
+    - "BCA building inspection: Agent receives site inspection photos from contractor showing completed works, analyses images to identify structural defects or non-compliance with building codes, compares against approved architectural plans, generates annotated inspection report highlighting specific areas of concern with visual markers, and produces compliance checklist"
+    - "MOE accessibility support: Agent supporting student with visual impairment receives lesson materials, converts text documents to speech, generates audio descriptions for diagrams and charts, transcribes teacher's recorded lectures with timestamps, and creates accessible versions of worksheets"
+
+  wog_sub_capabilities:
+    - id: "SG-CAP-04.1"
+      name: "Multilingual Support"
+      description: "Processing and generating content across Singapore's official languages (English, Chinese, Malay, Tamil) with government-standard terminology, culturally appropriate phrasing, and accurate translation of policy intent. This capability is critical for citizen-facing services to ensure accessibility across all language communities and compliance with the multilingual requirements of government communications."
+      examples:
+        - "PA community engagement: Agent generates town hall meeting materials translating policy announcements about new community facilities into all four official languages, ensuring culturally appropriate examples and terminology for each language community"
+        - "MOM foreign worker advisory: Agent receives workplace safety complaint in Chinese from foreign worker, translates to English for case management system, generates investigation questions in worker's preferred language, and produces final resolution letter in both English and Chinese"
+        - "MOH health advisory: Agent creates COVID-19 vaccination campaign materials, translating medical terminology and health guidelines into Tamil, Malay, and Chinese while ensuring cultural sensitivity around health practices and maintaining consistent policy messaging across all language versions"
+
+CAP-05:
+  name: "Official Communication"
+  category: "Interaction"
+
+  original_description: "The capability to autonomously compose, finalize, and dispatch authoritative communications that formally and legally represent an organization to external parties (e.g. customers, partners, regulators, courts, or media) via approved channels and formats, without prior human review or approval, thereby creating potential legal, regulatory, or reputational obligations. This includes sending legally binding correspondence, publishing official statements or press releases, and responding to external inquiries using the organisation's identity."
+
+  wog_adapted_description: "The capability to autonomously compose, finalise, and dispatch authoritative communications that formally and legally represent a government agency to external parties (citizens, businesses, other agencies, regulators, courts, or media) via approved channels and formats, without prior human review or approval, thereby creating potential legal, regulatory, or reputational obligations. This includes sending legally binding correspondence, publishing official statements or press releases through Gov.sg channels, and responding to external enquiries using the agency's official identity."
+
+  wog_examples:
+    - "IRAS tax assessment notice: Agent autonomously generates and dispatches Notice of Assessment to taxpayer via registered mail and Singpass Inbox, including calculated tax liability, payment deadline, appeal instructions, and legal basis for assessment, creating legally binding obligation for taxpayer to pay or appeal within statutory timeframe"
+    - "MOH disease outbreak notification: Agent detects reportable disease cluster threshold breach, autonomously drafts official advisory for healthcare providers via MOH Professional Portal, coordinates simultaneous publication on MOH website and Gov.sg WhatsApp channel, and dispatches media release through Government Communications Hub, triggering public health response protocols"
+    - "MAS regulatory directive: Agent monitoring financial institution's capital adequacy ratio detects breach of regulatory threshold, autonomously generates official enforcement notice citing specific MAS regulations, specifies required remediation actions and timeline, dispatches via MAS portal with legal standing, and schedules escalation procedures"
+
+  wog_sub_capabilities:
+    - id: "SG-CAP-05.1"
+      name: "Statutory Communication"
+      description: "Generating and dispatching legally binding notices, directives, or decisions that invoke statutory authority, create legal obligations or rights, and may be subject to judicial review or appeal. Includes tax assessments, enforcement orders, licensing decisions, and regulatory directives that must comply with specific legislative requirements for content, format, and delivery methods."
+      examples:
+        - "LTA traffic summons: Agent processes red-light camera violation, validates vehicle registration via OneMotoring, generates official summons citing specific Road Traffic Act provision, calculates demerit points and fine amount, dispatches via registered post and OneMotoring portal with legal deadline for payment or contest"
+        - "NEA environmental penalty: Agent receives inspector's report of unlicensed food establishment, autonomously issues composition fine notice under Environmental Public Health Act, specifies violation, penalty quantum, payment deadline, and appeal rights, sending via registered mail with tracking"
+        - "URA development control enforcement: Agent identifies unauthorised building works through property inspection records, issues stop-work order and show-cause notice under Planning Act, specifying violations and potential penalties, dispatching to registered property owner with statutory response deadline"
+
+CAP-06:
+  name: "Business Transactions"
+  category: "Interaction"
+
+  original_description: "The capability to autonomously initiate, authorise, and execute binding business transactions with external parties - such as payments, purchases, reservations, or service commitments - within predefined authorisation limits, resulting in real financial, contractual, or operational obligations for the organization. This includes processing payments or refunds, placing orders or subscriptions, booking services or reservations, and accepting or triggering contractual commitments on behalf of the organization."
+
+  wog_adapted_description: "The capability to autonomously initiate, authorise, and execute binding business transactions with external parties—such as payments, purchases, reservations, grants, or service commitments—within predefined authorisation limits, resulting in real financial, contractual, or operational obligations for the government agency. This includes processing payments or refunds, placing orders or subscriptions, booking services or reservations, disbursing grants or subsidies, and accepting or triggering contractual commitments on behalf of the agency."
+
+  wog_examples:
+    - "MSF social assistance disbursement: Agent processes approved ComCare application, validates recipient bank account via PayNow-NRIC, calculates monthly assistance quantum based on household income and composition, generates payment instruction to GovPay, executes GIRO transfer to recipient within 3 working days, and sends payment confirmation via SMS"
+    - "GovTech vendor payment processing: Agent receives goods receipt confirmation for cloud services subscription from COMET, matches against purchase order and vendor invoice, verifies budget availability in government financial system, generates payment voucher with appropriate GL codes, routes for approval if above threshold, and processes payment via GIRO to vendor"
+    - "NParks event permit and booking: Agent receives application for East Coast Park event space, verifies applicant credentials, checks availability in booking system, calculates permit fee based on event type and duration, processes payment via eNets/PayNow, generates permit with terms and conditions, and sends confirmation with QR code for on-site verification"
+
+  wog_sub_capabilities:
+    - id: "SG-CAP-06.1"
+      name: "Government Procurement"
+      description: "Autonomous purchasing of goods and services within delegated financial authority limits through government procurement systems (such as GeBIZ, GSIB). Includes validating vendor credentials, checking budget availability, generating purchase orders, obtaining necessary approvals based on monetary thresholds, and committing government funds in accordance with procurement regulations and financial procedures."
+      examples:
+        - "MOE school supplies ordering: Agent monitors school's stationery inventory levels, detects items below reorder threshold, generates purchase requisition for approved vendors on GeBIZ, verifies budget allocation for school operational expenses, creates purchase order within principal's delegation limit ($5,000), and sends to vendor via GeBIZ portal"
+        - "MHA police vehicle maintenance: Agent receives scheduled maintenance alert for patrol car, checks approved workshop panel, generates service order for routine servicing, verifies annual maintenance budget availability, obtains digital approval from fleet manager for amount exceeding officer's limit, and confirms booking with workshop via API"
+        - "NLB digital resource subscription: Agent reviews expiring database subscriptions, compares usage statistics against cost, generates renewal proposal for high-usage resources, checks multi-year budget allocation, routes to director for approval above $50,000 threshold, and executes subscription renewal with vendor upon approval"
+
+    - id: "SG-CAP-06.2"
+      name: "Grant and Subsidy Disbursement"
+      description: "Automated calculation and distribution of government financial assistance to eligible citizens and businesses based on verified eligibility criteria and entitlement rules. Includes validating recipient details, computing payment amounts according to policy parameters, generating payment instructions to government payment systems (such as GovPay), executing fund transfers via GIRO/PayNow, and maintaining audit trails for accountability."
+      examples:
+        - "MOE Financial Assistance Scheme: Agent processes approved FAS application for student, calculates annual assistance amount based on household income per capita, generates payment schedule for school fees waiver, meal subsidies, and transport allowance, creates payment instructions to schools' bank accounts via GIRO, and sends notification to parents via Parents Gateway"
+        - "ESG Productivity Solutions Grant: Agent receives enterprise's claim for approved technology adoption project, verifies project milestones completion via supporting documents, calculates grant disbursement at 50% co-funding rate up to approved cap, validates company's UEN and bank details, processes payment via GovPay to company GIRO account, and updates Enterprise Portal with disbursement record"
+        - "CPF MediSave top-up for Pioneer Generation: Agent identifies eligible Pioneer Generation seniors turning 65 based on NRIC cohort, verifies citizenship status and CPF account status, calculates top-up quantum per policy, generates batch payment file, executes transfer to individual MediSave accounts via CPF system, and dispatches confirmation letters via Singpass Inbox"
+
+    - id: "SG-CAP-06.3"
+      name: "Revenue Collection"
+      description: "Processing fees, fines, levies, and payments owed to government agencies through approved payment channels (such as eNets, PayNow, AXS, GIRO). Includes calculating amounts payable, generating payment notices, accepting payments via multiple channels, reconciling transactions against government financial systems, handling refunds for overpayments, and maintaining revenue accounting records."
+      examples:
+        - "ICA passport renewal fee: Agent processes passport renewal application, calculates fee based on passport type (adult/child) and processing speed (standard/urgent), generates payment reference number, presents multiple payment options (eNets, credit card, PayNow), receives payment confirmation from payment gateway, updates application status to 'payment received', and issues digital receipt via Singpass Inbox"
+        - "LTA parking composition fine: Agent issues parking offence notice, calculates composition amount based on offence type and location, sends payment notice to vehicle owner via registered mail and OneMotoring portal, monitors for early payment discount eligibility window, accepts payment via AXS, eNets, or SAM kiosks, updates offence record to 'settled', and triggers case closure if paid within deadline"
+        - "BCA developer levy collection: Agent monitors construction project milestones, calculates foreign worker levy based on number of work permits and project duration, generates quarterly levy invoice, sends to developer via CorPass portal, accepts GIRO payment or online banking transfer, reconciles payment against invoice, and updates levy compliance status in BCA system"
+
+CAP-07:
+  name: "Internet and Search Access"
+  category: "Interaction"
+
+  original_description: "The capability to autonomously access, browse, search, and retrieve information from the Internet to augment the LLM's static training knowledge with external and up-to-date sources in support of task execution and response generation. This includes issuing search queries, following and parsing web pages, extracting relevant facts or documents, and aggregating information from multiple online sources."
+
+  wog_adapted_description: "The capability to autonomously access, browse, search, and retrieve information from the Internet and approved external data sources to augment the LLM's static training knowledge with external and up-to-date sources in support of government task execution and response generation. This includes issuing search queries, following and parsing web pages, extracting relevant facts or documents from trusted sources, and aggregating information from multiple online sources while adhering to government security policies and acceptable use guidelines."
+
+  wog_examples:
+    - "MTI trade policy research: Agent researches latest WTO trade dispute rulings relevant to Singapore's bilateral agreements, searches official WTO database and member country government websites, extracts key judgement points and precedents, cross-references with Singapore's FTA commitments, and synthesises findings into policy brief for trade negotiators"
+    - "MOH disease surveillance: Agent monitors WHO disease outbreak notifications and CDC travel health advisories, tracks emerging infectious disease cases in regional countries, searches PubMed for latest clinical studies on novel pathogens, aggregates epidemiological data, and generates risk assessment report for MOH disease control division"
+    - "CPIB corruption case research: Agent receives investigation request on suspect's corporate affiliations, searches ACRA BizFile for company directorships and shareholdings, checks international sanctions databases (OFAC, UN), searches news archives for relevant corporate governance issues, and compiles due diligence report with source citations"
+
+CAP-08:
+  name: "Computer Use"
+  category: "Interaction"
+
+  original_description: "The capability to directly operate a computer's graphical user interface on behalf of the user, enabling the agent to navigate applications and execute tasks through mouse, keyboard, and window-based interactions. This includes moving the cursor, clicking buttons, entering text, using keyboard shortcuts, switching between windows and applications, and navigating files and menus within the operating system environment."
+
+  wog_adapted_description: "The capability to directly operate a computer's graphical user interface on behalf of government officers, enabling the agent to navigate government applications and execute tasks through mouse, keyboard, and window-based interactions. This includes moving the cursor, clicking buttons, entering text into forms, using keyboard shortcuts, switching between windows and applications, and navigating files and menus within the government desktop environment or virtual desktop infrastructure (VDI)."
+
+  wog_examples:
+    - "MOF budget data entry: Agent accesses government financial management system via secure VDI, navigates to budget allocation module using mouse clicks, enters approved budget figures into web forms across multiple tabs, validates data entry against source spreadsheet, uses keyboard shortcuts to navigate between fields, and captures screenshot confirmation of successful submission"
+    - "ICA visa application processing: Agent logs into ICA case management system, uses mouse to select pending visa application from queue, navigates through multi-screen application form reviewing passport scans and supporting documents, enters visa approval details and validity dates, clicks through approval workflow stages, and generates visa label by interacting with legacy printing interface"
+    - "LTA enforcement officer case filing: Agent assists officer by automating data entry from body-worn camera footage, opens LTA enforcement application, uses OCR to extract vehicle plate number and location from image, navigates dropdown menus to select offence type and severity, fills in officer remarks field, and submits case record while officer verifies accuracy"
+
+CAP-09:
+  name: "Other Programmatic Interfaces"
+  category: "Interaction"
+
+  original_description: "The capability to interact with external systems through non-graphical, programmatic interfaces, such as APIs, SDKs, and backend services, to exchange data or trigger actions as part of task execution. This includes calling REST or GraphQL APIs, invoking cloud services, publishing or consuming messages from queues or event streams, and performing operations such as code pushes, data updates, or system integrations across enterprise platforms."
+
+  wog_adapted_description: "The capability to interact with government systems and external platforms through non-graphical, programmatic interfaces such as APIs, SDKs, and backend services to exchange data or trigger actions as part of task execution. This includes calling REST or GraphQL APIs through government API gateways (such as APEX), invoking cloud services on Government Commercial Cloud (GCC), publishing or consuming messages from queues or event streams, and performing operations such as code deployments, data updates, or system integrations across government enterprise platforms."
+
+  wog_examples:
+    - "IRAS corporate tax filing integration: Agent receives tax computation from company's accounting system via APEX API gateway, validates data format against IRAS schemas, calls myTax Portal API to submit corporate income tax return, retrieves acknowledgement receipt and filing reference number, posts filing confirmation back to company's system via webhook, and logs transaction in IRAS audit trail"
+    - "MOH HealthHub data synchronisation: Agent monitors patient's polyclinic visit via NEHR event stream, retrieves updated medical records and prescription details through NEHR API, transforms data to HealthHub format, publishes to HealthHub backend via REST API, triggers push notification to patient's mobile app via Gov.sg Notify service, and updates synchronisation status in MOH data warehouse"
+    - "GovTech CI/CD pipeline automation: Agent detects code merge to main branch in government GitLab repository, triggers SHIP-HATS build pipeline via API call, monitors build status through webhook callbacks, deploys successful build to GCC staging environment using AWS CLI, runs automated security scans via Fortify API, and posts deployment summary to Slack via webhook"
+
+CAP-10:
+  name: "Code Execution"
+  category: "Operational"
+
+  original_description: "The capability to write, execute, and debug code in various programming languages to automate tasks or solve computational problems. This includes implementing algorithms, writing scripts, compiling and running code, debugging errors, and integrating with external systems through APIs or backend services."
+
+  wog_adapted_description: "The capability to write, execute, and debug code in various programming languages to automate government tasks or solve computational problems. This includes implementing algorithms for policy calculations, writing scripts to process government data, compiling and running code in secure environments, debugging errors in automation workflows, and integrating with government systems through APIs or backend services."
+
+  wog_examples:
+    - "CPF retirement sum calculation: Agent writes Python script to calculate CPF member's Basic Retirement Sum based on birth year cohort, executes code to process member's CPF balances across Ordinary, Special, and Retirement Accounts, applies top-up and withdrawal history adjustments, validates output against CPF policy rules, and generates personalised retirement adequacy projection report"
+    - "SingStat census data analysis: Agent receives population census microdata, writes R script to perform statistical analysis on household income distribution by planning area, executes code to generate Gini coefficients and quintile breakdowns, debugs data type errors in census variables, produces visualisations using ggplot2, and exports summary tables in government reporting format"
+    - "MOE school placement algorithm: Agent implements Primary 1 registration placement algorithm in Python, executes code to process thousands of applications with priority phases and distance criteria, runs simulation to validate placement fairness across schools, debugs edge cases for sibling priority rules, and generates final school allocation results with audit trail"
+
+  wog_sub_capabilities:
+    - id: "SG-CAP-10.1"
+      name: "Policy Calculation Automation"
+      description: "Executing code to automatically calculate entitlements, benefits, subsidies, taxes, or regulatory compliance based on codified government policy rules and legislative parameters. This includes implementing complex eligibility criteria, means-testing formulae, progressive rate structures, and policy adjustments whilst ensuring accuracy, auditability, and consistency with official policy intent."
+      examples:
+        - "HDB housing grant calculation: Agent writes Python script implementing CPF Housing Grant eligibility rules, executes code to assess applicant's income ceiling, citizenship status, property ownership history, and proximity to parents, calculates grant quantum based on flat type and first-timer status, validates against multiple grant scheme combinations, and generates breakdown showing maximum grant entitlement"
+        - "IRAS progressive tax computation: Agent develops JavaScript calculator for personal income tax assessment, executes code applying progressive tax rates across income bands, computes reliefs for CPF contributions, spouse and child reliefs, course fees, and parent support, calculates resulting tax liability with NSman discount, and produces tax computation worksheet with line-by-line breakdown"
+        - "MOM foreign worker quota compliance: Agent implements quota calculation algorithm for construction sector, executes code to compute company's dependency ratio ceiling based on total workforce, processes work permit applications against available quota headroom, flags companies breaching man-year entitlement limits, and generates compliance report for MOM enforcement officers"
+
+    - id: "SG-CAP-10.2"
+      name: "Data Processing and Analytics"
+      description: "Running scripts and programmes to ingest, clean, transform, analyse, and visualise government datasets for policy research, operational reporting, or evidence-based decision-making. This includes statistical analysis, data aggregation across agencies, pattern detection, predictive modelling, and generating publication-ready outputs whilst ensuring data quality and handling sensitive information appropriately."
+      examples:
+        - "MOH hospital bed capacity forecasting: Agent writes Python script using pandas and scikit-learn to analyse 5 years of hospital admission data, executes code to identify seasonal patterns and demographic trends, builds time-series forecasting model for bed demand by specialty, validates model accuracy against holdout data, generates interactive Tableau dashboard showing projected capacity needs, and exports recommendations for hospital expansion planning"
+        - "LTA traffic flow optimisation: Agent develops R script to process real-time traffic sensor data from expressways and arterial roads, executes code to identify congestion hotspots and bottlenecks, performs spatial analysis of accident clusters, correlates with weather and time-of-day patterns, generates heat maps of traffic density, and produces monthly traffic management report with intervention recommendations"
+        - "MSF social services demand analysis: Agent creates SQL queries and Python scripts to aggregate ComCare, Silver Support, and social assistance applications across regions, executes code to identify vulnerable household clusters by planning area, performs demographic profiling of assistance recipients, detects emerging social needs through application trend analysis, and produces policy brief with data visualisations for MSF social policy division"
+
+    - id: "SG-CAP-10.3"
+      name: "Government Application Development"
+      description: "Developing, testing, and deploying software applications for government use, including citizen-facing digital services on gov.sg domains and internal officer tools, following government development standards, security requirements under IM8 (Instruction Manual 8 on ICT Security), and best practices for government technology development. This includes implementing user interfaces, backend services, databases, and integrations whilst adhering to accessibility standards and government design guidelines."
+      examples:
+        - "MOE Parents Gateway feature development: Agent develops new notification module for school announcements, writes React frontend components following government design system standards, implements Node.js backend API with authentication via Singpass, integrates with MOE student database through APEX gateway, applies IM8 security controls including data encryption and access logging, conducts security testing via Fortify SAST, deploys to GCC using SHIP-HATS CI/CD pipeline, and submits for security clearance"
+        - "NEA myENV app enhancement: Agent builds air quality alert feature, develops Flutter mobile app components for iOS and Android, implements real-time data fetching from NEA air quality API, creates background notification service complying with IM8 mobile security requirements, writes unit and integration tests achieving 80% code coverage, performs accessibility testing against WCAG 2.1 standards, and releases through government app stores with security attestation"
+        - "IRAS tax portal self-service tool: Agent develops tax relief calculator widget, writes Vue.js frontend with responsive design for mobile and desktop, implements serverless backend using AWS Lambda on GCC, integrates with IRAS tax computation engine via REST API, applies IM8 web application security controls including input validation and CSRF protection, conducts penetration testing, obtains security clearance from IRAS CISO, and deploys to myTax Portal production environment"
+
+CAP-11:
+  name: "File and Data Management"
+  category: "Operational"
+
+  original_description: "The capability to manage the full lifecycle of files and data by creating, reading, modifying, organizing, converting, querying, and updating information across both unstructured artifacts (e.g. documents, spreadsheets, media files) and structured data stores (e.g. SQL/NoSQL databases, data warehouses, vector or embedding stores) in support of operational tasks. This includes ingesting and transforming datasets, generating or updating files, maintaining directory or schema structures, executing database queries or updates, and storing or retrieving embeddings or derived data products."
+
+  wog_adapted_description: "The capability to manage the full lifecycle of files and data by creating, reading, modifying, organising, converting, querying, and updating information across both unstructured artefacts (documents, spreadsheets, PDFs, media files) and structured data stores (SQL/NoSQL databases, data warehouses, vector stores) in support of government operational tasks. This includes ingesting and transforming datasets, generating or updating government documents, maintaining directory or schema structures, executing database queries or updates on government systems, and storing or retrieving embeddings or derived data products."
+
+  wog_examples:
+    - "MOH medical records consolidation: Agent retrieves patient medical records from multiple polyclinics via NEHR database queries, extracts relevant diagnoses and prescription history, consolidates into structured JSON format, updates patient summary in central data warehouse, generates PDF medical summary document, stores document in secure government SharePoint with patient NRIC-based folder structure, and logs all data access for PDPA audit trail"
+    - "HDB tenancy agreement generation: Agent queries HDB flat allocation database for new tenant details, retrieves property specifications and rental terms, populates standardised tenancy agreement template (DOCX) with tenant names, NRIC, flat address, rental amount, and contract dates, converts to PDF with digital signatures, uploads signed agreement to HDB document management system with metadata tags, and updates tenancy status in PostgreSQL database"
+    - "LTA vehicle registration data migration: Agent reads legacy vehicle registration CSV files from tape archive, validates and cleanses data (removes duplicates, standardises formats), transforms to new schema structure, executes batch INSERT statements into modern vehicle database system, creates backup snapshots in S3-compatible GCC storage, generates migration verification report comparing record counts, and archives original files with retention metadata"
+
+  wog_sub_capabilities:
+    - id: "SG-CAP-11.1"
+      name: "Government Document Handling"
+      description: "Creating, modifying, versioning, and managing official government documents throughout their lifecycle, including policy papers, reports, briefings, correspondence, and citizen-facing materials. This includes populating templates with data, applying government branding and formatting standards, managing document versions, and setting appropriate access permissions based on classification levels."
+      examples:
+        - "MOF Budget Book preparation: Agent retrieves fiscal data from government financial systems, populates annual Budget Book template with ministry allocations and programme expenditures, applies MOF document formatting standards and graphics, generates multiple versions for different stakeholder groups (Parliament, public, media), and manages version control with track changes for ministerial review rounds"
+        - "AGC legal opinion drafting: Agent receives legal query from ministry, retrieves relevant case law and statutes from LawNet, drafts preliminary legal opinion using AGC template, inserts case citations and statutory references, applies legal formatting conventions, and incorporates feedback across multiple review rounds with track changes"
+        - "MHA parliamentary reply preparation: Agent extracts crime statistics from SPF database for parliamentary question, populates standardised parliamentary reply template, includes comparison tables with previous years' data, and applies formatting for Hansard submission"
+
+    - id: "SG-CAP-11.2"
+      name: "Database Operations"
+      description: "Executing SQL queries, database updates, data migrations, and administrative operations on government databases and data warehouses whilst ensuring data integrity, referential consistency, and compliance with data governance policies. This includes reading from multiple tables, performing complex joins and aggregations, inserting or updating records, managing transactions, creating backups, and maintaining audit logs of all database modifications."
+      examples:
+        - "IRAS tax assessment batch update: Agent executes SQL query to identify all taxpayers eligible for COVID-19 tax rebate based on income thresholds, performs batch UPDATE operation to reduce tax liability by rebate amount across 500,000 taxpayer records, validates data integrity by checking sum of rebates matches policy allocation, and creates database transaction rollback point before commit"
+        - "MOE student enrollment data consolidation: Agent runs complex JOIN query across school registration, student demographics, and academic records tables to compile enrollment statistics by level, stream, and subject combinations, aggregates data by school cluster and region, and inserts summary records into MOE data warehouse with proper indexing"
+        - "ICA immigration clearance analytics: Agent queries immigration checkpoint database for daily arrival and departure statistics, performs temporal aggregations to identify peak travel periods, executes window functions to calculate rolling 7-day averages, and joins with visa status and nationality tables for demographic breakdowns"
+
+CAP-12:
+  name: "System Management"
+  category: "Operational"
+
+  original_description: "The capability to directly manage and configure technical systems and infrastructure by adjusting system settings, controlling computing resources, and administering operational environments across on-premise or cloud platforms. This includes monitoring system health and performance, managing authentication credentials and access controls, provisioning or scaling compute and storage resources, configuring operating system or runtime parameters, and applying system-level optimisations to support reliable operation."
+
+  wog_adapted_description: "The capability to directly manage and configure government technical systems and infrastructure by adjusting system settings, controlling computing resources, and administering operational environments across on-premise data centres or Government Commercial Cloud platforms. This includes monitoring system health and performance, managing authentication credentials and access controls in compliance with IM8, provisioning or scaling compute and storage resources, configuring operating system or runtime parameters, and applying system-level optimisations to support reliable government service delivery."
+
+  wog_examples:
+    - "GovTech GCC resource scaling: Agent monitors GCC compute utilisation for citizen-facing portal during peak hours, detects CPU usage exceeding 80% threshold, automatically scales EC2 instances from 4 to 8 instances using AWS Auto Scaling, adjusts load balancer configuration to distribute traffic, updates CloudWatch alarms for new capacity, and logs scaling actions to StackOps for operational visibility"
+    - "HDB officer account provisioning: Agent receives request to onboard new HDB estate officer, creates Active Directory account with appropriate permissions, adds user to required security groups for HDB property management systems, configures Singpass authentication binding, sets password policy and expiry date, provisions access to shared network drives based on division, and sends account credentials via secure channel"
+    - "MOE school system backup automation: Agent monitors daily backup jobs for MOE student management system, detects failed backup for primary database server, investigates log files to identify disk space exhaustion, automatically extends storage volume on GCC EBS, retriggers backup job, verifies backup integrity through test restore, updates backup retention policy to archive older backups to S3 Glacier, and alerts system administrators of remediation actions taken"
+
+  wog_sub_capabilities:
+    - id: "SG-CAP-12.1"
+      name: "Cloud Infrastructure Management"
+      description: "Managing resources on Government Commercial Cloud platforms (AWS GCC, Azure GCC) including provisioning, configuring, scaling, and decommissioning compute instances, storage volumes, networking components, and other cloud services. This includes automated resource scaling based on demand, cost optimisation through rightsizing, infrastructure-as-code deployment, and ensuring cloud resources comply with government security baselines and IM8 requirements."
+      examples:
+        - "LTA transport data platform scaling: Agent monitors S3 storage usage for LTA DataMall historical traffic data, detects approaching storage quota limit, provisions additional S3 buckets with appropriate lifecycle policies, configures cross-region replication to backup GCC region for disaster recovery, applies server-side encryption with KMS keys, and updates bucket policies to maintain least-privilege access for authorised applications"
+        - "IRAS tax filing infrastructure preparation: Agent forecasts compute demand for annual tax filing season based on historical patterns, pre-provisions additional RDS database read replicas two weeks before deadline, scales application tier EC2 instances from 10 to 30 using Auto Scaling Groups, increases ElastiCache cluster capacity for session management, configures CloudFront CDN for static assets, and schedules automatic scale-down after filing deadline"
+        - "MOH healthcare analytics platform: Agent receives request to deploy new data analytics environment, uses Terraform to provision VPC with private subnets, launches EMR cluster with Spark for big data processing, configures S3 data lake with appropriate bucket policies and access logging, sets up IAM roles following least-privilege principle, applies mandatory security group rules per IM8 baseline, and registers resources in AWS Config for compliance monitoring"
+
+    - id: "SG-CAP-12.2"
+      name: "Security and Access Control"
+      description: "Managing authentication, authorisation, identity lifecycle, and security configurations across government systems in compliance with IM8 security requirements. This includes creating and deactivating user accounts, assigning role-based access permissions, configuring multi-factor authentication, managing service accounts and API credentials, enforcing password policies, conducting access reviews, and maintaining audit logs of privileged operations."
+      examples:
+        - "CPF officer role-based access: Agent processes HR notification of officer's role change from operations to policy division, revokes access to CPF contribution processing system and member account databases, removes user from operational security groups in Active Directory, provisions new access to policy research systems and aggregated statistical databases, updates Singpass authentication profile with new role attributes, schedules access recertification review in 6 months, and logs all permission changes for audit"
+        - "IRAS API credential rotation: Agent detects myTax Portal API service account credentials approaching 90-day expiry per IM8 requirements, generates new credentials with equivalent permissions, updates secrets in AWS Secrets Manager, coordinates with consuming applications to migrate to new credentials during maintenance window, validates connectivity and functionality post-migration, revokes old credentials after confirmation, and sends completion notification to security team"
+        - "GovTech privileged access review: Agent conducts quarterly review of privileged accounts with sudo or administrator rights across GCC environments, queries IAM roles with AdministratorAccess policy, cross-references with authorised privileged user list from HR system, identifies 3 accounts belonging to transferred officers, automatically disables unused privileged accounts, notifies security team of accounts disabled, and generates compliance report for CSA audit requirements"
+
+    - id: "SG-CAP-12.3"
+      name: "System Monitoring and Incident Response"
+      description: "Monitoring system health, performance metrics, security events, and operational status across government infrastructure, detecting anomalies or incidents, and executing automated remediation actions or escalations. This includes collecting telemetry from servers and applications, analysing logs for errors or threats, alerting on threshold breaches, performing automated diagnostics, triggering remediation playbooks, and maintaining operational dashboards."
+      examples:
+        - "NEA website availability monitoring: Agent continuously monitors NEA public website response times and availability via synthetic probes from multiple locations, detects HTTP 503 errors indicating service unavailability, automatically checks application server health metrics via StackOps, identifies crashed web server process, restarts application service using systemctl commands, verifies service restoration within 2 minutes, logs incident timeline with root cause analysis, and sends post-incident report to operations team"
+        - "MOM work pass portal performance degradation: Agent monitors MOM employment pass application portal database query performance, detects average query time increasing from 200ms to 5 seconds, analyses slow query logs to identify inefficient SQL statement, triggers alert to database administrator team via PagerDuty, captures performance metrics and query execution plans, suggests index optimization for problematic table, and creates incident ticket with diagnostic information pre-populated"
+        - "IRAS disk space threshold alert: Agent monitors disk utilisation across IRAS tax computation servers, detects /var/log partition reaching 85% capacity on production server, analyses log files to identify rapid growth in application logs, automatically archives logs older than 30 days to S3 archival storage, compresses recent logs to free immediate space, updates log rotation policy to prevent recurrence, verifies disk usage reduced to 65%, and documents remediation actions in ServiceNow incident ticket"
