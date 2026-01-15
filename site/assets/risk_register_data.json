@@ -25,7 +25,7 @@
           "id": "CTRL-0002",
           "level": 0,
           "statement": "Obtain legally binding no-training and no-logging agreements from LLM API service providers",
-          "recommendations": "",
+          "recommendations": "Configure API settings to opt out of data logging and model training where available. Agencies must review provider terms of service and data processing agreements to verify these protections are legally enforceable, ensuring alignment with Government Instruction Manual requirements, PDPA, and data residency requirements for citizen data. For GCC-hosted AI services, verify that Microsoft/AWS/Google enterprise agreements include appropriate no-training provisions for government data. Maintain records of these agreements and configurations for audit and compliance purposes.",
           "references": []
         },
         {
@@ -1495,21 +1495,21 @@
     "total_controls": 89,
     "total_elements": 19,
     "categories": [
-      "Capability - Operational",
       "Component - LLM",
-      "Design - Monitoring and Traceability",
       "Capability - Interaction",
-      "Capability - Cognitive",
-      "Design - Agentic Architecture",
       "Component - Tools",
+      "Component - Memory",
+      "Design - Agentic Architecture",
+      "Capability - Operational",
+      "Design - Monitoring and Traceability",
       "Design - Roles and Access Controls",
       "Component - Instructions",
-      "Component - Memory"
+      "Capability - Cognitive"
     ],
     "failure_modes": [
       "Tool or Resource Malfunction",
-      "External Manipulation",
-      "Agent Failure"
+      "Agent Failure",
+      "External Manipulation"
     ],
     "risk_types": [
       "Safety",
