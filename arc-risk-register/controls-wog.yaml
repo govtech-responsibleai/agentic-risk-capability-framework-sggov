@@ -1,0 +1,832 @@
+CTRL-0001:
+  level: 0
+  risks:
+  - RISK-001
+  statement: Use only LLMs from verified and trusted model developers
+  recommendations: Untrusted or unknown model developers may introduce backdoors, data exfiltration risks, or inconsistent safety guarantees that compromise your agentic system. Establish evaluation criteria to assess model provider trustworthiness before adoption, including verification of published model cards, transparent responsible disclosure policies, evidence of security audits, and documented data handling practices. Evaluate whether the provider has an established track record, active security team, and clear incident response procedures. Regularly reassess providers against these criteria as new information emerges or the threat landscape evolves.
+  wog_recommendation: Untrusted or unknown model developers may introduce backdoors, data exfiltration risks, or inconsistent safety guarantees. Agencies should prioritise LLMs available through GovTech's LLMaaS platform or approved GCC AI services (Azure OpenAI, GCP) which have undergone security assessment. For models outside these platforms, establish evaluation criteria including verification of published model cards, transparent responsible disclosure policies, evidence of security audits, and documented data handling practices. Evaluate whether the provider has an established track record, active security team, and clear incident response procedures. Maintain a register of approved model providers and versions for agency use, and regularly reassess providers as the threat landscape evolves.
+  references: null
+
+CTRL-0002:
+  level: 0
+  risks:
+  - RISK-001
+  statement: Obtain legally binding no-training and no-logging agreements from LLM API service providers
+  recommendations: Without contractual protections, API providers may train models on your proprietary data or retain logs containing sensitive information, creating data leakage and compliance risks. Configure API settings to opt out of data logging and model training where available, and have your legal team review provider terms of service and data processing agreements to verify these protections are legally enforceable. Ensure alignment with your organisation's data governance and privacy requirements (e.g., GDPR, PDPA). Maintain records of these agreements and configurations for audit and compliance purposes.
+  wog_recommendation: Without contractual protections, API providers may train models on government data or retain logs containing sensitive citizen information, creating data leakage and compliance risks. Configure API settings to opt out of data logging and model training where available. Agencies must review provider terms of service and data processing agreements to verify these protections are legally enforceable, ensuring alignment with Government Instruction Manual requirements, PDPA, and data residency requirements for citizen data. For GCC-hosted AI services, verify that Microsoft/AWS/Google enterprise agreements include appropriate no-training provisions for government data. Maintain records of these agreements and configurations for audit and compliance purposes.
+  references: null
+
+CTRL-0003:
+  level: 1
+  risks:
+  - RISK-001
+  statement: Use only established and verified model loaders in production environments
+  recommendations: Malicious or unvetted model loaders may execute arbitrary code during model deserialisation, potentially introducing backdoors or system vulnerabilities. Use well-maintained, community-vetted model loading libraries with active security support and regular updates. Examples include Hugging Face Transformers, vLLM, or official framework loaders (PyTorch, TensorFlow), whilst avoiding custom or unmaintained deserialisation code. Monitor for security advisories affecting your chosen loaders and apply patches promptly.
+  wog_recommendation: Malicious or unvetted model loaders may execute arbitrary code during model deserialisation, potentially introducing backdoors or system vulnerabilities. Agencies should use GovTech's LLMaaS platform where possible, which abstracts away model loading concerns. For agencies self-hosting models, use well-maintained, community-vetted model loading libraries (e.g., Hugging Face Transformers, vLLM, PyTorch, TensorFlow) and avoid custom or unmaintained deserialisation code. Prefer models distributed in safetensors format over pickle-based formats. If loading pickle-based models is necessary, scan model files using tools such as ProtectAI ModelScan or picklescan before deployment, recognising these tools have known bypass techniques. Maintain approved models in an internal registry (e.g., AWS ECR, Azure Container Registry) rather than auto-downloading from external sources at runtime. Monitor for security advisories affecting chosen loaders and apply patches promptly.
+  references: null
+
+CTRL-0004:
+  level: 2
+  risks:
+  - RISK-002
+  - RISK-003
+  statement: Review the LLM's system card to inform risk assessment and model selection
+  recommendations: System cards provide essential information about model capabilities, limitations, known failure modes, and safety evaluations that directly inform deployment decisions. Obtain and review the model's system card (or model card) before deployment, paying particular attention to documented risks, benchmark performance on safety evaluations, and limitations relevant to your use case. Use this information to identify potential misalignment between model behaviour and your application requirements, and to inform additional safeguards or testing strategies. If a system card is unavailable or incomplete, consider this a red flag when assessing provider trustworthiness.
+  wog_recommendation: System cards provide essential information about model capabilities, limitations, known failure modes, and safety evaluations that directly inform deployment decisions. Obtain and review the model's system card before deployment, paying particular attention to documented risks, benchmark performance on safety evaluations, and limitations relevant to your use case. For citizen-facing applications, pay particular attention to documented limitations around multi-lingual support (English, Mandarin, Malay, Tamil) and cultural context relevant to Singapore. Use this information to identify potential misalignment between model behaviour and application requirements, and to inform additional safeguards or testing strategies. If a system card is unavailable or incomplete, consider this a red flag when assessing provider trustworthiness. Document system card review as part of the agency's risk assessment process for audit purposes.
+  references: null
+
+CTRL-0005:
+  level: 0
+  risks:
+  - RISK-002
+  - RISK-003
+  statement: Conduct structured evaluation of multiple LLMs for instruction-following, performance, and safety before deployment
+  recommendations: Deploying an LLM without comparative evaluation risks selecting a model poorly suited to your use case, potentially resulting in safety issues, poor performance, or misaligned behaviour. Define evaluation criteria aligned with your application requirements (e.g., accuracy on domain-specific tasks, refusal of unsafe requests, consistency of outputs) and benchmark multiple candidate models against these criteria using representative test scenarios. Use both automated metrics and human evaluation to assess instruction-following quality, safety boundaries, and failure modes. Document evaluation results to support model selection decisions and establish baseline performance expectations for ongoing monitoring.
+  wog_recommendation: Deploying an LLM without comparative evaluation risks selecting a model poorly suited to your use case, potentially resulting in safety issues, poor performance, or misaligned behaviour. Define evaluation criteria aligned with application requirements (e.g., accuracy on domain-specific tasks, refusal of unsafe requests, consistency of outputs) and benchmark candidate models using representative test scenarios. Agencies should use GovTech's Litmus platform to conduct automated safety and security testing, which integrates with CI/CD pipelines to enable continuous testing on code changes. Supplement automated testing with evaluation datasets that include use case-specific scenarios such as multilingual citizen service interactions and sensitive topics (race, religion, politics) to ensure appropriate handling of edge cases. Document evaluation results to support model selection decisions and establish baseline performance expectations for ongoing monitoring.
+  references: null
+
+CTRL-0006:
+  level: 1
+  risks:
+  - RISK-001
+  - RISK-002
+  - RISK-003
+  - RISK-019
+  - RISK-020
+  statement: Require human approval before executing high-impact actions
+  recommendations: Autonomous execution of high-impact actions without human oversight creates unacceptable risk of unintended consequences, including financial loss, data deletion, reputational damage, or safety incidents. Implement approval workflows that pause agent execution before critical actions (e.g., financial transactions, data deletion, external communications, system configuration changes) and present the proposed action with sufficient context for informed human decision-making. Design the approval interface to clearly display what will be executed, why the agent selected this action, and potential consequences. Ensure approval mechanisms cannot be bypassed by the agent and maintain audit logs of all approval decisions.
+  wog_recommendation: Autonomous execution of high-impact actions without human oversight creates unacceptable risk of unintended consequences, including financial loss, data deletion, reputational damage, or safety incidents. Implement approval workflows that pause agent execution before critical actions (e.g., financial transactions, data deletion, external communications, system configuration changes) and present the proposed action with sufficient context for informed human decision-making. Agencies must align human approval thresholds with existing delegation of authority matrices. Statutory duties conferred on agencies or officers by legislation must remain with human decision-makers and cannot be delegated to AI agents. For financial transactions, ensure approval workflows respect Financial Procedure Act requirements. For citizen communications, require officer approval before sending official notices or decisions. Design the approval interface to clearly display what will be executed, why the agent selected this action, and potential consequences. Ensure approval mechanisms cannot be bypassed by the agent, integrate with existing agency case management systems where applicable, and maintain audit logs of all approval decisions.
+  references: null
+
+CTRL-0007:
+  level: 0
+  risks:
+  - RISK-001
+  - RISK-002
+  - RISK-003
+  statement: Log all LLM inputs and outputs for regular review
+  recommendations: Comprehensive logging enables post-incident analysis, safety monitoring, detection of adversarial inputs, and continuous improvement of LLM behaviour over time. Implement structured logging that captures all LLM inputs, outputs, timestamps, model versions, and relevant metadata (user ID, session ID, tool calls). Use a centralised logging system (e.g., ELK stack, Datadog, CloudWatch) with appropriate retention policies and access controls to protect sensitive data. Establish regular review processes—manual spot-checks or automated anomaly detection—to identify drift, unsafe outputs, or emerging failure patterns.
+  wog_recommendation: Comprehensive logging enables post-incident analysis, safety monitoring, detection of adversarial inputs, and continuous improvement of LLM behaviour over time. Agencies should log both system health metrics (resource usage, error rates, availability) and agent performance metrics (LLM inputs/outputs, tool calls, decision traces, timestamps, model versions) to enable comprehensive monitoring. For agent-specific observability, consider self-hostable tools such as Langfuse or Arize Phoenix that can be deployed on GCC to maintain data sovereignty. Leverage GCC logging infrastructure for centralised log management with appropriate retention policies and access controls. Ensure logging configuration complies with IM8 audit logging requirements. For applications processing citizen data, implement log redaction to mask NRIC numbers and other PII while preserving operational visibility. Establish regular review processes—manual spot-checks or automated anomaly detection—to identify drift, unsafe outputs, or emerging failure patterns. Consider integration with central platforms like StackOps, WOGAA, and ABLR for logging analytics.
+  references: null
+
+CTRL-0008:
+  level: 1
+  risks:
+  - RISK-002
+  - RISK-022
+  statement: Implement automated alerts when agent behaviour drifts from predefined thresholds
+  recommendations: Behavioural drift may indicate model degradation, adversarial manipulation, or emergent unsafe patterns that require immediate investigation. Define baseline metrics for expected agent behaviour (e.g., tool usage patterns, response times, error rates, decision distributions) and establish acceptable variance thresholds based on your risk tolerance. Implement monitoring systems that continuously track these metrics and trigger alerts when deviations exceed thresholds, enabling rapid response to anomalies. Configure alerts to include sufficient diagnostic context (timestamp, affected sessions, deviation magnitude) and establish clear escalation procedures for investigating and remediating drift incidents.
+  wog_recommendation: Behavioural drift may indicate model degradation, adversarial manipulation, or emergent unsafe patterns that require immediate investigation. Define baseline metrics for expected agent behaviour (e.g., tool usage patterns, response times, error rates, decision distributions) and establish acceptable variance thresholds based on risk tolerance. Implement monitoring systems that continuously track these metrics and trigger alerts when deviations exceed thresholds. Consider Datadog LLM Observability or Grafana Cloud for managed solutions, or self-hostable options like Langfuse, Arize Phoenix, or Grafana OSS for data sovereignty on GCC. Configure alerts to include sufficient diagnostic context (timestamp, affected sessions, deviation magnitude) and notify both technical teams and service owners. For citizen-facing services, consider alerting on changes in citizen satisfaction metrics or complaint patterns. Integrate alerts with agency incident management processes and establish clear escalation procedures, including escalation paths to necessary support.
+  references: null
+
+CTRL-0009:
+  level: 0
+  risks:
+  - RISK-004
+  statement: Use only MCP servers that implement robust authentication mechanisms in production environments
+  recommendations: Weak or misconfigured authorisation in MCP servers can lead to unauthorised access, token theft, or privilege escalation that compromises connected systems. Verify that MCP servers implement modern OAuth standards (OAuth 2.1 or OAuth 2.0 with PKCE) before deployment, ensuring they enforce per-client consent flows, scope restrictions, and redirect URI validation to prevent authorisation bypasses. Review the server's authentication documentation and test authorisation flows in a development environment to confirm proper implementation. Reject MCP servers that use deprecated authentication methods, hard-coded credentials, or insufficient session management.
+  wog_recommendation: Use MCP servers listed in GovTech's MCP Registry where available, as these have undergone appropriate review. If a server is not listed, agencies must perform the full authentication verification and validation below and document evidence of compliance before use. Verify that MCP servers implement modern OAuth standards (OAuth 2.1 or OAuth 2.0 with PKCE) before deployment, ensuring they enforce per-client consent flows, scope restrictions, and redirect URI validation to prevent authorisation bypasses. Review the server's authentication documentation and test authorisation flows in a development environment to confirm proper implementation. Reject MCP servers that use deprecated authentication methods, hard-coded credentials, or insufficient session management. Ensure MCP servers integrate with government identity infrastructure where appropriate, such as WOG AD for internal applications, and Singpass or CorpPass for citizen-facing services.
+  references:
+  - https://modelcontextprotocol.io/specification/draft/basic/security_best_practices
+
+CTRL-0010:
+  level: 1
+  risks:
+  - RISK-004
+  statement: Use only MCP servers that validate credentials on every inbound request
+  recommendations: Relying on session state or connection-based authentication without per-request validation creates vulnerability to session hijacking, token replay attacks, and unauthorised access after initial authentication. Verify that MCP servers implement stateless authentication by validating credentials (e.g., OAuth tokens, API keys) on every single request rather than caching authorisation decisions based on connection or session state. Test this behaviour by monitoring whether the server accepts requests with expired, revoked, or missing credentials after an initial successful authentication. Ensure the server responds with appropriate HTTP 401 errors when credentials are invalid, expired, or absent, forcing re-authentication rather than relying on stale authorisation state.
+  wog_recommendation: Verify that MCP servers implement stateless authentication by validating credentials (e.g., OAuth tokens, API keys) on every single request rather than caching authorisation decisions. Test this behaviour by monitoring whether the server accepts requests with expired, revoked, or missing credentials after an initial successful authentication. Ensure the server responds with appropriate HTTP 401 errors when credentials are invalid, expired, or absent. Agencies should test MCP server credential validation behaviour before deployment, particularly for tools accessing citizen data. Ensure that when officer access is revoked (e.g., role change, termination), the MCP server immediately stops accepting requests with that officer's credentials. Document validation testing as part of security assessment.
+  references:
+  - https://modelcontextprotocol.io/specification/draft/basic/security_best_practices
+
+CTRL-0011:
+  level: 0
+  risks:
+  - RISK-005
+  statement: Limit token scopes to the minimum privileges required and avoid broad or wildcard scopes
+  recommendations: Overly broad token scopes enable compromised or malicious actors to access resources beyond what is necessary for legitimate operations, amplifying the impact of security breaches. Define granular, task-specific scopes for each MCP server integration and request only the minimum permissions required for the intended functionality (e.g., "read:inventory" rather than "admin:*"). Review and document the justification for each requested scope during integration, and reject MCP servers that require unnecessarily broad permissions or fail to support fine-grained scope definitions. Periodically audit active token scopes to identify and revoke excessive permissions that may have accumulated over time.
+  wog_recommendation: Define granular, task-specific scopes for each MCP server integration and request only the minimum permissions required for the intended functionality (e.g., "read:inventory" rather than "admin:*"). Agencies should apply the principle of least privilege aligned with IM8 access control requirements. Use ephemeral or time-bound credentials where possible rather than long-lived API keys—consider workload identity federation mechanisms (AWS IRSA, Azure/GCP Workload Identity) to obtain short-lived, narrowly-scoped credentials just-in-time. Document scope justifications as part of application security documentation. For tools accessing multiple agency APIs through central API gateways like APEX, ensure each API connection uses appropriately scoped credentials rather than broad cross-agency access tokens. Periodically audit active token scopes to identify and revoke excessive permissions.
+  references:
+  - https://modelcontextprotocol.io/specification/draft/basic/security_best_practices
+
+CTRL-0012:
+  level: 2
+  risks:
+  - RISK-005
+  statement: Use only MCP servers that integrate with authorisation servers implementing per-client consent mechanisms
+  recommendations: Without explicit per-client consent, a malicious or compromised client could abuse delegated permissions to access resources the user never intended to authorise for that specific application. Verify that MCP servers integrate with OAuth 2.1 authorisation servers that implement per-client consent flows, where users explicitly approve each client-permission combination rather than granting blanket permissions across all clients. The authorisation server should clearly identify the requesting client and display what data or actions are being requested during the consent flow. Ensure the authorisation server persists consent decisions and provides mechanisms for users to review and revoke previously granted permissions.
+  wog_recommendation: Verify that MCP servers integrate with OAuth 2.1 authorisation servers that implement per-client consent flows, where users explicitly approve each client-permission combination rather than granting blanket permissions. The authorisation server should clearly identify the requesting client and display what data or actions are being requested during the consent flow. Ensure the authorisation server persists consent decisions and provides mechanisms to review and revoke previously granted permissions.
+  references:
+  - https://modelcontextprotocol.io/specification/2025-03-26/basic/authorization
+  - https://aaronparecki.com/2025/11/25/1/mcp-authorization-spec-update
+  - https://stytch.com/blog/mcp-authentication-and-authorization-servers/
+
+CTRL-0013:
+  level: 0
+  risks:
+  - RISK-006
+  statement: Test all untested MCP servers in a sandboxed environment before deploying to production
+  recommendations: Untested MCP servers may contain vulnerabilities, malicious code, or unexpected behaviours that could compromise your production systems or data. Deploy MCP servers first to an isolated sandbox environment (e.g., containerised test environment, separate network segment, or dedicated development infrastructure) to evaluate their security posture, behaviour, and reliability. Monitor server activity during testing for anomalous network connections, excessive resource consumption, unauthorised file access, or other suspicious behaviours. Only promote MCP servers to production after successful security review, functional testing, and verification that the server behaves as documented.
+  wog_recommendation: Untested MCP servers may contain vulnerabilities, malicious code, or unexpected behaviours that could compromise production systems or data. Deploy MCP servers first to an isolated sandbox environment (e.g., containerised test environment, separate network segment) to evaluate their security posture, behaviour, and reliability. Monitor server activity during testing for anomalous network connections, excessive resource consumption, unauthorised file access, or other suspicious behaviours. Agencies should use GCC development/staging environments for MCP server testing before production deployment. Leverage SHIP-HATS for security scanning of MCP server code and dependencies, including static and dynamic analysis in quarantine environments. For third-party or open-source MCP servers, conduct testing in isolated environments that do not have access to production citizen data or government systems. Only promote MCP servers to production after successful security review and functional testing.
+  references:
+  - https://modelcontextprotocol.io/specification/draft/basic/security_best_practices
+
+CTRL-0014:
+  level: 0
+  risks:
+  - RISK-006
+  statement: Use only MCP servers from verified and trusted developers
+  recommendations: Untrusted or unknown MCP server developers may introduce malicious functionality, security vulnerabilities, or data exfiltration mechanisms that compromise your agentic system. Establish evaluation criteria to assess MCP server developer trustworthiness before adoption, including verification of public code repositories, community reputation, security disclosure practices, and maintenance history. Evaluate whether the developer has a track record of responding to security issues, maintains active development, and provides transparent documentation of server capabilities. Prioritise MCP servers from the official Model Context Protocol repository, well-established organisations, or developers with verified identities and demonstrated security practices.
+  wog_recommendation: Untrusted or unknown MCP server developers may introduce malicious functionality, security vulnerabilities, or data exfiltration mechanisms that compromise your agentic system. Use only pre-approved MCP servers from GovTech's MCP Registry where available. For MCP servers outside the registry, establish evaluation criteria including verification of public code repositories, community reputation, security disclosure practices, and maintenance history. Prioritise MCP servers developed by GovTech or approved government technology partners, or from the official Model Context Protocol repository and well-established organisations. For open-source MCP servers, evaluate repository activity, contributor reputation, and security track record before adoption. Include MCP server provenance in application security documentation.
+  references:
+  - https://modelcontextprotocol.io/specification/draft/basic/security_best_practices
+
+CTRL-0015:
+  level: 1
+  risks:
+  - RISK-007
+  statement: Treat all tool metadata and outputs as untrusted input requiring validation
+  recommendations: Tool metadata (descriptions, parameter names, schema definitions) can contain prompt injection attacks that manipulate agent behaviour even without tool invocation, whilst tool outputs may contain malicious content designed to compromise downstream systems. Validate and sanitise all tool metadata before exposing it to the LLM, treating tool descriptions with the same scrutiny as external user input and implementing content filtering to detect embedded instructions or adversarial prompts. Apply strict schema validation to tool outputs and sanitise responses before using them in prompts, displaying them to users, or passing them to other systems. Implement monitoring and logging of tool metadata and outputs to enable detection of injection attempts and post-incident analysis of compromised tool behaviour.
+  wog_recommendation: Tool metadata (descriptions, parameter names, schema definitions) can contain prompt injection attacks that manipulate agent behaviour, whilst tool outputs may contain malicious content designed to compromise downstream systems. Validate and sanitise all tool metadata before exposing it to the LLM, treating tool descriptions with the same scrutiny as external user input and implementing content filtering to detect embedded instructions or adversarial prompts. Enforce strict schema validation (e.g., JSON Schema) for tool outputs and sanitise responses before using them in prompts, displaying them to users, or passing them to other systems. Agencies should implement input validation for all tool outputs before incorporating them into agent responses, particularly for tools that process citizen-submitted data or retrieve information from external sources. Use SHIP-HATS security scanning tools to identify potential injection vulnerabilities in tool integration code. Implement monitoring and logging of tool metadata and outputs to enable detection of injection attempts.
+  references:
+  - https://embracethered.com/blog/posts/2025/model-context-protocol-security-risks-and-exploits/
+  - https://simonwillison.net/2025/Apr/9/mcp-prompt-injection/
+  - https://www.practical-devsecops.com/mcp-security-vulnerabilities/
+
+CTRL-0016:
+  level: 0
+  risks:
+  - RISK-008
+  statement: Define clearly the agent's role, scope, and non-goals in the system prompt
+  recommendations: Ambiguous or missing role definitions allow agents to interpret requests too broadly, potentially executing actions outside intended boundaries or misunderstanding their authority and constraints. Explicitly define the agent's purpose, permitted actions, and operational boundaries in the system prompt, including clear statements about what the agent should not do or attempt. Document specific examples of in-scope and out-of-scope behaviours to reduce ambiguity and guide the agent's decision-making in edge cases. Regularly review and refine these definitions based on observed agent behaviour, ensuring role boundaries remain aligned with evolving use cases and risk tolerances.
+  wog_recommendation: Explicitly define the agent's purpose, permitted actions, and operational boundaries in the system prompt, including clear statements about what the agent should not do or attempt. Agencies should define agent roles aligned with public service values and agency-specific missions, with multi-objective success criteria including safety and security considerations. Include clear instructions about when to escalate to human officers and what constitutes out-of-scope requests (e.g., requests outside the agent's designated function or agency mandate). Document specific examples of in-scope and out-of-scope behaviours to reduce ambiguity. Document role definitions as part of application documentation for audit and review purposes. Regularly review and refine these definitions based on observed agent behaviour.
+  references: null
+
+CTRL-0017:
+  level: 1
+  risks:
+  - RISK-008
+  statement: Define clear success criteria for the agent's tasks
+  recommendations: Without explicit success criteria, agents may pursue task completion using inappropriate methods, over-optimise for partial objectives, or fail to recognise when they have achieved the intended outcome. Define measurable, verifiable success criteria for each task or category of tasks the agent performs, specifying both what constitutes successful completion and acceptable quality standards. Include criteria that address not just functional outcomes but also safety constraints, resource limits, and acceptable trade-offs. Regularly evaluate whether the agent's interpretation of success criteria aligns with intended outcomes and refine definitions to address observed gaps or misalignments.
+  wog_recommendation: Without explicit success criteria, agents may pursue task completion using inappropriate methods, over-optimise for partial objectives, or fail to recognise when they have achieved the intended outcome. Define measurable, verifiable success criteria for each task or category of tasks the agent performs, specifying both what constitutes successful completion and acceptable quality standards. Include criteria that address not just functional outcomes but also safety constraints, resource limits, and acceptable trade-offs. Agencies should define success criteria that balance efficiency with public service quality. For citizen-facing agents, success should include citizen satisfaction and appropriate handling of edge cases, not just transaction completion rates. Ensure success criteria align with agency service level agreements and do not incentivise agents to rush through complex citizen enquiries. Regularly evaluate whether the agent's interpretation of success criteria aligns with intended outcomes and refine definitions to address observed gaps.
+  references: null
+
+CTRL-0018:
+  level: 2
+  risks:
+  - RISK-008
+  statement: Define default behaviour when the agent encounters ambiguous situations
+  recommendations: Agents encountering ambiguous instructions without clear fallback behaviour may make incorrect assumptions, proceed with risky actions, or halt unexpectedly, reducing reliability and increasing safety risks. Establish a default policy for handling ambiguity that aligns with your risk tolerance, such as requesting human clarification, selecting the most conservative option, or declining to act until uncertainty is resolved. Document this policy in the system prompt and provide examples of ambiguous scenarios to guide agent decision-making. Monitor how often the agent invokes ambiguity handling mechanisms to identify areas where task definitions or instructions require clarification.
+  wog_recommendation: Agents encountering ambiguous instructions without clear fallback behaviour may make incorrect assumptions, proceed with risky actions, or halt unexpectedly, reducing reliability and increasing safety risks. Establish a default policy for handling ambiguity that aligns with your risk tolerance. For government agents, the default behaviour for ambiguous situations should generally be to escalate to human officers rather than making assumptions—this is particularly important for agents handling statutory functions, eligibility determinations, or citizen complaints where incorrect assumptions could cause harm or violate regulations. Document this policy in the system prompt and provide examples of ambiguous scenarios to guide agent decision-making. Monitor how often the agent invokes ambiguity handling mechanisms to identify areas where task definitions or instructions require clarification.
+  references: null
+
+CTRL-0019:
+  level: 0
+  risks:
+  - RISK-009
+  statement: Use delimiters to enclose untrusted inputs and instruct the LLM to treat delimited content as data only
+  recommendations: Prompt injection attacks exploit LLMs' inability to distinguish between instructions and data, allowing malicious users to embed commands within input that override intended behaviour. Implement delimiter-based input segregation by enclosing all untrusted content (user inputs, external data, tool outputs) within clearly marked boundaries (e.g., XML tags, triple quotes, special markers) and explicitly instructing the LLM to treat delimited content as data rather than instructions. Use consistent, distinctive delimiters that are unlikely to appear naturally in user input and reinforce the delimiter policy throughout the system prompt. Whilst delimiters provide some protection, this is not a complete defence and should be combined with other prompt injection mitigations such as input validation and output monitoring.
+  wog_recommendation: Prompt injection attacks exploit LLMs' inability to distinguish between instructions and data, allowing malicious users to embed commands within input that override intended behaviour. Implement delimiter-based input segregation by enclosing all untrusted content (user inputs, external data, tool outputs) within clearly marked boundaries (e.g., XML tags, triple quotes) and explicitly instructing the LLM to treat delimited content as data rather than instructions. Use consistent, distinctive delimiters that are unlikely to appear naturally in user input. Agencies should implement delimiter-based input segregation for citizen-submitted content and data from external non-government sources. Document the delimiter strategy as part of application security design and test delimiter effectiveness against known prompt injection patterns. Whilst delimiters provide some protection, this is not a complete defence and should be combined with other prompt injection mitigations such as input validation and output monitoring.
+  references: null
+
+CTRL-0020:
+  level: 2
+  risks:
+  - RISK-009
+  statement: Use a dedicated LLM to extract required fields from inputs and filter out extraneous text or embedded instructions
+  recommendations: Using the same LLM for both input processing and task execution creates vulnerability to prompt injection attacks embedded in user input. Deploy a separate LLM instance configured specifically for input sanitisation, with explicit instructions to extract only designated fields (e.g., name, email, query text) whilst ignoring any other content including embedded commands or meta-instructions. Configure this extraction LLM with a restrictive system prompt focused solely on structured data extraction and validation against expected schemas. Validate extracted fields against expected formats before passing them to the main agent LLM, and monitor extraction outputs for anomalies that might indicate injection attempts.
+  wog_recommendation: Using the same LLM for both input processing and task execution creates vulnerability to prompt injection attacks embedded in user input. For high-risk applications processing citizen-submitted content (e.g., appeals, complaints, applications), agencies should consider implementing a separate input sanitisation layer using a dedicated LLM instance configured specifically for input sanitisation, with explicit instructions to extract only designated fields whilst ignoring embedded commands or meta-instructions. Configure this extraction LLM with a restrictive system prompt focused solely on structured data extraction and validation against expected schemas. This is particularly important for applications that incorporate citizen-provided text into system prompts or use it to make eligibility determinations. Validate extracted fields against expected formats before passing them to the main agent LLM, and monitor extraction outputs for anomalies that might indicate injection attempts.
+  references: null
+
+CTRL-0021:
+  level: 0
+  risks:
+  - RISK-010
+  - RISK-011
+  statement: Implement allowlists and denylists to restrict what categories of information can be written to agent memory
+  recommendations: Unrestricted memory writes enable attackers to poison agent memory with malicious instructions, false information, or sensitive data that could compromise future agent behaviour or leak confidential information. Define explicit allowlists of permitted memory categories (e.g., user preferences, conversation context, task history) and denylists of forbidden content (e.g., credentials, system instructions, security policies, prompt overrides). Enforce these restrictions at the memory write interface, validating all write operations against the defined policies before persisting data.
+  wog_recommendation: Unrestricted memory writes enable attackers to poison agent memory with malicious instructions, false information, or sensitive data that could compromise future agent behaviour or leak confidential information. Define explicit allowlists of permitted memory categories (e.g., user preferences, conversation context, task history) and denylists of forbidden content (e.g., credentials, system instructions, security policies, prompt overrides). Enforce these restrictions at the memory write interface, validating all write operations against the defined policies before persisting data. Agencies should implement strict controls on agent memory to prevent storage of citizen PII beyond what is necessary for the current session. Denylist categories should include NRIC numbers, financial details, medical information, and other sensitive data unless explicitly required for the agent's function. Document memory policies as part of application data protection design.
+  references: null
+
+CTRL-0022:
+  level: 1
+  risks:
+  - RISK-010
+  statement: Implement content filtering on memory writes to detect and block known unsafe content patterns
+  recommendations: Malicious actors may attempt to inject adversarial content into agent memory that bypasses category-based restrictions, such as jailbreak prompts, command injection templates, or social engineering content designed to manipulate future agent behaviour. Deploy content filtering mechanisms that scan all memory write operations for known unsafe patterns (e.g., jailbreak strings, tool invocation templates, prompt override attempts, phishing content) before persisting data. Implement filtering using prompt injection detectors (to detect jailbreak strings) or custom classifiers finetuned on specific risks (e.g. attempts to invoke tools maliciously).
+  wog_recommendation: Malicious actors may attempt to inject adversarial content into agent memory that bypasses category-based restrictions, such as jailbreak prompts, command injection templates, or social engineering content designed to manipulate future agent behaviour. Deploy content filtering mechanisms that scan all memory write operations for known unsafe patterns (e.g., jailbreak strings, tool invocation templates, prompt override attempts) before persisting data. Implement filtering using prompt injection detectors or custom classifiers—agencies can leverage GovTech's Sentinel guardrails-as-a-service for real-time content filtering and prompt injection detection. Agencies should also implement content filtering that detects attempts to inject false government policy information, incorrect eligibility rules, or misleading guidance into agent memory. This is particularly important for agents that learn from interactions or maintain knowledge bases that inform future responses.
+  references: null
+
+CTRL-0023:
+  level: 2
+  risks:
+  - RISK-010
+  - RISK-011
+  statement: Log all memory modifications with comprehensive source metadata for audit purposes
+  recommendations: Without detailed audit logs, detecting and investigating memory poisoning attacks becomes extremely difficult, preventing effective incident response and forensic analysis. Implement comprehensive logging for all memory write, update, and delete operations, capturing source metadata including timestamps, user or agent identity, session context, and the specific content being modified. Structure logs to enable correlation analysis, allowing security teams to trace how specific memory entries evolved over time and identify suspicious modification patterns. Store audit logs in a tamper-evident system separate from the agent's operational memory to prevent attackers from covering their tracks by deleting or modifying log entries.
+  wog_recommendation: Without detailed audit logs, detecting and investigating memory poisoning attacks becomes extremely difficult, preventing effective incident response and forensic analysis. Implement comprehensive logging for all memory write, update, and delete operations, capturing source metadata including timestamps, user or agent identity, session context, and the specific content being modified. Structure logs to enable correlation analysis, allowing security teams to trace how specific memory entries evolved over time and identify suspicious modification patterns. Store audit logs in a tamper-evident system separate from the agent's operational memory. Agencies should ensure memory modification logs comply with IM8 audit logging requirements and Government Instruction Manual retention policies. Logs should capture sufficient detail to support incident investigation and respond to audit queries about how agent knowledge or behaviour changed over time.
+  references: null
+
+CTRL-0024:
+  level: 0
+  risks:
+  - RISK-012
+  - RISK-022
+  statement: Define formal schemas for inter-agent messages and validate all messages against these schemas before processing
+  recommendations: Unstructured or inadequately validated inter-agent messages create vulnerability to injection attacks, misinterpretation, and parsing errors that could compromise agent behaviour or cascade through multi-agent systems. Define explicit message schemas using formal specification languages (e.g., JSON Schema, Protobuf, OpenAPI) that specify required fields, data types, validation rules, and permitted value ranges for all agent-to-agent communications. Implement strict input validation that verifies all incoming messages conform to expected schemas, checking field presence, data types, value ranges, and structural integrity before processing message content. Reject messages that are incomplete, contain unexpected fields, violate type constraints, or include suspicious patterns, returning explicit error responses to the sending agent and logging validation failures to enable detection of compromised or malfunctioning agents.
+  wog_recommendation: Unstructured or inadequately validated inter-agent messages create vulnerability to injection attacks, misinterpretation, and parsing errors that could compromise agent behaviour or cascade through multi-agent systems. Define explicit message schemas using formal specification languages (e.g., JSON Schema, Protobuf) that specify required fields, data types, validation rules, and permitted value ranges. Implement strict input validation that verifies all incoming messages conform to expected schemas before processing. Reject messages that are incomplete, contain unexpected fields, or violate type constraints. Agents shall follow the A2A specification and minimally include an AgentCard, AgentExecutor, and A2A server. Agents shall make their AgentCard discoverable at the standard location (/.well-known/agent-card.json) and register with the central WOG Agentry Registry. For multi-agent systems spanning agencies, coordinate on common message schemas aligned with existing government data standards.
+  references: null
+
+CTRL-0025:
+  level: 1
+  risks:
+  - RISK-012
+  - RISK-022
+  statement: Ensure all inter-agent communications are encrypted in transit and prohibit plaintext channels
+  recommendations: Unencrypted inter-agent communications expose sensitive data, credentials, and operational context to network-based attackers through eavesdropping or man-in-the-middle attacks. Ensure all agent-to-agent network communications use transport-layer encryption (minimum TLS 1.2, preferably TLS 1.3), including internal traffic within trusted network boundaries, as internal networks are increasingly targeted by sophisticated attackers. For protocol-based frameworks (e.g., A2A Protocol), verify that TLS is enabled by default; for application frameworks (e.g., LangGraph, CrewAI), configure deployment infrastructure to enforce HTTPS endpoints for all remote agent APIs. Configure agents to reject plaintext connections and verify certificates to prevent downgrade attacks or rogue agent impersonation, and regularly audit network traffic to detect agents attempting unencrypted communication.
+  wog_recommendation: Unencrypted inter-agent communications expose sensitive data, credentials, and operational context to network-based attackers through eavesdropping or man-in-the-middle attacks. Ensure all agent-to-agent network communications use transport-layer encryption (minimum TLS 1.2, preferably TLS 1.3), including internal traffic within trusted network boundaries. Configure agents to reject plaintext connections and verify certificates to prevent downgrade attacks or rogue agent impersonation. Agents shall validate other agents' identity via TLS. For highly sensitive data exchanged between agents, consider applying end-to-end encryption. Agencies must ensure inter-agent communications comply with IM8 encryption requirements. For agents communicating across agency boundaries or network segments within GCC, use TLS 1.3 where supported. Ensure certificate management follows government PKI standards where applicable.
+  references:
+  - https://a2aprotocol.ai/blog/2025-full-guide-a2a-protocol
+
+CTRL-0026:
+  level: 1
+  risks:
+  - RISK-013
+  statement: Require all agents to authenticate with verifiable, cryptographically signed identities before processing requests
+  recommendations: Without strong agent authentication, attackers can impersonate legitimate agents to gain unauthorised access, inject malicious commands, or exfiltrate sensitive data from multi-agent systems. Implement cryptographic identity verification using mechanisms such as mutual TLS (mTLS), signed JWTs, or certificate-based authentication to ensure each agent presents verifiable credentials before processing its requests. Configure the authentication system to validate that credentials are properly signed by a trusted authority, have not expired, and belong to the claimed agent identity. Reject unauthenticated requests immediately and log authentication failures to detect potential impersonation attempts or compromised agents attempting to bypass security controls. Both the A2A Protocol and LangGraph provide native support for cryptographic agent authentication through mTLS, OAuth 2.0, and JWT-based identity verification.
+  wog_recommendation: Agents shall declare the supported authentication methods (e.g., OAuth, OIDC) in the AgentCard per the A2A specification. Agencies should implement agent authentication that integrates with government identity infrastructure where appropriate. For inter-agency agent communications, coordinate with partner agencies on mutual authentication requirements. Without strong agent authentication, attackers can impersonate legitimate agents to gain unauthorised access, inject malicious commands, or exfiltrate sensitive data from multi-agent systems. Implement cryptographic identity verification using mechanisms such as mutual TLS (mTLS), signed JWTs, or certificate-based authentication to ensure each agent presents verifiable credentials before processing its requests. Configure the authentication system to validate that credentials are properly signed by a trusted authority, have not expired, and belong to the claimed agent identity. Document agent identity management as part of application security design.
+  references:
+  - https://developers.redhat.com/articles/2025/08/19/how-enhance-agent2agent-security
+  - https://a2a-protocol.org/latest/topics/enterprise-ready/
+  - https://blog.langchain.com/custom-authentication-and-access-control-in-langgraph/
+
+CTRL-0027:
+  level: 1
+  risks:
+  - RISK-013
+  statement: Implement circuit breakers to prevent cascading failures in multi-agent systems
+  recommendations: Without circuit breakers, failures in one agent can cascade through multi-agent systems, causing widespread outages, resource exhaustion, or degraded performance across interconnected agents. Implement circuit breaker patterns that monitor agent interactions and automatically halt requests to failing agents when error rates, timeouts, or response times exceed predefined thresholds. Configure circuit breakers with appropriate timeout values, retry limits, and failure thresholds based on your system's tolerance for latency and error rates.
+  wog_recommendation: Agencies should implement circuit breakers for multi-agent systems, particularly for high-stakes applications where hidden cascading failures could cause significant harm. Without circuit breakers, failures in one agent can cascade through multi-agent systems, causing degraded performance or incorrect outputs across interconnected agents. Implement circuit breaker patterns that monitor agent interactions and automatically halt requests to failing agents when error rates, timeouts, or response quality metrics exceed predefined thresholds. Configure circuit breakers with appropriate timeout values, retry limits, and failure thresholds based on your system's tolerance for errors. Configure circuit breakers to fail gracefully with appropriate handling rather than allowing failures to propagate silently across agent chains.
+  references:
+  - https://live.paloaltonetworks.com/t5/community-blogs/safeguarding-ai-agents-an-in-depth-look-at-a2a-protocol-risks/ba-p/1235996
+
+CTRL-0028:
+  level: 0
+  risks:
+  - RISK-014
+  statement: Continuously monitor multi-agent systems for cascade failure indicators
+  recommendations: Cascade failures can rapidly propagate through multi-agent systems, but early detection enables intervention before widespread system degradation occurs. Implement monitoring that tracks indicators of cascading failures including agent looping behaviour, repeated error patterns, diverging outputs across similar agents, and abnormal request rates between agents. Configure alerting thresholds that trigger when cascade indicators exceed acceptable levels, such as the same agent repeatedly calling the same endpoint, multiple agents simultaneously failing similar requests, or circular dependencies in agent communication patterns.
+  wog_recommendation: Inter-agent communications shall be monitored for anomalies. Cascade failures can rapidly propagate through multi-agent systems, but early detection enables intervention before widespread system degradation occurs. Implement monitoring that tracks indicators of cascading failures including agent looping behaviour, repeated error patterns, diverging outputs across similar agents, and abnormal request rates between agents. Configure alerting thresholds that trigger when cascade indicators exceed acceptable levels, such as the same agent repeatedly calling the same endpoint, multiple agents simultaneously failing similar requests, or circular dependencies in agent communication patterns. Agencies should configure monitoring dashboards that provide visibility into multi-agent workflow health. For whole-of-government service chains involving multiple agencies, coordinate monitoring approaches to enable rapid identification of which agency's agent is the source of cascade failures.
+  references:
+  - https://live.paloaltonetworks.com/t5/community-blogs/safeguarding-ai-agents-an-in-depth-look-at-a2a-protocol-risks/ba-p/1235996?utm_source=chatgpt.com
+
+CTRL-0029:
+  level: 1
+  risks:
+  - RISK-014
+  statement: Grant agents only the minimum permissions required for their designated tasks
+  recommendations: Excessive permissions enable compromised or malfunctioning agents to access sensitive resources, modify critical data, or perform actions beyond their intended scope, amplifying the impact of security breaches. Apply the principle of least privilege by defining granular permission sets for each agent based on its specific role and required operations, avoiding blanket administrative access or broad permission grants. Review agent permissions regularly to ensure they remain aligned with current responsibilities, revoking unnecessary access as agent roles evolve.
+  wog_recommendation: Authorisation shall be granular, with fine-grained, scoped tokens or credentials where possible (e.g., limiting agent's capabilities with OAuth scopes). Use ephemeral or time-bound credentials where possible and avoid long-lived API keys. Higher privilege operations shall require human-in-the-loop for approval. Excessive permissions enable compromised or malfunctioning agents to access sensitive resources, modify critical data, or perform actions beyond their intended scope. Apply the principle of least privilege by defining granular permission sets for each agent based on its specific role and required operations, avoiding blanket administrative access. Agencies must align with IM8 access control requirements. Document permission justifications for each agent and conduct regular access reviews. For agents accessing citizen data, ensure permissions are scoped to only the data categories required for the agent's specific function.
+  references: null
+
+CTRL-0030:
+  level: 1
+  risks:
+  - RISK-015
+  - RISK-016
+  statement: Assign each agent a unique, verifiable identity with no shared credentials
+  recommendations: Shared credentials prevent accurate attribution of agent actions, making it impossible to identify which agent performed unauthorised activities or to revoke access for compromised agents without affecting legitimate ones. Assign each agent instance a unique identity (e.g., service account, API key, certificate) that can be independently tracked, audited, and revoked without impacting other agents. Prohibit credential sharing between agents even when they perform similar functions, as unique identities enable granular access control and forensic analysis of agent behaviour. Emerging agentic IAM platforms, such as Amazon Bedrock AgentCore Identity, can help to provide purpose-built identity management for AI agents.
+  wog_recommendation: Agents shall not be responsible for obtaining or providing credentials—only authentication. Users shall be responsible for obtaining and delegating required credentials, such that all agent activities are explicitly tied to and auditable under a user's identity. Shared credentials prevent accurate attribution of agent actions, making it impossible to identify which agent performed unauthorised activities. Assign each agent instance a unique identity (e.g., service account, API key, certificate) that can be independently tracked, audited, and revoked without impacting other agents. Prohibit credential sharing between agents even when they perform similar functions. For agents operating on behalf of officers, ensure the officer's identity is captured in audit logs alongside the agent identity to enable accountability and support incident investigation.
+  references:
+  - https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/identity-overview.html
+
+CTRL-0031:
+  level: 1
+  risks:
+  - RISK-015
+  statement: Use only MCP servers that validate token provenance and prohibit unauthorised token passthrough
+  recommendations: Token passthrough is an anti-pattern where MCP servers accept tokens from clients without validating they were properly issued to the server, enabling malicious actors to use the server as a proxy for data exfiltration with stolen tokens. Verify that MCP servers validate the provenance of all tokens they receive, ensuring tokens are intended for that specific server by checking audience claims and preventing tokens from being blindly forwarded to third-party services. Reject MCP servers that implement token passthrough patterns, as they compromise incident investigation, access controls, and auditing capabilities by obscuring the true source of requests.
+  wog_recommendation: MCP Server shall validate that the provided access token is valid, that the audience matches the server, and that the scopes include the requested server actions. MCP Server shall use its own service credentials for downstream tool calls where possible to maintain service isolation. Token passthrough is an anti-pattern where MCP servers accept tokens from clients without validating they were properly issued to the server, enabling malicious actors to use the server as a proxy for data exfiltration. Verify that MCP servers validate the provenance of all tokens they receive by checking audience claims and preventing tokens from being blindly forwarded to third-party services. This is particularly important for MCP servers that access government APIs, as token passthrough could enable unauthorised access to citizen data or government systems.
+  references:
+  - https://modelcontextprotocol.io/specification/draft/basic/security_best_practices
+
+CTRL-0032:
+  level: 0
+  risks:
+  - RISK-004
+  - RISK-016
+  statement: Centralise observability data collection in a unified backend system
+  recommendations: Distributed observability data across disconnected systems prevents effective analysis of multi-agent workflows, obscuring failure patterns, performance bottlenecks, and security incidents that span multiple agents. Centralise collection of logs, metrics, and traces from all agents into a unified observability backend using standards-compliant protocols (e.g., OpenTelemetry) to enable correlation analysis across the entire agentic system. Configure agents to emit structured telemetry with consistent identifiers (agent IDs, session IDs, request IDs) that enable tracing requests across agent boundaries and reconstructing complete workflow execution paths.
+  wog_recommendation: Agentic systems must integrate distributed tracing via OpenTelemetry, provide comprehensive logging at both client and server, and expose operational metrics via Prometheus. All agent actions shall be comprehensively logged, including inputs and outputs, taskId, sessionId, agentId, and trace context. Log the entire agentic chain of events to the final output. Agents shall expose key operational metrics like error rates and latency. Distributed observability data across disconnected systems prevents effective analysis of multi-agent workflows. Centralise collection of logs, metrics, and traces into a unified observability backend to enable correlation analysis across the entire agentic system. Agencies should leverage GCC observability infrastructure for centralised log and metric collection. For multi-agency agent workflows, coordinate on correlation ID formats to enable end-to-end tracing across agency boundaries.
+  references: null
+
+CTRL-0033:
+  level: 0
+  risks:
+  - RISK-017
+  statement: Standardise trace attributes for agent operations using consistent semantic conventions
+  recommendations: Inconsistent or ad-hoc telemetry labelling prevents effective correlation of agent activities across multi-agent systems, making it difficult to debug failures, analyse performance, or investigate security incidents. Define and enforce standard semantic conventions for trace attributes across all agents, including mandatory fields such as agent identity, tool name, operation type, session identifiers, and correlation IDs. Adopt existing observability standards where available (e.g., OpenTelemetry semantic conventions) to ensure compatibility with industry-standard analysis tools and reduce implementation effort. Document attribute naming conventions, permitted values, and usage guidelines, and implement validation to ensure agents emit telemetry conforming to the standardised schema.
+  wog_recommendation: Inconsistent or ad-hoc telemetry labelling prevents effective correlation of agent activities across multi-agent systems, making it difficult to debug failures, analyse performance, or investigate security incidents. Define and enforce standard semantic conventions for trace attributes across all agents, including mandatory fields such as agent identity (agentId), tool name, operation type, session identifiers (sessionId, taskId), inputs and outputs, and correlation IDs (trace context). Adopt existing observability standards where available (e.g., OpenTelemetry semantic conventions) to ensure compatibility with industry-standard analysis tools. Agencies should adopt consistent trace attribute conventions for agentic applications to enable cross-agency troubleshooting and incident investigation. Document trace attribute standards as part of application integration specifications.
+  references: null
+
+CTRL-0034:
+  level: 0
+  risks:
+  - RISK-018
+  statement: Conduct regular reviews of logs and traces to detect emergent issues in deployed agentic systems
+  recommendations: Automated monitoring may miss subtle patterns, novel failure modes, or emergent behaviours that only become apparent through human analysis of observability data. Establish a regular cadence for manual review of logs, traces, and metrics from production agentic systems, focusing on identifying unusual patterns, unexpected agent interactions, or degrading performance trends that automated alerts might not detect. Assign responsibility for these reviews to teams with deep understanding of expected agent behaviour, empowering them to investigate anomalies and propose system improvements. Document findings from reviews and track identified issues to closure, using insights to refine monitoring rules, update agent implementations, or strengthen security controls based on observed real-world behaviour.
+  wog_recommendation: Automated monitoring may miss subtle patterns, novel failure modes, or emergent behaviours that only become apparent through human analysis of observability data. Establish a regular cadence for manual review of logs, traces, and metrics from production agentic systems, focusing on identifying unusual patterns, unexpected agent interactions, or degrading performance trends that automated alerts might not detect. Assign responsibility for these reviews to teams with deep understanding of expected agent behaviour, empowering them to investigate anomalies and propose system improvements. Agencies should establish regular log review processes for agentic applications, with review frequency aligned to the risk level of the application. For citizen-facing agents, consider weekly reviews during initial deployment, transitioning to monthly reviews once the system is stable. Document findings from reviews and track identified issues to closure for audit purposes.
+  references: null
+
+CTRL-0035:
+  level: 2
+  risks:
+  - RISK-017
+  - RISK-018
+  statement: Require agents to decompose user goals into explicit sub-goals and validate necessity before proceeding
+  recommendations: Agents that pursue goals without decomposition may execute unnecessary, excessive, or unintended actions that waste resources, violate constraints, or create unintended side effects. Configure planning agents to explicitly break down high-level user goals into discrete, verifiable sub-goals before executing any actions, and to validate that each sub-goal is necessary and sufficient for achieving the overall objective. Implement review mechanisms that require agents to justify the necessity of each sub-goal, either through automated reasoning checks or human approval for high-impact plans.
+  wog_recommendation: Agents that pursue goals without decomposition may execute unnecessary, excessive, or unintended actions that waste resources, violate constraints, or create unintended side effects. Configure planning agents to explicitly break down high-level user goals into discrete, verifiable sub-goals before executing any actions, and to validate that each sub-goal is necessary and sufficient for achieving the overall objective. Implement review mechanisms that require agents to justify the necessity of each sub-goal. For government agents handling complex citizen requests (e.g., grant applications, appeals), goal decomposition helps ensure all required verification steps are completed and provides an audit trail of the agent's reasoning. This supports accountability and enables officers to understand how the agent arrived at its recommendations.
+  references: null
+
+CTRL-0036:
+  level: 1
+  risks:
+  - RISK-019
+  statement: Regularly evaluate and test planning behaviour under representative workloads and failure scenarios
+  recommendations: Planning failures often emerge only under specific conditions, edge cases, or failure modes that may not be apparent during initial development or testing. Establish systematic testing programmes that evaluate agent planning behaviour across representative workloads, including normal scenarios, edge cases, adversarial inputs, and simulated failure conditions such as unavailable resources or degraded services. Document common planning pitfalls identified during testing (e.g., circular reasoning, goal abandonment, excessive retries) and implement targeted mitigations such as improved prompts, reasoning constraints, or circuit breakers. Continuously expand test scenarios based on observed production failures, ensuring the test suite evolves to cover newly discovered planning vulnerabilities.
+  wog_recommendation: Agents shall undergo behavioral testing with benchmark datasets and simulated environments. Agents shall undergo adversarial evaluation to detect specification gaming behaviour. System prompts shall be tested for efficacy through scenario-based evaluations. Planning failures often emerge only under specific conditions or edge cases that may not be apparent during initial development. Establish systematic testing programmes that evaluate agent planning behaviour across representative workloads, including normal scenarios, edge cases, adversarial inputs, and simulated failure conditions. Agencies should use GovTech's Litmus platform for automated safety and security testing of agentic applications. Develop test scenarios that cover Singapore-specific edge cases such as citizens with complex eligibility situations, multi-agency referrals, and peak load periods. Include testing of agent behaviour when dependent government services are unavailable or degraded. Document common planning pitfalls identified during testing and implement targeted mitigations.
+  references: null
+
+CTRL-0037:
+  level: 1
+  risks:
+  - RISK-019
+  statement: Require planning agents to include explicit safety constraints in all generated plans before execution
+  recommendations: Plans generated without explicit safety constraints may inadvertently violate security policies, regulatory requirements, or operational boundaries, leading to dangerous or non-compliant agent behaviour. Configure planning agents to incorporate safety constraints and domain-specific restrictions directly into plan representations, making safety requirements explicit and verifiable rather than implicit assumptions. Examples of planning-level safety constraints include limiting plan complexity (maximum number of steps or tools), requiring verification steps before irreversible actions, prohibiting plans that access certain data categories or environments, mandating human review checkpoints for high-risk operations, and including rollback or recovery procedures for plans involving state changes.
+  wog_recommendation: Plans generated without explicit safety constraints may inadvertently violate security policies, regulatory requirements, or operational boundaries, leading to dangerous or non-compliant agent behaviour. Configure planning agents to incorporate safety constraints and domain-specific restrictions directly into plan representations, making safety requirements explicit and verifiable rather than implicit assumptions. Examples of planning-level safety constraints include limiting plan complexity (maximum number of steps or tools), requiring verification steps before irreversible actions, prohibiting plans that access certain data categories, mandating human review checkpoints for high-risk operations, and including rollback or recovery procedures for plans involving state changes. Government agents should include safety constraints that enforce compliance with relevant regulations and policies—for example, human review checkpoints before finalising eligibility determinations, mandatory verification steps before financial transactions, and escalation paths for cases involving vulnerable citizens.
+  references: null
+
+CTRL-0038:
+  level: 0
+  risks:
+  - RISK-020
+  statement: Conduct pre-deployment safety verification using domain-relevant stress tests and adversarial scenarios
+  recommendations: Deploying agents without rigorous safety testing risks exposing users to harmful behaviours, security vulnerabilities, or compliance violations that only emerge under adversarial or edge-case conditions. Establish comprehensive pre-deployment testing that evaluates agent safety across domain-specific stress scenarios, including adversarial inputs designed to trigger unsafe behaviour, edge cases that challenge safety boundaries, and failure modes that test resilience under degraded conditions. Design test scenarios based on known risks in your domain (e.g., financial fraud attempts for banking agents, medical misinformation for healthcare agents, data exfiltration for enterprise assistants) and establish clear pass/fail criteria that must be met before deployment. Document test results, identified vulnerabilities, and implemented mitigations for future reference and regular review.
+  wog_recommendation: AI Red Teaming exercise shall be conducted on agentic AI systems. Deploying agents without rigorous safety testing risks exposing users to harmful behaviours, security vulnerabilities, or compliance violations that only emerge under adversarial or edge-case conditions. Establish comprehensive pre-deployment testing that evaluates agent safety across domain-specific stress scenarios, including adversarial inputs designed to trigger unsafe behaviour, edge cases that challenge safety boundaries, and failure modes that test resilience under degraded conditions. Agencies should develop safety test scenarios specific to government context, including attempts to extract citizen data, requests for false government information, and adversarial inputs related to sensitive topics (race, religion, politics). Include testing against prompt injection attacks that attempt to manipulate agent behaviour in citizen-facing applications. Use GovTech's Litmus platform for automated safety and security testing. Document test results, identified vulnerabilities, and implemented mitigations for audit purposes.
+  references: null
+
+CTRL-0039:
+  level: 1
+  risks:
+  - RISK-020
+  statement: Ensure each agent publishes standardised, machine-readable capability descriptors accessible to other agents
+  recommendations: Without standardised capability descriptors, agents cannot reliably discover what other agents can do, leading to misrouted requests, capability mismatches, or failed inter-agent collaborations. Implement machine-readable capability descriptions for each agent using standardised formats such as A2A Agent Cards that declare available skills, required inputs, output formats, and operational constraints. Publish capability descriptors through discoverable endpoints (e.g., well-known URIs at `https://{domain}/.well-known/agent-card.json`) or centralised agent registries that other agents can query to determine if a target agent can fulfil specific requests. Maintain capability descriptors in sync with actual agent implementations, updating descriptors whenever agent capabilities change to prevent stale metadata from causing integration failures.
+  wog_recommendation: Agents shall support A2A discovery via enable_discovery. Agents shall make their AgentCard discoverable at the standard location (/.well-known/agent-card.json). Agents shall register with the central WOG Agentry Registry. Without standardised capability descriptors, agents cannot reliably discover what other agents can do, leading to misrouted requests, capability mismatches, or failed inter-agent collaborations. Implement machine-readable capability descriptions for each agent using standardised formats such as A2A Agent Cards that declare available skills, required inputs, output formats, and operational constraints. Maintain capability descriptors in sync with actual agent implementations, updating descriptors whenever agent capabilities change to prevent stale metadata from causing integration failures. For multi-agency agent ecosystems, coordinate on capability descriptor formats to enable interoperability across whole-of-government services.
+  references:
+  - https://a2a-protocol.org/latest/topics/agent-discovery/
+
+CTRL-0040:
+  level: 0
+  risks:
+  - RISK-021
+  statement: Limit the scope of agent actions through predefined thresholds and baselines
+  recommendations: Without action limits, agents may bypass controls by delegating excessive tasks, consuming unlimited resources, or spreading malicious activities across multiple operations to evade detection. Define quantitative thresholds that constrain agent behaviour, such as maximum number of tool calls per session, maximum number of agents that can be delegated to, maximum cost or resource consumption, or maximum data volume accessed. Implement runtime monitoring that tracks agent activity against these thresholds and halts execution when limits are exceeded. Examples include limiting an agent to 50 API calls per task or restricting delegation to no more than 3 sub-agents.
+  wog_recommendation: Without action limits, agents may bypass controls by delegating excessive tasks, consuming unlimited resources, or spreading malicious activities across multiple operations to evade detection. Agencies should define quantitative thresholds that constrain agent behaviour, such as maximum number of tool calls per session, maximum number of agents that can be delegated to (e.g., no more than 3 sub-agents), maximum cost or resource consumption within GCC budget limits, or maximum data volume accessed. Implement runtime monitoring that tracks agent activity against these thresholds and halts execution when limits are exceeded. For citizen-facing agents, consider additional limits on the number of citizen records that can be accessed per session and maximum transaction values that can be processed without approval.
+  references: null
+
+CTRL-0041:
+  level: 0
+  risks:
+  - RISK-022
+  statement: Provide comprehensive descriptions for each tool including intended use, required inputs, and potential outputs
+  recommendations: Incomplete or ambiguous tool descriptions lead agents to misunderstand tool capabilities, misuse tools for unintended purposes, or select inappropriate tools for tasks, resulting in failures or unsafe behaviour. Document each tool with clear, comprehensive descriptions that specify the tool's intended purpose, required input parameters with data types and constraints, expected outputs and formats, and any preconditions or side effects. Include usage examples and common failure scenarios to guide agent decision-making and prevent misuse. Ensure tool descriptions are accurate, up-to-date, and written in language that LLMs can reliably interpret, avoiding ambiguity that might lead to incorrect tool selection or invocation.
+  wog_recommendation: Incomplete or ambiguous tool descriptions lead agents to misunderstand tool capabilities, misuse tools for unintended purposes, or select inappropriate tools for tasks. Agents shall follow the A2A specification - the AgentCard should include clear capability and skill descriptions that specify intended purpose, required inputs with data types and constraints, expected outputs and formats, and any preconditions or side effects. Include usage examples and common failure scenarios to guide agent decision-making. For WoG context, descriptions should clearly indicate government-specific constraints such as data classification handling requirements, audit logging expectations, or restrictions on use with citizen data. Ensure descriptions are written in language that LLMs can reliably interpret, avoiding ambiguity.
+  references: null
+
+CTRL-0042:
+  level: 0
+  risks:
+  - RISK-023
+  statement: Require explicit human confirmation before executing high-impact or irreversible tool actions
+  recommendations: Agents may incorrectly select or misuse high-impact tools, leading to irreversible damage such as data deletion, unauthorised financial transactions, or unintended system modifications. Implement mandatory human-in-the-loop approval workflows for tools that perform high-impact or irreversible actions, including sending external communications, executing financial transactions, deleting or modifying critical data, and making privileged configuration changes. Configure approval interfaces to clearly display the tool being invoked, the parameters being passed, and the expected outcome, enabling informed human decision-making. Ensure approval mechanisms cannot be bypassed by agents and maintain audit logs of all approval decisions, including who approved what action and when.
+  wog_recommendation: Agents shall maintain human-in-the-loop for high-risk actions (financial transactions, official communications, data deletion), such that the agent should only be able to propose the action, while a human must provide explicit approval before it is executed (1.2). Higher privilege operations shall also require human-in-the-loop for approval (1.3). Configure approval interfaces to clearly display the tool being invoked, parameters being passed, and expected outcome. Agencies must align approval requirements with existing delegation of authority workflows, ensuring approval is obtained from officers with appropriate authority. Maintain audit logs of all approval decisions including who approved what action and when.
+  references: null
+
+CTRL-0043:
+  level: 1
+  risks:
+  - RISK-023
+  statement: Log all tool selection decisions and invocations with comprehensive metadata
+  recommendations: Without comprehensive tool invocation logs, diagnosing incorrect tool selection or misuse becomes extremely difficult, preventing effective debugging and post-incident analysis. Implement detailed logging for all tool selection decisions and invocations, capturing the tool name, input arguments, caller identity, authorisation outcome, timestamp, and resulting outputs or side effects. Structure logs to enable correlation between tool selection reasoning and actual outcomes, allowing investigation of why particular tools were chosen and whether they produced expected results.
+  wog_recommendation: All agent actions shall be comprehensively logged, including but not limited to MCP client and server inputs and outputs, taskId, sessionId, agentId, and trace context (3.30). Log the entire agentic chain of thought including the initial prompt, LLM's reasoning steps, chosen tools and actions, parameters passed, tool results, and the final output (3.31). Structure logs to enable correlation between tool selection reasoning and actual outcomes. For tools that access citizen data or perform statutory functions, logs should capture sufficient detail to support audit queries and incident investigation aligned with IM8 audit logging requirements. Include officer identity (where applicable) alongside agent identity in audit trails.
+  references: null
+
+CTRL-0044:
+  level: 1
+  risks:
+  - RISK-023
+  statement: Implement output safety guardrails to detect and prevent generation of undesirable content
+  recommendations: Agents may generate toxic, hateful, sexual, or otherwise inappropriate content that causes harm to users, violates organisational standards, or creates regulatory compliance issues. Deploy output safety guardrails that scan all agent-generated content before delivery to users, detecting categories of undesirable content such as hate speech, sexually explicit material, violent content, or self-harm promotion. Use content moderation APIs, classifiers, or LLM-based safety filters to evaluate outputs against defined safety policies, blocking or flagging content that violates established boundaries. Configure appropriate responses when unsafe content is detected, such as refusing to generate the output, requesting reformulation, or escalating to human review for edge cases.
+  wog_recommendation: Run-time protection shall require guardrail protection such as GovTech's Sentinel (1.6). Deploy output safety guardrails that scan all agent-generated content before delivery to users, detecting undesirable content such as hate speech, sexually explicit material, violent content, or self-harm promotion. For government context, include detection for content inappropriate for government communications - content that could be perceived as discriminatory, politically biased, or culturally insensitive in Singapore's multi-racial, multi-religious context. Include detection for content that could violate the Maintenance of Religious Harmony Act or other Singapore regulations. Configure appropriate responses when unsafe content is detected, such as blocking output or escalating to human review.
+  references: null
+
+CTRL-0045:
+  level: 0
+  risks:
+  - RISK-024
+  statement: Implement input guardrails to detect and decline requests for specialised domain advice
+  recommendations: Agents generating unqualified advice in specialised domains such as medical, financial, or legal matters may cause users to act on incorrect or inappropriate information, leading to serious harm or adverse outcomes. Deploy input guardrails that detect when user requests fall within specialised domains requiring professional expertise, such as medical diagnosis, financial investment advice, or legal counsel. Configure the system to decline these requests with appropriate messaging that explains why the agent cannot provide such advice and suggests consulting qualified professionals.
+  wog_recommendation: Agents generating unqualified advice in specialised domains such as medical, financial, or legal matters may cause users to act on incorrect information, leading to serious harm. Deploy input guardrails that detect when user requests fall within specialised domains requiring professional expertise. Government agents should decline such requests and direct citizens to appropriate qualified services - for health-related queries, direct to MOH resources or healthcare providers; for legal matters, direct to Legal Aid Bureau or appropriate legal services; for financial advice, direct to MAS-regulated advisors. Ensure decline messages are helpful, explain why the agent cannot provide such advice, and provide clear next steps for citizens.
+  references: null
+
+CTRL-0046:
+  level: 0
+  risks:
+  - RISK-025
+  statement: Implement input guardrails to detect and decline requests for controversial content that violates organisational policies
+  recommendations: Agents generating controversial or sensitive content such as political commentary or statements about competitors may create reputational damage, legal liability, or compliance violations for the organisation. Deploy input guardrails that detect requests for content on topics deemed controversial or sensitive according to organisational policies, such as political positions, religious commentary, competitive disparagement, or other restricted subjects. Define clear content policies that specify which topics or viewpoints the agent should avoid, and configure detection mechanisms to identify requests that would violate these boundaries. When controversial requests are detected, decline with messaging that explains the agent's content limitations whilst maintaining a respectful tone towards the user.
+  wog_recommendation: Agents generating controversial or sensitive content such as political commentary may create reputational damage or compliance violations. Government agents must maintain political neutrality and avoid generating content on sensitive topics including race, religion, and politics. Deploy input guardrails that detect requests for content on topics deemed controversial or sensitive according to government policies - political positions, religious commentary, or content that could affect Singapore's social cohesion. When such requests are detected, decline with messaging that explains the agent's content limitations whilst maintaining a respectful tone, and direct to appropriate official sources or human officers where needed.
+  references: null
+
+CTRL-0047:
+  level: 0
+  risks:
+  - RISK-026
+  statement: Implement output guardrails to detect and redact personally identifiable information
+  recommendations: Agents may reproduce personally identifiable information from training data, memory, or prior interactions in their outputs, violating privacy obligations, exposing individuals to harm, or breaching data protection requirements such as GDPR or PDPA. Deploy output guardrails that scan all agent-generated content for PII categories including names, email addresses, phone numbers, identification numbers, financial account details, and other sensitive personal data before delivery to users. Use PII detection tools, pattern matching, or named entity recognition models to identify and redact or block outputs containing PII. Configure appropriate handling based on context — some PII may be acceptable if it belongs to the current user, whilst PII belonging to other individuals should be strictly prevented from disclosure.
+  wog_recommendation: Agents may reproduce personally identifiable information from training data, memory, or prior interactions in their outputs, violating privacy obligations or breaching data protection requirements. Deploy output guardrails (such as GovTech's Sentinel) that scan all agent-generated content for PII before delivery to users. Implement PII detection that identifies Singapore-specific identifiers including NRIC/FIN numbers, local phone number formats, and Singapore addresses. Ensure output guardrails comply with Public Sector Governance Act requirements for data protection even though public agencies are exempt from PDPA. Configure appropriate handling based on context - redact or mask PII in agent outputs unless disclosure is authorised for the specific transaction.
+  references: null
+
+CTRL-0048:
+  level: 2
+  risks:
+  - RISK-027
+  statement: Implement methods to reduce hallucination rates in agent outputs
+  recommendations: Agents may generate inaccurate, fabricated, or unsupported information whilst presenting it as factual, misleading users and causing them to make incorrect decisions or lose trust in the system. Implement hallucination reduction techniques such as retrieval-augmented generation (RAG) that grounds agent responses in verified source documents, or citation requirements that force agents to reference specific sources for factual claims. Configure agents to acknowledge uncertainty when information cannot be verified rather than generating plausible-sounding but false content.
+  wog_recommendation: Agents may generate inaccurate, fabricated, or unsupported information whilst presenting it as factual, misleading users and causing them to make incorrect decisions. Government agents must provide accurate information as citizens rely on official sources for critical decisions. Implement hallucination reduction techniques such as retrieval-augmented generation (RAG) that grounds agent responses in authoritative government sources (gov.sg websites, official policy documents, legislation). Configure agents to acknowledge uncertainty when information cannot be verified. For policy information, require agents to cite specific sources and acknowledge when information may be outdated or when citizens should verify with the relevant agency.
+  references: null
+
+CTRL-0049:
+  level: 0
+  risks:
+  - RISK-028
+  statement: Implement UI/UX cues to communicate the risk of hallucination to users
+  recommendations: Users may treat agent-generated content as completely reliable without recognising that LLMs can produce inaccurate or fabricated information presented as fact. Implement clear UI/UX indicators that remind users of hallucination risks, such as disclaimers on agent responses, visual cues distinguishing generated content from verified information, or warnings when agents make factual claims without citations. Consider contextual warnings that appear when agents discuss topics particularly prone to hallucination, such as recent events beyond the model's training data or highly specialised technical subjects.
+  wog_recommendation: Users may treat agent-generated content as completely reliable without recognising that LLMs can produce inaccurate or fabricated information presented as fact. Implement clear UI/UX indicators that remind users of hallucination risks, such as disclaimers on agent responses, visual cues distinguishing generated content from verified information, or warnings when agents make factual claims without citations. Citizen-facing government agents should include clear disclaimers that AI-generated information should be verified against official sources for important decisions. Display links to authoritative government sources alongside agent responses. For eligibility assessments or policy guidance, clearly indicate that the information is for general guidance and citizens should confirm with the relevant agency for their specific circumstances.
+  references: null
+
+CTRL-0050:
+  level: 1
+  risks:
+  - RISK-028
+  statement: Implement features enabling users to verify generated answers against source content
+  recommendations: Without verification mechanisms, users cannot easily check whether agent-generated information is accurate or fabricated, increasing reliance on potentially hallucinated content. Provide built-in features that enable users to verify agent responses against original source materials, such as inline citations linking to specific documents or passages, source attribution showing which materials informed the response, or side-by-side views displaying retrieved content alongside generated summaries. Design verification features to minimise friction whilst maintaining effectiveness — users should be able to check sources with minimal effort rather than requiring extensive navigation or manual searching. For example, automatically highlight passages in source documents that support specific claims made by the agent, enabling rapid verification of factual statements.
+  wog_recommendation: Without verification mechanisms, users cannot easily check whether agent-generated information is accurate or fabricated, increasing reliance on potentially hallucinated content. Provide built-in features that enable users to verify agent responses against original source materials, such as inline citations linking to specific documents or passages, source attribution showing which materials informed the response, or side-by-side views displaying retrieved content alongside generated summaries. Government agents should provide links to official gov.sg sources, legislation, or policy documents that support their responses. For citizen-facing services, enable citizens to easily access the underlying official information rather than relying solely on the agent's summary or interpretation.
+  references: null
+
+CTRL-0051:
+  level: 0
+  risks:
+  - RISK-028
+  statement: Implement input guardrails to detect and decline requests to generate copyrighted content
+  recommendations: Agents may generate content that reproduces or closely resembles copyrighted material without authorisation, exposing the organisation to intellectual property infringement claims, legal liability, or licensing violations. Deploy input guardrails that detect requests asking the agent to reproduce copyrighted works such as song lyrics, book passages, proprietary code, or other protected content. Configure the system to decline these requests with appropriate messaging that explains copyright limitations and suggests legal alternatives such as summarisation, licensed access, or original creation. Note that copyright detection at the input stage may not catch all violations, as users might phrase requests in ways that obscure copyrighted content generation — tools such as Patronus AI's CopyrightCatcher can provide output-level copyright detection to complement input filtering.
+  wog_recommendation: Agents may generate content that reproduces or closely resembles copyrighted material without authorisation, exposing the organisation to intellectual property infringement claims or legal liability. Deploy input guardrails that detect requests asking the agent to reproduce copyrighted works such as song lyrics, book passages, proprietary code, or other protected content. Configure the system to decline these requests with appropriate messaging that explains copyright limitations and suggests legal alternatives such as summarisation or original creation. Government agents should ensure content generation for official communications respects intellectual property rights under Singapore's Copyright Act. Tools such as Patronus AI's CopyrightCatcher can provide output-level copyright detection to complement input filtering.
+  references:
+  - https://www.patronus.ai/blog/introducing-copyright-catcher
+
+CTRL-0052:
+  level: 2
+  risks:
+  - RISK-029
+  statement: Declare upfront that communications are generated by an AI system
+  recommendations: Recipients misled about whether communications were generated by AI or authored by humans may form incorrect assumptions about accountability, intent, or authority, leading to trust issues or legal complications. Implement clear, prominent disclosures at the beginning of AI-generated communications stating that content was created by an automated system, using unambiguous language such as "This message was generated by an AI assistant" rather than vague phrases that might confuse recipients.
+  wog_recommendation: Recipients misled about whether communications were generated by AI or authored by humans may form incorrect assumptions about accountability, intent, or authority. Implement clear, prominent disclosures at the beginning of AI-generated communications stating that content was created by an automated system, using unambiguous language such as "This message was generated by an AI assistant". Government agencies should disclose AI involvement in citizen communications to maintain trust and transparency. For official notices or decisions, clearly indicate whether the communication was generated by an AI system and whether it was reviewed by a human officer. This supports accountability and helps citizens understand when to request human review or escalation.
+  references: null
+
+CTRL-0053:
+  level: 0
+  risks:
+  - RISK-030
+  statement: Require human approval for communications on sensitive matters
+  recommendations: Agents making unsupported commitments, inaccurate assurances, or statements that exceed organisational capabilities in official communications may expose the organisation to reputational damage, legal liability, or unmet expectations. Implement mandatory human review and approval workflows for communications on sensitive matters including contractual commitments, financial promises, policy statements, regulatory responses, or public-facing announcements. Define clear criteria for what constitutes "sensitive matters" requiring approval, ensuring consistent application across the organisation.
+  wog_recommendation: Agents making unsupported commitments, inaccurate assurances, or statements that exceed organisational capabilities in official communications may expose the organisation to reputational damage or legal liability. Maintain human-in-the-loop for official communications on sensitive matters (1.2). Government agencies must require human officer approval for communications involving policy interpretations, eligibility determinations, enforcement actions, or any matter that could create legitimate expectations or legal liability. Define clear criteria for what constitutes "sensitive matters" requiring approval, aligned with agency delegation of authority. Ensure audit trails capture approval decisions.
+  references: null
+
+CTRL-0054:
+  level: 0
+  risks:
+  - RISK-031
+  statement: Limit agent communications to standard processes with predefined templates
+  recommendations: Agents generating free-form communications may inadvertently make inaccurate promises or statements that exceed organisational authority or capabilities, creating legal and reputational risks. Restrict agent communications to standard, well-defined processes where approved communication templates exist, such as appointment confirmations, order status updates, or routine customer service responses. Design templates to include appropriate disclaimers, limit commitments to verified capabilities, and avoid language that could create unintended obligations. Review and approve all communication templates before deployment, ensuring they accurately reflect organisational policies and cannot be misinterpreted as making unauthorised commitments.
+  wog_recommendation: Agents generating free-form communications may inadvertently make inaccurate promises or statements that exceed organisational authority, creating legal and reputational risks. Restrict agent communications to standard, well-defined processes where approved communication templates exist, such as appointment confirmations, order status updates, or routine citizen service responses. Design templates to include appropriate disclaimers, limit commitments to verified capabilities, and avoid language that could create unintended obligations. Government agencies should develop approved templates for common citizen interactions (acknowledgements, status updates, routine information). Ensure templates are reviewed by agency communications teams and legal advisors before deployment.
+  references: null
+
+CTRL-0055:
+  level: 1
+  risks:
+  - RISK-031
+  statement: Provide alternative channels for users to clarify communications or provide feedback
+  recommendations: When agents make inaccurate statements or commitments in communications, recipients need accessible mechanisms to seek clarification, report concerns, or correct misunderstandings before problems escalate. Establish clear alternative channels for recipients to contact human representatives when they have questions about AI-generated communications, such as dedicated email addresses, phone numbers, or contact forms prominently displayed in agent communications.
+  wog_recommendation: When agents make inaccurate statements or commitments in communications, recipients need accessible mechanisms to seek clarification, report concerns, or correct misunderstandings before problems escalate. Establish clear alternative channels for recipients to contact human representatives when they have questions about AI-generated communications, such as dedicated email addresses, phone numbers, or contact forms prominently displayed in agent communications. Government agencies should provide clear escalation paths for citizens to reach human officers when agent responses are unclear or unsatisfactory. Include agency contact information in all agent communications. For citizen-facing agents, integrate with existing feedback channels such as the OneService app or agency-specific feedback mechanisms.
+  references: null
+
+CTRL-0056:
+  level: 1
+  risks:
+  - RISK-031
+  statement: Require explicit user confirmation before initiating or committing any business transaction
+  recommendations: Agents executing business transactions without explicit user confirmation may create unintended financial obligations, contractual commitments, or operational liabilities that were not properly authorised. Implement mandatory confirmation workflows that pause execution immediately before any transaction is initiated, presenting clear details of the transaction type, amounts, counterparties, and consequences for user review and approval. Design confirmation interfaces to require active consent rather than passive acceptance, using explicit "confirm" actions rather than dismissible notifications or opt-out mechanisms. Ensure confirmation cannot be bypassed by agents and maintain audit logs of all transaction approvals including timestamp, user identity, and transaction details.
+  wog_recommendation: Agents executing business transactions without explicit user confirmation may create unintended financial obligations, contractual commitments, or operational liabilities. Maintain human-in-the-loop for financial transactions such that the agent should only be able to propose the action while a human must provide explicit approval (1.2). Implement mandatory confirmation workflows that pause execution immediately before any transaction is initiated, presenting clear details of the transaction type, amounts, counterparties, and consequences for user review. Design confirmation interfaces to require active consent rather than passive acceptance, using explicit "confirm" actions rather than dismissible notifications or opt-out mechanisms. Government agencies must implement confirmation workflows for transactions involving public funds, citizen entitlements, or official commitments. For citizen-facing transactions (e.g., applications, payments), obtain explicit confirmation before submission and provide confirmation records to citizens. Maintain audit logs of all transaction approvals.
+  references: null
+
+CTRL-0057:
+  level: 2
+  risks:
+  - RISK-032
+  statement: Require out-of-band confirmation when transaction risk signals are elevated
+  recommendations: Transactions exhibiting elevated risk indicators may represent unauthorised or fraudulent activity requiring additional verification beyond standard confirmation. Implement out-of-band confirmation (e.g., SMS codes, email verification, authentication app approvals) when transactions exhibit risk signals such as unusual payees, amounts exceeding typical patterns, rapid transaction sequences, or first-time recipients.
+  wog_recommendation: Transactions exhibiting elevated risk indicators may represent unauthorised or fraudulent activity requiring additional verification beyond standard confirmation. Implement out-of-band confirmation (e.g., SMS codes, email verification, authentication app approvals) when transactions exhibit risk signals such as unusual payees, amounts exceeding typical patterns, rapid transaction sequences, or first-time recipients. For high-value government transactions or those exhibiting unusual patterns, implement additional verification steps. Consider integration with Singpass for citizen identity verification on high-risk transactions. Define risk thresholds appropriate to the agency's transaction types and fraud risk profile.
+  references: null
+
+CTRL-0058:
+  level: 1
+  risks:
+  - RISK-032
+  statement: Restrict agents to proposing transactions whilst using a separate transaction controller for execution
+  recommendations: Allowing agents direct access to transaction credentials creates risk of credential leakage through prompt injection, logging, or model outputs. Implement architectural separation where agents propose transactions but a dedicated non-LLM transaction controller handles authentication, authorisation, and execution. Ensure agents never receive or handle credentials directly, passing only transaction proposals through secure interfaces.
+  wog_recommendation: Allowing agents direct access to transaction credentials creates risk of credential leakage through prompt injection, logging, or model outputs. Implement architectural separation where agents propose transactions but a dedicated non-LLM transaction controller handles authentication, authorisation, and execution. Ensure agents never receive or handle credentials directly, passing only transaction proposals through secure interfaces. Government agencies should implement architectural separation between AI agents and transaction execution systems. Agents should propose transactions (e.g., payment requests, data updates) while dedicated government systems (e.g., payment gateways, database controllers) handle actual execution with appropriate authorisation controls.
+  references: null
+
+CTRL-0059:
+  level: 2
+  risks:
+  - RISK-033
+  statement: Apply fraud detection models or heuristics to agent-proposed transactions
+  recommendations: Compromised or manipulated agents may propose fraudulent transactions that bypass standard user confirmation by appearing legitimate to users but serving malicious purposes. Implement fraud detection systems that analyse agent-proposed transactions for suspicious patterns such as unusual amounts, unfamiliar recipients, rapid transaction sequences, or deviations from historical behaviour. Configure fraud detection to operate independently of the agent, using rule-based heuristics or machine learning models trained on legitimate and fraudulent transaction patterns.
+  wog_recommendation: Compromised or manipulated agents may propose fraudulent transactions that bypass standard user confirmation by appearing legitimate to users but serving malicious purposes. Implement fraud detection systems that analyse agent-proposed transactions for suspicious patterns such as unusual amounts, unfamiliar recipients, rapid transaction sequences, or deviations from historical behaviour. Configure fraud detection to operate independently of the agent, using rule-based heuristics or machine learning models trained on legitimate and fraudulent transaction patterns. Government agencies should implement fraud detection appropriate to their transaction types. For grant disbursements, detect unusual patterns in recipient profiles or amounts. For procurement, detect suspicious vendor patterns or pricing anomalies. Integrate with existing government fraud detection capabilities where available.
+  references: null
+
+CTRL-0060:
+  level: 1
+  risks:
+  - RISK-033
+  statement: Implement escape filtering before incorporating web content into prompts
+  recommendations: Malicious websites may embed hidden instructions or manipulative prompts in their content designed to hijack agent behaviour when retrieved and processed. Implement escape filtering that sanitises web content before incorporating it into agent prompts, removing or neutralising potential injection attacks such as hidden instructions, delimiter manipulation attempts, or prompt override commands.
+  wog_recommendation: Malicious websites may embed hidden instructions or manipulative prompts in their content designed to hijack agent behaviour when retrieved and processed. Input validation and structured APIs shall be used for external data access (1.8). Implement escape filtering that sanitises web content before incorporating it into agent prompts, removing or neutralising potential injection attacks such as hidden instructions, delimiter manipulation attempts, or prompt override commands. MCP Servers shall ensure relevant input sanitisation including escaping harmful code and rejecting excessively long inputs (2.8). Government agents that retrieve external web content should be particularly cautious with content from non-government domains. Prioritise retrieval from gov.sg domains and other authoritative sources.
+  references: null
+
+CTRL-0061:
+  level: 0
+  risks:
+  - RISK-034
+  statement: Use structured retrieval APIs for web searches rather than web scraping
+  recommendations: Web scraping exposes agents to arbitrary web content including malicious HTML, scripts, and embedded instructions that may be crafted to inject prompts or manipulate agent behaviour. Use structured retrieval APIs such as search engine APIs, knowledge bases, or curated data sources that provide pre-processed, sanitised content rather than raw web pages. Structured APIs typically return controlled formats (JSON, XML) containing extracted information without rendering full web content, reducing exposure to injection vectors embedded in HTML, CSS, or JavaScript.
+  wog_recommendation: Web scraping exposes agents to arbitrary web content including malicious HTML, scripts, and embedded instructions that may be crafted to inject prompts or manipulate agent behaviour. Input validation and structured APIs shall be used for external data access (1.8). Use structured retrieval APIs such as search engine APIs, knowledge bases, or curated data sources that provide pre-processed, sanitised content rather than raw web pages. Structured APIs typically return controlled formats (JSON, XML) containing extracted information without rendering full web content, reducing exposure to injection vectors. Government agents should prioritise government data sources such as data.gov.sg APIs, agency-specific APIs, or curated knowledge bases. For external information needs, use structured search APIs rather than directly scraping websites.
+  references: null
+
+CTRL-0062:
+  level: 0
+  risks:
+  - RISK-034
+  statement: Implement input guardrails to detect prompt injection and adversarial attacks
+  recommendations: Malicious actors may attempt to inject hidden instructions through web content, uploaded files, or external data sources to hijack agent behaviour and bypass intended constraints. Use prompt injection detection tools or classifiers trained to identify adversarial inputs before they reach the agent's context.
+  wog_recommendation: Malicious actors may attempt to inject hidden instructions through web content, uploaded files, or external data sources to hijack agent behaviour and bypass intended constraints. Run-time protection shall require guardrail protection such as GovTech's Sentinel (1.6). Implement input sanitisation measures, such as scanning inputs for known malicious instruction patterns with input guardrails, before they reach the agent's context (3.7). Government agencies should implement prompt injection detection for all citizen-facing agents, particularly those that process citizen-submitted documents or retrieve external content. Consider using commercial prompt injection detection tools or developing agency-specific detectors trained on government-relevant attack patterns.
+  references: null
+
+CTRL-0063:
+  level: 1
+  risks:
+  - RISK-034
+  - RISK-044
+  statement: Prioritise search results from verified, high-quality domains
+  recommendations: Agents retrieving information from unreliable or low-quality websites may present inaccurate, outdated, or biased content to users, leading to misinformed decisions. Configure search and retrieval systems to prioritise results from verified, authoritative sources such as government domains (.gov), educational institutions (.edu), established news organisations, and recognised industry authorities.
+  wog_recommendation: Agents retrieving information from unreliable or low-quality websites may present inaccurate, outdated, or biased content to users, leading to misinformed decisions. Configure search and retrieval systems to prioritise results from verified, authoritative sources such as government domains (.gov), educational institutions (.edu), established news organisations, and recognised industry authorities. Government agents should prioritise gov.sg domains and other authoritative Singapore government sources when retrieving information. Consider using SearchSG for retrieval of government content. Configure retrieval systems to rank official government sources above third-party content. For policy or regulatory information, require retrieval from official sources rather than secondary summaries.
+  references: null
+
+CTRL-0064:
+  level: 1
+  risks:
+  - RISK-035
+  statement: Limit computer use to accessing only safe and trusted resources
+  recommendations: Agents with unrestricted computer access may encounter malicious content on untrusted websites, documents, or applications that embed hidden instructions designed to manipulate agent behaviour. Restrict computer use capabilities to accessing only pre-approved, safe resources such as internal applications, trusted websites on allowlists, or sandboxed environments isolated from sensitive systems. Define clear boundaries for what resources agents may access and enforce these restrictions through technical controls such as network filtering, application allowlisting, or containerisation.
+  wog_recommendation: Agents with unrestricted computer access may encounter malicious content on untrusted websites, documents, or applications that embed hidden instructions designed to manipulate agent behaviour. Network segmentation shall be implemented to isolate agent operations (1.5). Configure VLANs and subnets for agent workloads, implement firewall rules restricting inter-agent communication, and deploy zero-trust network architecture with whitelist-based access controls. Restrict computer use capabilities to accessing only pre-approved, safe resources such as internal applications, trusted websites on allowlists, or sandboxed environments isolated from sensitive systems. Government agents with computer use capabilities should be restricted to accessing approved government systems and whitelisted external resources. For agents operating on government networks, ensure compliance with IM8 network security requirements.
+  references: null
+
+CTRL-0065:
+  level: 0
+  risks:
+  - RISK-036
+  statement: Ensure computer use capabilities provide immediate interruptability
+  recommendations: Agents operating computer interfaces may encounter prompt injection attacks or begin executing unintended actions that require immediate human intervention to prevent harm. Implement interruptability mechanisms that allow users or operators to immediately halt agent computer use actions at any point, such as emergency stop buttons, kill switches, or session termination controls.
+  wog_recommendation: Agents operating computer interfaces may encounter prompt injection attacks or begin executing unintended actions that require immediate human intervention to prevent harm. Implement a kill switch that allows authorised users to immediately intervene and halt agent operations (1.1). Implement interruptability mechanisms that allow users or operators to immediately halt agent computer use actions at any point, such as emergency stop buttons, kill switches, or session termination controls. Government agents with computer use capabilities must provide officers with immediate ability to halt agent actions. Implement prominent stop controls in agent interfaces and ensure agents respond immediately to interrupt commands. For agents processing citizen transactions, ensure interrupted transactions are properly rolled back or flagged for human review.
+  references: null
+
+CTRL-0066:
+  level: 0
+  risks:
+  - RISK-036
+  statement: Ensure "take over" mode is activated when entering sensitive data
+  recommendations: Agents operating computer interfaces may inadvertently view, process, or expose sensitive data such as passwords, API keys, or personally identifiable information displayed on screens or in applications. Implement "take over" mode that pauses agent operation and requires direct human control when sensitive data entry is required, preventing agents from observing or handling credentials and other confidential information.
+  wog_recommendation: Agents operating computer interfaces may inadvertently view, process, or expose sensitive data such as passwords, API keys, or personally identifiable information displayed on screens or in applications. Implement "take over" mode that pauses agent operation and requires direct human control when sensitive data entry is required, preventing agents from observing or handling credentials and other confidential information. Government agents must not observe or process officer credentials, citizen NRIC numbers, or other sensitive data during computer use operations. Implement automatic detection of sensitive data entry scenarios (e.g., login screens, forms with NRIC fields) and pause agent operation until human-controlled data entry is complete.
+  references: null
+
+CTRL-0067:
+  level: 0
+  risks:
+  - RISK-037
+  statement: Ensure proper documentation of programmatic interfaces for agent use
+  recommendations: Agents interacting with poorly documented or unfamiliar programmatic interfaces may misinterpret interface semantics, invoke operations incorrectly, or produce unintended effects. Provide comprehensive, LLM-readable documentation for all programmatic interfaces agents may interact with, including clear descriptions of available operations, required parameters with data types and constraints, expected responses, and common error conditions.
+  wog_recommendation: Agents interacting with poorly documented or unfamiliar programmatic interfaces may misinterpret interface semantics, invoke operations incorrectly, or produce unintended effects. Agents should use APIs that have comprehensive, LLM-readable documentation, including clear descriptions of available operations, required parameters with data types and constraints, expected responses, and common error conditions. Government agencies should ensure agents interact with APIs that follow GovTech's API Governance Model and API Design Standards, preferably documented using OpenAPI Specification. Prioritise use of APIs published via APEX which have standardised documentation. Avoid allowing agents to interact with undocumented or poorly documented interfaces.
+  references: null
+
+CTRL-0068:
+  level: 0
+  risks:
+  - RISK-038
+  statement: Use code linters to screen generated code for bad practices and poor syntax
+  recommendations: Agents may generate code containing bad practices, anti-patterns, unused variables, or syntax errors that reduce code quality, introduce bugs, or create maintainability issues. Implement automated code linting that analyses all agent-generated code before execution or deployment, using tools such as Pylint, ESLint, or language-specific linters configured with appropriate rule sets. Configure linters to detect common issues including syntax errors, unused variables, deprecated functions, security anti-patterns, and violations of coding standards. Reject code that fails linting checks or present warnings to users for review before proceeding.
+  wog_recommendation: Agents may generate code containing bad practices, anti-patterns, unused variables, or syntax errors that reduce code quality, introduce bugs, or create maintainability issues. Implement automated code linting that analyses all agent-generated code before execution or deployment. Configure linters to detect common issues including syntax errors, unused variables, deprecated functions, security anti-patterns, and violations of coding standards. Government agencies should integrate code analysis into agent workflows using SHIP-HATS tooling - SonarQube for code quality analysis and Fortify on Demand (FOD) for deeper security vulnerability scanning. For agent-generated code that will be deployed to production, ensure linting and security scanning is part of the CI/CD pipeline through SHIP-HATS.
+  references: null
+
+CTRL-0069:
+  level: 0
+  risks:
+  - RISK-039
+  statement: Run agent-generated code only in isolated compute environments with network access blocked by default
+  recommendations: Agent-generated code may contain vulnerabilities, bugs, or malicious logic that could compromise systems, leak data, exfiltrate information, or establish unauthorised network connections. Implement virtual isolation for all agent-generated code execution using containerised environments (e.g., Docker), virtual machines, or dedicated sandboxes that limit access to sensitive resources, networks, and data. Configure default-deny network policies that block all inbound and outbound network connections unless explicitly required and authorised for specific use cases. When network access is necessary, enforce allowlists restricting connections to known-safe endpoints such as internal APIs or approved external services.
+  wog_recommendation: Agent-generated code may contain vulnerabilities, bugs, or malicious logic that could compromise systems, leak data, or establish unauthorised network connections. Third-party tools shall be tested in hardened sandboxes before production use (1.4). MCP Servers shall run in an isolated environment with added network security safeguards (2.4). Implement virtual isolation for all agent-generated code execution using containerised environments (e.g., Docker), virtual machines, or dedicated sandboxes that limit access to sensitive resources. Configure default-deny network policies that block all inbound and outbound network connections unless explicitly required. Government agencies should execute agent-generated code in isolated GCC environments with network access restricted to approved endpoints. Ensure sandboxed environments do not have access to production citizen data or government systems unless explicitly required and authorised. Align isolation requirements with IM8 security standards.
+  references: null
+
+CTRL-0070:
+  level: 0
+  risks:
+  - RISK-039
+  - RISK-040
+  statement: Review all agent-generated code before execution
+  recommendations: Agent-generated code may contain security vulnerabilities, logic errors, or malicious instructions that could compromise systems if executed without review. Implement mandatory human review workflows for all code generated by agents before execution, including source code, scripts, configuration files, and command sequences. Configure review processes to present code with sufficient context for reviewers to assess safety and correctness, including the agent's reasoning for generating the code and its intended purpose.
+  wog_recommendation: Agent-generated code may contain security vulnerabilities, logic errors, or malicious instructions that could compromise systems if executed without review. Implement mandatory human review workflows for all code generated by agents before execution, including source code, scripts, configuration files, and command sequences. Configure review processes to present code with sufficient context for reviewers to assess safety and correctness. Government agencies using AI coding assistants through the SHIP-HATS Gen-AI Coding Assistant Programme (GitHub Copilot, GitLab Duo) should ensure human review of AI-generated code before committing. GitLab Duo integrates with SHIP-HATS' SAST/DAST gates ensuring quality checks pass before merge. For code that will process citizen data or perform statutory functions, ensure review includes verification that the code meets government security and compliance requirements. Document review decisions for audit purposes.
+  references: null
+
+CTRL-0071:
+  level: 0
+  risks:
+  - RISK-039
+  - RISK-040
+  statement: Use static code analysers to detect security vulnerabilities and code quality issues
+  recommendations: Agent-generated code may contain security vulnerabilities, code smells, or quality issues that manual review might miss. Deploy static code analysis tools (e.g., Bandit for Python, SonarQube, Semgrep) that automatically scan agent-generated code for security vulnerabilities, coding standard violations, and quality issues before execution. Configure analysers to detect common vulnerability patterns such as SQL injection, command injection, path traversal, insecure cryptography, and hard-coded credentials. Block or flag code that fails security scans, requiring remediation before proceeding with execution or deployment.
+  wog_recommendation: Agent-generated code may contain security vulnerabilities, code smells, or quality issues that manual review might miss. Deploy static code analysis tools that automatically scan agent-generated code for security vulnerabilities, coding standard violations, and quality issues before execution. Configure analysers to detect common vulnerability patterns such as SQL injection, command injection, path traversal, insecure cryptography, and hard-coded credentials. Government agencies should use SHIP-HATS static analysis tools - SonarQube for code quality and Fortify on Demand (FOD) for security vulnerability scanning. Configure scans to detect vulnerabilities relevant to government systems, including those identified in IM8 security standards. Block or flag code that fails security scans, requiring remediation before deployment.
+  references: null
+
+CTRL-0072:
+  level: 1
+  risks:
+  - RISK-039
+  - RISK-040
+  statement: Monitor runtime and memory consumption of agent-generated code
+  recommendations: Agent-generated code may contain inefficient implementations, infinite loops, or memory leaks that degrade system performance or exhaust resources. Implement runtime monitoring that tracks execution time, memory consumption, CPU usage, and other resource metrics for all agent-generated code during execution. Configure alerts that trigger when code exceeds predefined resource thresholds, such as maximum execution time, memory limits, or CPU usage, enabling automatic termination of runaway processes.
+  wog_recommendation: Agent-generated code may contain inefficient implementations, infinite loops, or memory leaks that degrade system performance or exhaust resources. Implement runtime monitoring that tracks execution time, memory consumption, CPU usage, and other resource metrics for all agent-generated code during execution. Configure alerts that trigger when code exceeds predefined resource thresholds, enabling automatic termination of runaway processes. Government agencies should leverage GCC native monitoring infrastructure (e.g., CloudWatch) to monitor resource consumption of agent-generated code and prevent impact on co-hosted services. Configure resource limits appropriate to the code's expected behaviour and implement automatic termination for processes exceeding thresholds.
+  references: null
+
+CTRL-0073:
+  level: 0
+  risks:
+  - RISK-039
+  statement: Create a denylist of commands that agents are not permitted to execute
+  recommendations: Agents may generate code that invokes dangerous or destructive commands capable of compromising systems, deleting data, or establishing unauthorised network connections. Implement command denylists that explicitly prohibit execution of dangerous operations such as system shutdown commands, file deletion utilities, network scanning tools, or privileged system calls. Enforce denylists at the execution layer, preventing blocked commands from running even if agents generate code containing them. Regularly review and update denylists based on observed agent behaviour, emerging security threats, and identified misuse patterns.
+  wog_recommendation: Agents may generate code that invokes dangerous or destructive commands capable of compromising systems, deleting data, or establishing unauthorised network connections. Implement command denylists that explicitly prohibit execution of dangerous operations such as system shutdown commands, file deletion utilities, network scanning tools, or privileged system calls. Enforce denylists at the execution layer, preventing blocked commands from running even if agents generate code containing them. Government agencies should maintain command denylists that prevent agents from executing destructive or dangerous operations. Implementation approaches include: (1) tool-level validation that checks command inputs against denylists before execution, (2) sandbox-level restrictions via Docker security profiles or seccomp filters, (3) output parsing that validates LLM-generated commands before execution, or (4) agent framework middleware/callbacks that intercept and validate actions. Include commands that could affect government infrastructure, citizen data, or system security. Review and update denylists regularly based on observed agent behaviour and emerging threats.
+  references: null
+
+CTRL-0074:
+  level: 0
+  risks:
+  - RISK-040
+  statement: Conduct CVE scanning and block execution of code with High or Critical vulnerabilities
+  recommendations: Agent-generated code may inadvertently include dependencies or libraries containing known security vulnerabilities that could be exploited to compromise systems. Implement automated CVE scanning that analyses all dependencies, libraries, and packages used by agent-generated code before execution, checking against vulnerability databases such as the National Vulnerability Database. Configure scanning to block execution when High or Critical severity CVEs are detected, requiring remediation such as dependency updates or vulnerability patches before proceeding.
+  wog_recommendation: Agent-generated code may inadvertently include dependencies or libraries containing known security vulnerabilities that could be exploited to compromise systems. Implement automated CVE scanning that analyses all dependencies, libraries, and packages used by agent-generated code before execution, checking against vulnerability databases such as the National Vulnerability Database. Configure scanning to block execution when High or Critical severity CVEs are detected, requiring remediation such as dependency updates or vulnerability patches before proceeding. Government agencies should use SHIP-HATS Nexus IQ for CVE scanning of agent-generated code dependencies. Configure scanning to block code with High or Critical vulnerabilities and require remediation before deployment. Align vulnerability thresholds with IM8 security requirements.
+  references: null
+
+CTRL-0075:
+  level: 1
+  risks:
+  - RISK-040
+  statement: Do not grant write access to agents unless strictly necessary
+  recommendations: Agents with unnecessary write access may inadvertently modify, overwrite, or delete critical files or data, leading to data loss, corruption, or operational disruption. Apply the principle of least privilege by granting write access only when explicitly required for the agent's intended functionality, defaulting to read-only access for all other operations. Implement granular access controls that restrict write permissions to specific directories, databases, or resources that the agent legitimately needs to modify. Regularly review agent permissions to ensure write access remains justified and revoke unnecessary permissions as agent responsibilities evolve.
+  wog_recommendation: Agents with unnecessary write access may inadvertently modify, overwrite, or delete critical files or data, leading to data loss, corruption, or operational disruption. Apply the principle of least privilege by granting write access only when explicitly required for the agent's intended functionality, defaulting to read-only access for all other operations. Implement granular access controls that restrict write permissions to specific directories, databases, or resources that the agent legitimately needs to modify. Government agencies must apply the principle of least privilege for agent write access, aligned with IM8 access control requirements. Default to read-only access for agents and require explicit justification for write permissions. Document write access grants and conduct regular reviews to ensure permissions remain appropriate.
+  references: null
+
+CTRL-0076:
+  level: 1
+  risks:
+  - RISK-040
+  statement: Require human approval for any destructive changes to databases, tables, or files
+  recommendations: Destructive operations such as deleting files, dropping database tables, or overwriting critical data can cause irreversible damage if executed without proper authorisation. Implement mandatory human approval workflows for all destructive operations including DELETE queries, DROP statements, file deletions, or data overwrites that modify or remove existing information.
+  wog_recommendation: Destructive operations such as deleting files, dropping database tables, or overwriting critical data can cause irreversible damage if executed without proper authorisation. Maintain human-in-the-loop for data deletion such that the agent should only be able to propose the action while a human must provide explicit approval (1.2). Implement mandatory human approval workflows for all destructive operations including DELETE queries, DROP statements, file deletions, or data overwrites. Government agencies must require human officer approval for destructive operations affecting citizen data, government records, or production systems. Ensure approval workflows capture officer identity and justification for audit purposes. Consider implementing two-person approval for highly sensitive destructive operations.
+  references: null
+
+CTRL-0077:
+  level: 0
+  risks:
+  - RISK-041
+  statement: Enable versioning or soft-delete for managed object stores to allow recovery from accidental modifications
+  recommendations: Even with access controls and approval workflows, agents may occasionally execute unintended destructive operations due to misunderstandings, bugs, or edge cases. Implement versioning or soft-delete mechanisms for file stores, object storage, and databases that preserve previous versions of data when modifications occur, enabling recovery from accidental overwrites or deletions.
+  wog_recommendation: Even with access controls and approval workflows, agents may occasionally execute unintended destructive operations due to misunderstandings, bugs, or edge cases. Implement versioning or soft-delete mechanisms for file stores, object storage, and databases that preserve previous versions of data when modifications occur, enabling recovery from accidental overwrites or deletions. Government agencies should enable versioning or soft-delete for data stores accessed by agents to support recovery from accidental modifications. Align retention periods with Government Instruction Manual requirements for data retention. Ensure backup and recovery procedures are documented and tested.
+  references: null
+
+CTRL-0078:
+  level: 0
+  risks:
+  - RISK-041
+  statement: Enforce throttling or rate limits on agent-initiated database operations
+  recommendations: Agents executing database operations without constraints may issue excessive queries that overwhelm database resources, degrade performance for other users, or cause service outages. Implement throttling mechanisms that limit the frequency and volume of agent-initiated database operations, such as maximum queries per second, maximum concurrent connections, or query timeout limits. Monitor database load patterns to detect agents approaching or exceeding rate limits, using this data to refine throttling policies or investigate agents with excessive query behaviour.
+  wog_recommendation: Agents executing database operations without constraints may issue excessive queries that overwhelm database resources, degrade performance for other users, or cause service outages. Implement throttling mechanisms that limit the frequency and volume of agent-initiated database operations, such as maximum queries per second, maximum concurrent connections, or query timeout limits. Monitor database load patterns to detect agents approaching or exceeding rate limits. Government agencies should implement rate limits for agent database operations to protect government infrastructure and ensure fair resource allocation. Configure limits appropriate to the agent's expected workload and the database's capacity. Monitor for agents approaching limits and investigate unusual query patterns.
+  references: null
+
+CTRL-0079:
+  level: 2
+  risks:
+  - RISK-041
+  statement: Validate agent-generated database queries for efficiency before execution against production databases
+  recommendations: Agents may generate inefficient database queries such as full table scans, missing indexes, or SELECT * operations that consume excessive resources and degrade database performance. Implement automated query validation that analyses agent-generated queries before execution, checking for common efficiency issues including lack of appropriate indexes, overly broad selections, missing WHERE clauses on large tables, or N+1 query patterns.
+  wog_recommendation: Agents may generate inefficient database queries such as full table scans, missing indexes, or SELECT * operations that consume excessive resources and degrade database performance. Implement automated query validation that analyses agent-generated queries before execution, checking for common efficiency issues including lack of appropriate indexes, overly broad selections, missing WHERE clauses on large tables, or N+1 query patterns. Government agencies should validate agent-generated queries for efficiency before execution against production databases supporting citizen services. Implement query analysis to detect full table scans, missing indexes, and other inefficient patterns that could degrade service availability.
+  references: null
+
+CTRL-0080:
+  level: 0
+  risks:
+  - RISK-042
+  statement: Implement caching mechanisms to reduce repetitive database queries by agents
+  recommendations: Agents repeatedly querying the same or similar data create unnecessary database load, consuming resources that could be avoided through intelligent caching. Implement caching layers (e.g., Redis, Memcached, in-memory caches) that store frequently accessed data, allowing agents to retrieve cached results rather than repeatedly querying databases for identical information.
+  wog_recommendation: Agents repeatedly querying the same or similar data create unnecessary database load, consuming resources that could be avoided through intelligent caching. Implement caching layers (e.g., Redis, Memcached, in-memory caches) that store frequently accessed data, allowing agents to retrieve cached results rather than repeatedly querying databases for identical information. Government agencies should implement caching for frequently accessed reference data to reduce database load. Ensure cache invalidation policies maintain data accuracy, particularly for citizen-facing services where outdated information could cause harm. Align caching strategies with data classification and security requirements.
+  references: null
+
+CTRL-0081:
+  level: 1
+  risks:
+  - RISK-042
+  statement: Implement input guardrails to detect personally identifiable information in data accessed by agents
+  recommendations: Agents accessing files or databases containing PII may inadvertently expose sensitive personal information through outputs, logs, or downstream processing without appropriate safeguards. Deploy input guardrails that scan data retrieved from files, databases, or other sources for PII categories including names, email addresses, phone numbers, identification numbers, and financial information before agents process it. When PII is detected, trigger protective measures such as flagging the data as sensitive to the agent, applying stricter output filtering, requiring additional access authorisation, or activating enhanced logging to track how the sensitive data is used.
+  wog_recommendation: Agents accessing files or databases containing PII may inadvertently expose sensitive personal information through outputs, logs, or downstream processing without appropriate safeguards. Deploy input guardrails that scan data retrieved from files, databases, or other sources for PII categories including names, email addresses, phone numbers, identification numbers, and financial information before agents process it. When PII is detected, trigger protective measures such as flagging the data as sensitive to the agent, applying stricter output filtering, requiring additional access authorisation, or activating enhanced logging. Government agencies must implement PII detection for agents accessing citizen data, leveraging GovTech's Sentinel for guardrail capabilities. Detect Singapore-specific identifiers (NRIC/FIN numbers, local phone formats) in addition to general PII categories. When PII is detected, apply appropriate handling measures aligned with Public Sector Governance Act requirements.
+  references: null
+
+CTRL-0082:
+  level: 2
+  risks:
+  - RISK-042
+  statement: Do not grant agents access to personally identifiable or sensitive data unless strictly required
+  recommendations: Agents with unnecessary access to PII or sensitive data create elevated risk of exposure, leakage, or misuse, particularly if agents are compromised or misuse their permissions. Apply the principle of least privilege by restricting agent access to databases, files, or systems containing PII or sensitive information unless explicitly required for the agent's designated functionality. Implement access controls that enforce these restrictions at the data layer, preventing agents from querying or reading sensitive datasets they should not access.
+  wog_recommendation: Agents with unnecessary access to PII or sensitive data create elevated risk of exposure, leakage, or misuse, particularly if agents are compromised or misuse their permissions. Apply the principle of least privilege by restricting agent access to databases, files, or systems containing PII or sensitive information unless explicitly required for the agent's designated functionality. Implement access controls that enforce these restrictions at the data layer, preventing agents from querying or reading sensitive datasets they should not access. Government agencies must restrict agent access to citizen data based on the principle of least privilege and need-to-know requirements, aligned with IM8 data classification and handling requirements. Document justification for agent access to PII or sensitive data. Implement technical controls that prevent agents from accessing data categories beyond their authorised scope.
+  references: null
+
+CTRL-0083:
+  level: 0
+  risks:
+  - RISK-043
+  statement: Disallow unknown or external files unless they have been scanned for threats
+  recommendations: External files may contain maliciously crafted content designed to inject hidden instructions, manipulate agent behaviour, or introduce security threats when processed. Implement mandatory scanning for all unknown or external files before allowing agents to access them, using antivirus software, malware scanners, or specialised tools that detect prompt injection attempts embedded in file content.
+  wog_recommendation: External files may contain maliciously crafted content designed to inject hidden instructions, manipulate agent behaviour, or introduce security threats when processed. Implement mandatory scanning for all unknown or external files before allowing agents to access them, using antivirus software, malware scanners, or specialised tools that detect prompt injection attempts embedded in file content. Government agencies should scan all citizen-submitted documents and external files before agent processing. Consider leveraging GovTech's Content Disarm & Reconstruction (CDR) capabilities for file sanitisation, which removes potentially malicious code while preserving clean content. Implement threat scanning that detects malware, malicious macros, and prompt injection attempts. For high-risk file types (e.g., PDFs, Office documents), apply additional sanitisation before agent access.
+  references: null
+
+CTRL-0084:
+  level: 0
+  risks:
+  - RISK-043
+  statement: Set minimum and maximum limits on what agents can modify within system resources
+  recommendations: Agents with unrestricted ability to modify system configurations may make inappropriate changes that degrade performance, compromise security, or cause service disruptions. Define and enforce quantitative boundaries on agent-initiated configuration changes, such as minimum and maximum values for resource allocations (CPU, memory, storage), rate limits, timeout values, or scaling parameters.
+  wog_recommendation: Agents with unrestricted ability to modify system configurations may make inappropriate changes that degrade performance, compromise security, or cause service disruptions. Define and enforce quantitative boundaries on agent-initiated configuration changes, such as minimum and maximum values for resource allocations (CPU, memory, storage), rate limits, timeout values, or scaling parameters. Government agencies should define acceptable ranges for agent configuration changes aligned with GCC resource limits and IM8 security requirements. Implement technical controls that prevent agents from making configuration changes outside approved boundaries. Document configuration limits and review them periodically.
+  references: null
+
+CTRL-0085:
+  level: 0
+  risks:
+  - RISK-044
+  statement: Log system health metrics and implement automated alerts for abnormal conditions
+  recommendations: Misconfigurations by agents may not cause immediate visible failures but instead gradually degrade system health, performance, or stability over time. Implement comprehensive logging of system health metrics including resource utilisation, error rates, response times, and performance indicators that reflect the impact of configuration changes. Configure automated alerting that triggers when metrics deviate from expected baselines or exceed acceptable thresholds.
+  wog_recommendation: Government agencies should leverage GCC monitoring infrastructure for system health logging and alerting. Configure alerts appropriate to service criticality and citizen impact. For citizen-facing services, ensure alerting enables rapid response to performance degradation before citizens are significantly affected.
+  references: null
+
+CTRL-0086:
+  level: 0
+  risks:
+  - RISK-045
+  statement: Limit the number of concurrent queries to external systems by agents
+  recommendations: Agents making unlimited concurrent queries to external systems may overwhelm those systems, trigger rate limiting or blocking, or exhaust connection pools and network resources. Implement concurrency limits that restrict the maximum number of simultaneous queries an agent can issue to external systems, such as APIs, web services, or remote databases. Configure limits appropriate to external system capacity and rate limit policies, ensuring agents operate within acceptable thresholds whilst maintaining functionality.
+  wog_recommendation: Government agencies should implement concurrency limits for agent queries to government APIs and external systems. Respect rate limits published by APEX-hosted APIs and other government services. Monitor for agents approaching rate limits and adjust concurrency settings to prevent service disruption.
+  references: null
+
+CTRL-0087:
+  level: 0
+  risks:
+  - RISK-045
+  statement: Ensure logging of system health metrics and automated alerts to the developer team if any metrics are abnormal
+  recommendations: null
+  wog_recommendation: Government agencies should ensure system health metrics from agentic applications are logged to centralised monitoring systems and configured to alert development and operations teams when anomalies are detected. Align alerting and escalation procedures with agency incident management processes.
+  references: null
+
+CTRL-0088:
+  level: 0
+  risks:
+  - RISK-046
+  statement: Limit the number of concurrent queries to external systems from the agent
+  recommendations: null
+  wog_recommendation: Government agencies should implement query concurrency limits to prevent agents from overwhelming external systems or exhausting GCC compute budgets. Configure limits based on expected workload patterns and external system capacities. Monitor query patterns and adjust limits as agent usage evolves.
+  references: null
