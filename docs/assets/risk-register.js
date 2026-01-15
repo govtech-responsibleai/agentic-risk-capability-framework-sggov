@@ -85,7 +85,11 @@ document.addEventListener('DOMContentLoaded', async function() {
         descriptionDiv.style.overflowWrap = "break-word";
         descriptionDiv.style.whiteSpace = "normal";
         descriptionDiv.style.marginBottom = "15px";
-        descriptionDiv.innerHTML = `<strong>Description:</strong> ${data.description}`;
+        let descriptionHtml = `<strong>Description:</strong> ${data.description}`;
+        if (data.wog_description) {
+            descriptionHtml += `<div style="margin-top: 10px; padding: 10px; background: #e8f4f8; border-left: 3px solid #0d9488; font-size: 0.95em;"><strong>WOG Context:</strong> ${data.wog_description}</div>`;
+        }
+        descriptionDiv.innerHTML = descriptionHtml;
         holderEl.appendChild(descriptionDiv);
 
         // References (if available)
@@ -359,9 +363,11 @@ document.addEventListener('DOMContentLoaded', async function() {
             if (searchTerm) {
                 const statement = (data.statement || '').toLowerCase();
                 const description = (data.description || '').toLowerCase();
+                const wogDescription = (data.wog_description || '').toLowerCase();
                 const id = (data.id || '').toLowerCase();
-                if (!statement.includes(searchTerm) && 
-                    !description.includes(searchTerm) && 
+                if (!statement.includes(searchTerm) &&
+                    !description.includes(searchTerm) &&
+                    !wogDescription.includes(searchTerm) &&
                     !id.includes(searchTerm)) {
                     return false;
                 }

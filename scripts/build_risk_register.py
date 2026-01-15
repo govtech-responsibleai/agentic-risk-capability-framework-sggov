@@ -21,10 +21,10 @@ def load_yaml(filename):
 def build_risk_register_data():
     """Build the complete risk register data structure."""
 
-    # Load all data sources
-    risks = load_yaml('risks.yaml')
-    controls = load_yaml('controls.yaml')
-    capabilities = load_yaml('capabilities.yaml')
+    # Load all data sources (WoG versions)
+    risks = load_yaml('risks-wog.yaml')
+    controls = load_yaml('controls-wog.yaml')
+    capabilities = load_yaml('capabilities-wog.yaml')
     components = load_yaml('components.yaml')
     design = load_yaml('design.yaml')
 
@@ -51,14 +51,14 @@ def build_risk_register_data():
             'description': design_data.get('description', '')
         }
 
-    # Add capabilities with hierarchical category
+    # Add capabilities with hierarchical category (use wog_adapted_description)
     for cap_id, cap_data in capabilities.items():
         cap_category = cap_data.get('category', 'Capability')
         elements[cap_id] = {
             'id': cap_id,
             'name': cap_data.get('name', ''),
             'category': f'Capability - {cap_category}',
-            'description': cap_data.get('description', '')
+            'description': cap_data.get('wog_adapted_description', cap_data.get('description', ''))
         }
 
     # Build enriched risk data
@@ -97,6 +97,7 @@ def build_risk_register_data():
             'id': risk_id,
             'statement': risk_data.get('statement', ''),
             'description': risk_data.get('description', ''),
+            'wog_description': risk_data.get('wog_description', ''),
             'element_id': element_id,
             'element_name': element_info.get('name', ''),
             'element_category': element_info.get('category', ''),
