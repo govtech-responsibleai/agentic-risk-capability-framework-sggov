@@ -11,7 +11,7 @@ CTRL-0002:
   risks:
   - RISK-001
   statement: Obtain legally binding no-training and no-logging agreements from LLM API service providers
-  wog_recommendation: Configure API settings to opt out of data logging and model training where available. Agencies must review provider terms of service and data processing agreements to verify these protections are legally enforceable, ensuring alignment with Government Instruction Manual requirements, PDPA, and data residency requirements for citizen data. For GCC-hosted AI services, verify that Microsoft/AWS/Google enterprise agreements include appropriate no-training provisions for government data. Maintain records of these agreements and configurations for audit and compliance purposes.
+  recommendations: Configure API settings to opt out of data logging and model training where available. Agencies must review provider terms of service and data processing agreements to verify these protections are legally enforceable, ensuring alignment with Government Instruction Manual requirements, PDPA, and data residency requirements for citizen data. For GCC-hosted AI services, verify that Microsoft/AWS/Google enterprise agreements include appropriate no-training provisions for government data. Maintain records of these agreements and configurations for audit and compliance purposes.
   references: null
 
 CTRL-0003:
