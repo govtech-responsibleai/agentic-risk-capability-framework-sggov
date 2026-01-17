@@ -3,7 +3,7 @@ CTRL-0001:
   risks:
   - RISK-001
   statement: Use only LLMs from verified and trusted model developers
-  recommendations: Agencies should prioritise LLMs available through GovTech's LLMaaS platform or approved GCC AI services (Azure OpenAI, GCP) which have undergone security assessment. For models outside these platforms, establish evaluation criteria including verification of published model cards, transparent responsible disclosure policies, evidence of security audits, and documented data handling practices. Evaluate whether the provider has an established track record, active security team, and clear incident response procedures. Maintain a register of approved model providers and versions for agency use, and regularly reassess providers as the threat landscape evolves.
+  recommendations: Agencies should prioritise LLMs available through GovTech's central AI platforms (e.g., LLMaaS) or approved GCC AI services (Azure OpenAI, GCP) which have undergone security assessment. For models outside these platforms, establish evaluation criteria including verification of published model cards, transparent responsible disclosure policies, evidence of security audits, and documented data handling practices. Evaluate whether the provider has an established track record, active security team, and clear incident response procedures. 
   references: null
 
 CTRL-0002:
@@ -11,7 +11,7 @@ CTRL-0002:
   risks:
   - RISK-001
   statement: Obtain legally binding no-training and no-logging agreements from LLM API service providers
-  recommendations: Configure API settings to opt out of data logging and model training where available. Agencies must review provider terms of service and data processing agreements to verify these protections are legally enforceable, ensuring alignment with Government Instruction Manual requirements, PDPA, and data residency requirements for citizen data. For GCC-hosted AI services, verify that Microsoft/AWS/Google enterprise agreements include appropriate no-training provisions for government data. Maintain records of these agreements and configurations for audit and compliance purposes.
+  recommendations: Configure API settings to opt out of data logging and model training where available. Agencies must review provider terms of service and data processing agreements to verify these protections are legally enforceable, ensuring alignment with Government Instruction Manual requirements, Circulars on the Use and Development of GenAI, PDPA, and data residency requirements for citizen data. For GCC-hosted AI services, verify that Microsoft/AWS/Google enterprise agreements include appropriate no-training provisions for government data. Maintain records of these agreements and configurations for audit and compliance purposes.
   references: null
 
 CTRL-0003:
@@ -19,7 +19,7 @@ CTRL-0003:
   risks:
   - RISK-001
   statement: Use only established and verified model loaders in production environments
-  recommendations: Agencies should use GovTech's LLMaaS platform where possible, which abstracts away model loading concerns. For agencies using self-hosting models, use well-maintained, community-vetted model loading libraries (e.g., Hugging Face Transformers, vLLM, PyTorch, TensorFlow) and avoid custom or unmaintained deserialisation code. Use only approved LLM loaders, inference frameworks and weight formats such as safetensors. If loading pickle-based models is necessary, scan model files using tools such as ProtectAI ModelScan or picklescan before deployment, recognising these tools have known bypass techniques. Maintain approved models in an internal registry (e.g., AWS ECR, Azure Container Registry) rather than auto-downloading from external sources at runtime. Verify model weights integrity via checksums. Monitor for security advisories affecting chosen loaders and apply patches promptly. 
+  recommendations: Agencies should use GovTech's LLMaaS platform where possible, which abstracts away model loading concerns. For agencies using self-hosting models, use well-maintained, community-vetted model loading libraries (e.g., Hugging Face Transformers, vLLM, PyTorch, TensorFlow) and avoid custom or unmaintained deserialisation code. Use only approved LLM loaders, inference frameworks and weight formats such as safetensors, as required in Circulars on the Use and Development of GenAI. If loading pickle-based models is necessary, scan model files using tools such as ProtectAI ModelScan or picklescan before deployment, recognising these tools have known bypass techniques. Maintain approved models in an internal registry (e.g., AWS ECR, Azure Container Registry) rather than auto-downloading from external sources at runtime. Verify model weights integrity via checksums. Monitor for security advisories affecting chosen loaders and apply patches promptly. 
   references: null
 
 CTRL-0004:
@@ -37,7 +37,7 @@ CTRL-0005:
   - RISK-002
   - RISK-003
   statement: Conduct structured evaluation of multiple LLMs for instruction-following, performance, and safety before deployment
-  recommendations: Define evaluation criteria aligned with application requirements (e.g., accuracy on domain-specific tasks, refusal of unsafe requests, consistency of outputs) and benchmark candidate models using representative test scenarios. Agencies should use GovTech's Litmus platform to conduct safety and security testing, and integrate testing with CI/CD pipelines to enable continuous testing on application changes. Supplement testing with evaluation datasets that include use case-specific scenarios such as multilingual citizen service interactions and sensitive topics (race, religion, politics) to ensure appropriate handling of edge cases. Document evaluation results to support model selection decisions and establish baseline performance expectations for ongoing monitoring.
+  recommendations: As required in the Circulars on the Use and Development of GenAI, define evaluation criteria aligned with application requirements (e.g., accuracy on domain-specific tasks, refusal of unsafe requests, consistency of outputs) and benchmark candidate models using representative test scenarios. Agencies should use GovTech's Litmus platform to conduct safety and security testing, and integrate testing with CI/CD pipelines to enable continuous testing on application changes. Supplement testing with evaluation datasets that include use case-specific scenarios such as multilingual citizen service interactions and sensitive topics (race, religion, politics) to ensure appropriate handling of edge cases. Document evaluation results to support model selection decisions and establish baseline performance expectations for ongoing monitoring.
   references: null
 
 CTRL-0006:
@@ -59,11 +59,11 @@ CTRL-0007:
   - RISK-002
   - RISK-003
   statement: Log all LLM inputs and outputs for regular review
-  recommendations: Comprehensive logging enables post-incident analysis, safety monitoring, detection of adversarial inputs, and continuous improvement of LLM behaviour over time. Agencies should log both system health metrics (resource usage, error rates, availability) and agent performance metrics (LLM inputs/outputs, tool calls, decision traces, timestamps, model versions) to enable comprehensive monitoring. For agent-specific observability, consider self-hostable tools such as Langfuse or Arize Phoenix that can be deployed on GCC to maintain data sovereignty. Leverage GCC logging infrastructure for centralised log management with appropriate retention policies and access controls. Ensure logging configuration complies with IM8 audit logging requirements. For applications processing sensitive data, implement log redaction to mask sensitive information like NRIC numbers and other PII while preserving operational visibility. Establish regular review processes—manual spot-checks or automated anomaly detection—to identify drift, unsafe outputs, or emerging failure patterns. Consider integration with central platforms like StackOps, WOGAA, and ABLR for logging analytics.
+  recommendations: Comprehensive logging enables post-incident analysis, safety monitoring, detection of adversarial inputs, and continuous improvement of LLM behaviour over time. Agencies should log both system health metrics (resource usage, error rates, availability) and agent performance metrics (LLM inputs/outputs, tool calls, decision traces, timestamps, model versions) to enable comprehensive monitoring. For agent-specific observability, consider self-hostable tools such as Langfuse or Arize Phoenix that can be deployed on GCC to maintain data sovereignty. Leverage GCC logging infrastructure for centralised log management with appropriate retention policies and access controls. Ensure logging configuration complies with IM8 audit logging requirements. For applications processing sensitive data, implement log redaction to mask sensitive information like NRIC numbers and other PII while preserving operational visibility. Establish regular review processes—manual spot-checks or automated anomaly detection—to identify drift, unsafe outputs, or emerging failure patterns. Consider integration with central platforms like StackOps and ABLR for logging analytics.
   references: null
 
 CTRL-0008:
-  level: 1
+  level: 2
   risks:
   - RISK-002
   - RISK-022
@@ -76,7 +76,7 @@ CTRL-0009:
   risks:
   - RISK-004
   statement: Use only MCP servers that implement robust authentication mechanisms in production environments
-  recommendations: Use MCP servers listed in GovTech's MCP Registry where available, as these have adequate authentication mechanisms (see MCP Governance Framework). If a server is not listed, agencies must perform the full authentication verification and validation below and document evidence of compliance before use. Verify that MCP servers implement modern OAuth standards (OAuth 2.1 or OAuth 2.0 with PKCE) before deployment, ensuring they enforce per-client consent flows, scope restrictions, and redirect URI validation to prevent authorisation bypasses. Review the server's authentication documentation and test authorisation flows in a development environment to confirm proper implementation. Reject MCP servers that use deprecated authentication methods, hard-coded credentials, or insufficient session management. Ensure MCP servers integrate with government identity infrastructure where appropriate, such as WOG AD for internal applications, and Singpass or CorpPass for citizen-facing services.
+  recommendations: Use MCP servers listed in GovTech's MCP Registry where available, as these have adequate authentication mechanisms (see MCP Governance Framework). If a server is not listed, agencies must perform the full authentication verification and validation below and document evidence of compliance before use. Verify that MCP servers implement modern OAuth standards (OAuth 2.1 or OAuth 2.0 with PKCE) before deployment, ensuring they enforce per-client consent flows, scope restrictions, and redirect URI validation to prevent authorisation bypasses. For simpler or internal-only servers, a secure API key model, while not preferred, is acceptable. This key should be passed in an HTTP header (e.g., X-API-key), or the secret must be stored in a hashed or encoded form. Review the server's authentication documentation and test authorisation flows in a development environment to confirm proper implementation. Reject MCP servers that use deprecated authentication methods, hard-coded credentials, or insufficient session management. Ensure MCP servers integrate with government identity infrastructure where appropriate, such as WOG AD for internal applications, and Singpass or CorpPass for citizen-facing services.
   references:
   - https://modelcontextprotocol.io/specification/draft/basic/security_best_practices
 
@@ -110,7 +110,7 @@ CTRL-0012:
   - https://stytch.com/blog/mcp-authentication-and-authorization-servers/
 
 CTRL-0089:
-  level: 1
+  level: 0
   risks:
   - RISK-005
   statement: Agents shall request secondary credentials from users where needed to perform tasks via sub-agents
@@ -122,7 +122,7 @@ CTRL-0013:
   risks:
   - RISK-006
   statement: Test all untested MCP servers in a sandboxed environment before deploying to production
-  recommendations: Deploy MCP servers first to an isolated, hardened sandbox environment (e.g., containerised test environment, separate network segment) to evaluate their security posture, behaviour, and reliability. Ensure that isolated environments that do not have access to production citizen data or government systems. Monitor server activity during testing for anomalous network connections, excessive resource consumption, unauthorised file access, or other suspicious behaviours. Leverage SHIP-HATS for security scanning of MCP server code and dependencies. Conduct static analysis and dynamic analysis in quarantine environments. Only promote MCP servers to production after successful security review and functional testing.
+  recommendations: Use the MCP Governance Framework to deploy MCP servers first to an isolated, hardened sandbox environment (e.g., containerised test environment, separate network segment) to evaluate their security posture, behaviour, and reliability. Ensure that isolated environments that do not have access to production citizen data or government systems. Monitor server activity during testing for anomalous network connections, excessive resource consumption, unauthorised file access, or other suspicious behaviours. Leverage SHIP-HATS for security scanning of MCP server code and dependencies. Conduct static analysis and dynamic analysis in quarantine environments. Only promote MCP servers to production after successful security review and functional testing.
   references:
   - https://modelcontextprotocol.io/specification/draft/basic/security_best_practices
 
@@ -131,7 +131,7 @@ CTRL-0014:
   risks:
   - RISK-006
   statement: Use only MCP servers from verified and trusted developers
-  recommendations: Use only pre-approved MCP servers from GovTech's MCP Registry where available. For MCP servers outside the registry, establish evaluation criteria including verification of public code repositories, community reputation, security disclosure practices, security track record and maintenance history. Prioritise MCP servers developed by GovTech or approved government technology partners, or from the official Model Context Protocol repository and well-established organisations. Include MCP server provenance in application security documentation.
+  recommendations: Use only pre-approved MCP servers from GovTech's MCP Registry as much as possible. For MCP servers outside the registry, establish evaluation criteria including verification of public code repositories, community reputation, security disclosure practices, security track record and maintenance history. Prioritise MCP servers developed by GovTech or approved government technology partners, or from the official Model Context Protocol repository and well-established organisations. Include MCP server provenance in application security documentation.
   references:
   - https://modelcontextprotocol.io/specification/draft/basic/security_best_practices
 
@@ -141,6 +141,14 @@ CTRL-0088:
   - RISK-006
   statement: For tools intended to be shared or reusable, agents shall only interact with tools via MCP at the /mcp endpoint
   recommendations: Building tools using MCP specs reduces security, consistency, and governance risk by enforcing a standardized, auditable, and permission-bounded interface between tools and models. It helps prevent privilege creep, injection attacks, inconsistent data handling, and shadow integrations that bypass controls. Ensure shared tools are registered with GovTech's MCP Registry and accessible only via the standard /mcp endpoint.
+  references: null
+
+CTRL-0090:
+  level: 0
+  risks:
+  - RISK-006
+  statement: MCP Servers shall be implemented strictly in accordance with the MCP Server specification, without undocumented extensions or deviations.
+  recommendations: Implementing MCP Servers according to the MCP Server specification (https://modelcontextprotocol.io/specification/2025-06-18) ensures that agent-tool interactions follow a standardized, predictable, and auditable protocol. Any deviation or extension to the MCP Server specification should undergo formal security and governance review prior to deployment.
   references: null
 
 CTRL-0015:
@@ -219,6 +227,14 @@ CTRL-0023:
   recommendations: Implement comprehensive logging for all memory write, update, and delete operations, capturing source metadata including timestamps, user or agent identity, session context, and the specific content being modified. Structure logs to enable correlation analysis, allowing security teams to trace how specific memory entries evolved over time and identify suspicious modification patterns. Store audit logs in a tamper-evident system separate from the agent's operational memory and comply with IM8 audit logging requirements and Government Instruction Manual retention policies. Logs should capture sufficient detail to support incident investigation and respond to audit queries about how agent knowledge or behaviour changed over time.
   references: null
 
+CTRL-0091:
+  level: 0
+  risks:
+  - RISK-011
+  statement: Long-term memory stores used by agentic systems shall be encrypted at rest and protected with appropriate access controls
+  recommendations: Encrypting long-term memory stores at rest reduces the risk of unauthorized access, data leakage, and secondary misuse of sensitive information that agents may inadvertently store from prior interactions. Memory stores should use industry-standard encryption mechanisms, enforce least-privilege access, and apply clear separation between agent memory, system metadata, and operational logs. Access to decrypt or query long-term memory should be restricted, monitored, and periodically reviewed, especially where memory persistence spans multiple tasks, users, or contexts.
+  references: null
+
 CTRL-0024:
   level: 0
   risks:
@@ -234,7 +250,7 @@ CTRL-0025:
   - RISK-012
   - RISK-022
   statement: Ensure all inter-agent communications are encrypted in transit and prohibit plaintext channels
-  recommendations: Ensure all agent-to-agent network communications use transport-layer encryption (minimum TLS 1.2, preferably TLS 1.3), including internal traffic within trusted network boundaries (e.g., network segments within GCC) and verification of other agents' identities. Configure agents to reject plaintext connections and verify certificates to prevent downgrade attacks or rogue agent impersonation. For highly sensitive data exchanged between agents, consider applying end-to-end encryption. Agencies must ensure inter-agent communications comply with IM8 encryption requirements, including implementing appropriate data protection measures. 
+  recommendations: Ensure all agent-to-agent network communications use transport-layer encryption (minimum TLS 1.2, preferably TLS 1.3), including internal traffic within trusted network boundaries (e.g., network segments within GCC) and verification of other agents' identities. Configure agents to reject plaintext connections and verify certificates to prevent downgrade attacks or rogue agent impersonation. For highly sensitive data exchanged between agents, consider applying end-to-end encryption. Agencies must ensure inter-agent communications comply with IM8 encryption requirements, including implementing appropriate data protection measures. Communication shall be via Streamable HTTP instead of long-lived Server-Sent Events (SSE). 
   references:
   - https://a2aprotocol.ai/blog/2025-full-guide-a2a-protocol
 
