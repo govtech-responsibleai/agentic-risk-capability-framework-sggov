@@ -1400,19 +1400,19 @@
       "description": "Memory is a persistent or semi-persistent data store attached to an LLM that retains information across interactions\u2014such as conversation history, user preferences, task state, and retrieved knowledge\u2014enabling continuity, long-horizon reasoning, and personalization in agentic workflows. Memory may be implemented through mechanisms such as context windows, vector databases, episodic logs, or external state stores, each offering different trade-offs in latency, fidelity, and persistence."
     },
     {
-      "id": "DSN-01",
+      "id": "DES-01",
       "name": "Agentic Architecture",
       "category": "Design - Agentic Architecture",
       "description": "The agentic architecture defines how multiple agents are structured, interconnected, and coordinated to collectively perform tasks that exceed the capabilities of a single agent. This includes orchestration patterns such as hierarchical delegation, parallel agent execution, sequential handoffs between specialised agents, shared or centralized planning components, and the communication protocols that govern information exchange and coordination across the system."
     },
     {
-      "id": "DSN-02",
+      "id": "DES-02",
       "name": "Roles and Access Controls",
       "category": "Design - Roles and Access Controls",
       "description": "Roles and access controls define and enforce differentiated roles, permissions, and scopes of authority across agents and system components, specifying what actions each agent is allowed to perform and which resources it may access. This includes assigning functional roles to agents, configuring tool- and data-level permissions, scoping credentials or identities, and enforcing access policies that govern interactions with files, systems, services, or other agents."
     },
     {
-      "id": "DSN-03",
+      "id": "DES-03",
       "name": "Monitoring and Traceability",
       "category": "Design - Monitoring and Traceability",
       "description": "Monitoring and traceability provide systematic visibility into agent behaviour, interactions, and decision pathways by recording, observing, and correlating agent actions and system events over time. This includes logging agent inputs and outputs, tracking tool invocations and state changes, capturing decision traces or execution paths, and surfacing telemetry or audit records that support analysis and review of system behaviour."
@@ -1495,21 +1495,21 @@
     "total_controls": 91,
     "total_elements": 19,
     "categories": [
-      "Design - Roles and Access Controls",
-      "Component - Memory",
-      "Component - LLM",
-      "Component - Instructions",
-      "Capability - Cognitive",
-      "Capability - Operational",
       "Design - Agentic Architecture",
-      "Capability - Interaction",
+      "Component - LLM",
+      "Component - Memory",
+      "Component - Tools",
+      "Capability - Cognitive",
+      "Component - Instructions",
       "Design - Monitoring and Traceability",
-      "Component - Tools"
+      "Capability - Interaction",
+      "Capability - Operational",
+      "Design - Roles and Access Controls"
     ],
     "failure_modes": [
       "Agent Failure",
-      "External Manipulation",
-      "Tool or Resource Malfunction"
+      "Tool or Resource Malfunction",
+      "External Manipulation"
     ],
     "risk_types": [
       "Safety",

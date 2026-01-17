@@ -73,9 +73,6 @@ def build_risk_register_data():
             # Try zero-padded version (CMP-1 -> CMP-01)
             if '-' in element_id:
                 prefix, number = element_id.split('-')
-                # Also handle DES -> DSN mapping
-                if prefix == 'DES':
-                    prefix = 'DSN'
                 normalized_id = f"{prefix}-{number.zfill(2)}"
                 element_info = elements.get(normalized_id, {})
 
